@@ -1,7 +1,11 @@
 <div class="render">
     <select class="component {{ self.css_class }}"
             id="{{ self.id }}"
-            name="{{ self.id }}">
+            name="{{ self.id }}"
+            {% for name, value in self.attributes.items %}
+                {{ name }}="{{ value }}"
+            {% endfor %}>
+
             {% for option in self.options %}
                 <option value="{{ option.value }}">{{ option.name }}</option>
             {% endfor %}

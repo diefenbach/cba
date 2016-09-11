@@ -1,4 +1,7 @@
-<div class="render">
+<div class="render"
+     {% for name, value in self.attributes.items %}
+         {{ name }}="{{ value }}"
+     {% endfor %}>
     <div id="{{ self.id }}"
         class="ui top attached tabular menu">
             {% for item in self.components %}
@@ -15,7 +18,6 @@
                 {% endfor %}
         </div>
     {% endfor %}
-
     <script type="text/javascript">
         $('.menu .item').tab();
     </script>

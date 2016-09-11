@@ -3,10 +3,17 @@
         {% if self.label %}
             <label>{{ self.label }}</label>
         {% endif %}
-
+        {% if self.error %}
+          <div class="error">
+            {{ self.error }}
+          </div>
+        {% endif %}
         <textarea class="form-control component"
-                  id='{{ self.id }}'
-                  rows="10">{{ self.value }}</textarea>
+                  id="{{ self.id }}"
+                  rows="{{ self.rows }}"
+                  {% for name, value in self.attributes.items %}
+                      {{ name }}="{{ value }}"
+                  {% endfor %}>{{ self.value }}</textarea>
     </div>
     {{ js|safe }}
 </div>

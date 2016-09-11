@@ -1,5 +1,10 @@
 <div class="render">
-    <button class="ui button {{ self.css_class }}" id='{{ self.id }}' handler="{{ self.handler }}">
+    <button class="ui button {{ self.css_class }}"
+            handler="{{ self.handler }}"
+            id="{{ self.id }}"
+            {% for name, value in self.attributes.items %}
+                {{ name }}="{{ value }}"
+            {% endfor %}>
         {{ self.value }}
     </button>
     {{ js|safe }}

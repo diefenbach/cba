@@ -1,4 +1,8 @@
+from collections import OrderedDict
+
+from django.conf import settings
 from django.template.loader import render_to_string
+
 from . utils import JSCreator
 
 
@@ -16,36 +20,39 @@ class Component(object):
     """
     template = None
 
-    def __init__(self, id, initial_components=None, attributes=None, css_class=None, *args, **kwargs):
+    def __init__(self, id, initial_components=None, attributes=None, css_class=None, actions=None, *args, **kwargs):
         self.id = id
         self.initial_components = initial_components or []
         self.attributes = attributes or {}
         self.css_class = css_class
 
-        self.html = None
-        self.components = []
-        self.components_dict = {}
+        self.actions = actions or []
+        self._html = None
+        self._components = OrderedDict()
         self.parent = None
-        self.actions = kwargs.get("actions", [])
 
-        if initial_components is None:
-            self.init_components()
-        else:
+        if initial_components:
             self.initial_components = initial_components
+        else:
+            self.init_components()
 
         self.load_components()
 
     def add_component(self, component):
         component.parent = self
-        self.components_dict[component.id] = component
-        self.components.append(component)
+        self._components[component.id] = component
+
+    @property
+    def components(self):
+        return self._components.values()
 
     def get_component(self, id, direct_only=False):
-        for component in self.components:
-            if component.id == id:
-                return component
-            if direct_only is False:
-                temp = component.get_component(id)
+        component = self._components.get(id)
+        if component:
+            return component
+        elif direct_only is False:
+            for component in self.components:
+                temp = component.get_component(id, direct_only)
                 if temp:
                     return temp
 
@@ -61,7 +68,7 @@ class Component(object):
         self.initial_components = []
 
     def refresh(self):
-        self.html = ["#{}".format(self.id), self.render()]
+        self._html = ["#{}".format(self.id), self.render()]
 
     def render(self):
         return render_to_string(self.template, {

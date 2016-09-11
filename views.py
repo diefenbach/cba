@@ -1,8 +1,12 @@
 import json
+import logging
 
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
+
+
+logger = logging.getLogger(__name__)
 
 
 class CBAView(View):
@@ -11,7 +15,7 @@ class CBAView(View):
     def __init__(self, **kwargs):
         super(CBAView, self).__init__(**kwargs)
         self.root = self.root("root")
-        self.html = []
+        self._html = []
 
     def load_components(self, root):
         """
@@ -20,7 +24,7 @@ class CBAView(View):
         if hasattr(root, "components"):
             for component in root.components:
                 if component.id in self.request.GET:
-                    root.components_dict[component.id].value = self.request.GET.get(component.id)
+                    root._components[component.id].value = self.request.GET.get(component.id)
                 self.load_components(component)
 
     def collect_refreshed_components(self, root):
@@ -29,8 +33,8 @@ class CBAView(View):
         """
         if hasattr(root, "components"):
             for component in root.components:
-                if component.html:
-                    self.html.append(component.html)
+                if component._html:
+                    self._html.append(component._html)
                 self.collect_refreshed_components(component)
 
     def get(self, *args, **kwargs):
@@ -51,8 +55,10 @@ class CBAView(View):
 
             self.collect_refreshed_components(self.root)
 
+            logger.debug("Refreshed components: {}".format(self._html))
+
             return HttpResponse(
-                json.dumps({"html": self.html}),
+                json.dumps({"html": self._html}),
                 content_type='application/json'
             )
         else:

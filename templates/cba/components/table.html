@@ -1,5 +1,8 @@
-<table id="{{ self.id }}"
-       class="render ui table">
+<table class="render ui table"
+       id="{{ self.id }}"
+       {% for name, value in self.attributes.items %}
+           {{ name }}="{{ value }}"
+       {% endfor %} >
     <thead>
         <tr>
             {% for column in self.columns %}

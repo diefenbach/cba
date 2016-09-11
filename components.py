@@ -2,11 +2,34 @@ from . base import Component
 
 
 class Button(Component):
+    """A HTML button.
+
+        handler
+            The method which is called when the button is clicked.
+
+        value
+            The value of the button
+
+    """
     template = "cba/components/button.html"
 
     def __init__(self, handler, value="", *args, **kwargs):
         super(Button, self).__init__(*args, **kwargs)
         self.handler = handler
+        self.value = value
+
+
+class Group(Component):
+    """A simple group to group compontens together for easier refresh.
+    """
+    template = "cba/components/group.html"
+
+
+class HiddenInput(Component):
+    template = "cba/components/hidden_input.html"
+
+    def __init__(self, id, value="", *args, **kwargs):
+        super(HiddenInput, self).__init__(id, *args, **kwargs)
         self.value = value
 
 
@@ -16,35 +39,6 @@ class Image(Component):
     def __init__(self, id, src, *args, **kwargs):
         super(Image, self).__init__(id, *args, **kwargs)
         self.src = src
-
-
-class Page(Component):
-    template = "cba/components/page.html"
-
-
-class Text(Component):
-    template = "cba/components/text.html"
-
-    def __init__(self, id, value, *args, **kwargs):
-        super(Text, self).__init__(id, *args, **kwargs)
-        self.value = value
-
-
-class TextInput(Component):
-    template = "cba/components/text_input.html"
-
-    def __init__(self, id, value="", label=None, *args, **kwargs):
-        super(TextInput, self).__init__(id, *args, **kwargs)
-        self.label = label
-        self.value = value
-
-
-class HiddenInput(TextInput):
-    template = "cba/components/hidden_input.html"
-
-    def __init__(self, id, value="", *args, **kwargs):
-        super(HiddenInput, self).__init__(id, *args, **kwargs)
-        self.value = value
 
 
 class Select(Component):
@@ -93,13 +87,26 @@ class Tab(Component):
 class TextArea(Component):
     template = "cba/components/textarea.html"
 
-    def __init__(self, id, label=None, value="", *args, **kwargs):
+    def __init__(self, id, label=None, value="", rows=10, *args, **kwargs):
         super(TextArea, self).__init__(id, *args, **kwargs)
         self.label = label
+        self.rows = rows
         self.value = value
 
 
-class Group(Component):
-    """A simple group to group compontens together for easier refresh.
-    """
-    template = "cba/components/group.html"
+class Text(Component):
+    template = "cba/components/text.html"
+
+    def __init__(self, id, value, *args, **kwargs):
+        super(Text, self).__init__(id, *args, **kwargs)
+        self.value = value
+
+
+class TextInput(Component):
+    template = "cba/components/text_input.html"
+
+    def __init__(self, id, value="", label=None, error=None, *args, **kwargs):
+        super(TextInput, self).__init__(id, *args, **kwargs)
+        self.error = False
+        self.label = label
+        self.value = value

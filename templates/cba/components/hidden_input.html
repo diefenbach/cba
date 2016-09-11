@@ -2,4 +2,7 @@
        id="{{ self.id }}"
        name="{{ self.id }}"
        type="hidden"
-       value="{{ self.value }}" />
+       value="{{ self.value }}"
+       {% for name, value in self.attributes.items %}
+           {{ name }}="{{ value }}"
+       {% endfor %} />

@@ -1,6 +1,9 @@
 <div class="render">
     <div class="component"
          id="{{ self.id }}">{{ self.value }}
+         {% for name, value in self.attributes.items %}
+             {{ name }}="{{ value }}"
+         {% endfor %}>
     </div>
     {{ js|safe }}
 </div>

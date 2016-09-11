@@ -4,11 +4,19 @@
             {% if self.label %}
                 <label>{{ self.label }}</label>
             {% endif %}
+            {% if self.error %}
+              <div class="error">
+                {{ self.error }}
+              </div>
+            {% endif %}
             <input class="component"
                    id="{{ self.id }}"
                    name="{{ self.id }}"
                    type="text"
-                   value="{{ self.value }}" />
+                   value="{{ self.value }}"
+                   {% for name, value in self.attributes.items %}
+                       {{ name }}="{{ value }}"
+                   {% endfor %} />
         </div>
         {{ js|safe }}
     </div>
