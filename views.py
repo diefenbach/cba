@@ -17,26 +17,6 @@ class CBAView(View):
         self.root = self.root("root")
         self._html = []
 
-    def _load_components(self, root):
-        """
-        Loads components with values from the browser.
-        """
-        if hasattr(root, "components"):
-            for component in root.components:
-                if component.id in self.request.GET:
-                    root._components[component.id].value = self.request.GET.get(component.id)
-                self.load_components(component)
-
-    def collect_refreshed_components(self, root):
-        """
-        Collects the html from all components which should be refreshed.
-        """
-        if hasattr(root, "components"):
-            for component in root.components:
-                if component._html:
-                    self._html.append(component._html)
-                self.collect_refreshed_components(component)
-
     def get(self, *args, **kwargs):
         if self.request.is_ajax():
             self._load_components(self.root)
@@ -53,7 +33,7 @@ class CBAView(View):
                     break
                 component = component.parent
 
-            self.collect_refreshed_components(self.root)
+            self._collect_refreshed_components(self.root)
 
             logger.debug("Refreshed components: {}".format(self._html))
 
@@ -65,3 +45,22 @@ class CBAView(View):
             return render(self.request, self.template, {
                 "content": self.root.render()
             })
+
+    def _collect_refreshed_components(self, root):
+        """Collects the html from all components which should be refreshed.
+        """
+        if hasattr(root, "components"):
+            for component in root.components:
+                if component._html:
+                    self._html.append(component._html)
+                self._collect_refreshed_components(component)
+
+
+    def _load_components(self, root):
+        """Loads components with values from the browser.
+        """
+        if hasattr(root, "components"):
+            for component in root.components:
+                if component.id in self.request.GET:
+                    root._components[component.id].value = self.request.GET.get(component.id)
+                self._load_components(component)
