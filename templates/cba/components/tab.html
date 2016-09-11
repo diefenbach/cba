@@ -1,0 +1,18 @@
+<div id="{{ self.id }}" class="ui top attached tabular menu render">
+    {% for item in self.components %}
+        <a class="item {% if item.active %}active{% endif %}" data-tab="{{ item.id }}">{{ item.title }}</a>
+    {% endfor %}
+</div>
+{% for item in self.components %}
+    <div id="{{ self.id }}" class="ui bottom attached tab segment {% if item.active %}active{% endif %}" data-tab="{{ item.id }}">
+        {% for component in item.components %}
+            <div style="padding:10px">
+                {{ component.render }}
+            </div>
+        {% endfor %}
+    </div>
+{% endfor %}
+
+<script type="text/javascript">
+    $('.menu .item').tab();
+</script>

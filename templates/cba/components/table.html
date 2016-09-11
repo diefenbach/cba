@@ -1,0 +1,24 @@
+<table id="{{ self.id }}" class="render ui table">
+    <thead>
+        <tr>
+            {% for column in self.columns %}
+                <th>
+                    {{ column }}
+                </th>
+            {% endfor %}
+        </tr>
+    </thead>
+    {% if self.data %}
+        <tbody>
+            {% for row in self.data %}
+                <tr>
+                    {% for column in row %}
+                        <td>
+                            {{ column }}
+                        </td>
+                    {% endfor %}
+                    </tr>
+            {% endfor %}
+        </tbody>
+    {% endif %}
+</table>

@@ -1,0 +1,6 @@
+<select class="component" name="{{ self.id }}" id="{{ self.id }}">
+    {% for option in self.options %}
+        <option value="{{ option.value }}">{{ option.name }}</option>
+    {% endfor %}
+</select>
+{{ js|safe }}

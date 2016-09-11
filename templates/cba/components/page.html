@@ -1,0 +1,7 @@
+<div class="render component" id="{{ self.id }}">
+    {% for component in self.components %}
+        <div style="padding: 20px">
+            {{ component.render }}
+        </div>
+    {% endfor %}
+</div>
