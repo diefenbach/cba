@@ -99,5 +99,7 @@ class TextArea(Component):
         self.value = value
 
 
-class SimpleLayout(Component):
-    template = "cba/components/simple_layout.html"
+class Group(Component):
+    """A simple group to group compontens together for easier refresh.
+    """
+    template = "cba/components/group.html"
