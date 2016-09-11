@@ -1,5 +1,5 @@
 <div class="render">
-    <button class="ui button" id='{{ self.id }}' handler="{{ self.handler }}">
+    <button class="ui button {{ self.css_class }}" id='{{ self.id }}' handler="{{ self.handler }}">
         {{ self.value }}
     </button>
     {{ js|safe }}

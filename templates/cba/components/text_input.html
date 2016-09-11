@@ -1,11 +1,15 @@
-<div class="ui form render">
-    <div class="field">
-        <label>Title</label>
-        <input class="component"
-               id="{{ self.id }}"
-               name="{{ self.id }}"
-               type="text"
-               value="{{ self.value }}" />
+<div class="render">
+    <div class="ui form">
+        <div class="field">
+            {% if self.label %}
+                <label>{{ self.label }}</label>
+            {% endif %}
+            <input class="component"
+                   id="{{ self.id }}"
+                   name="{{ self.id }}"
+                   type="text"
+                   value="{{ self.value }}" />
+        </div>
+        {{ js|safe }}
     </div>
-    {{ js|safe }}
 </div>

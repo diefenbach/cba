@@ -1,2 +1,9 @@
-<img class="render" id="{{ self.id }}" src="{{ self.src }}" {% for key, value in self.attributes.items %}{{ key }}="{{ value }}" {% endfor %} />
-{{ js|safe }}
+<div class="render">
+    <img class="{ self.css_class }}"
+         id="{{ self.id }}"
+         src="{{ self.src }}"
+         {% for key, value in self.attributes.items %}
+            {{ key }}="{{ value }}"
+         {% endfor %} />
+    {{ js|safe }}
+</div>
