@@ -17,7 +17,7 @@ class CBAView(View):
         self.root = self.root("root")
         self._html = []
 
-    def load_components(self, root):
+    def _load_components(self, root):
         """
         Loads components with values from the browser.
         """
@@ -39,7 +39,7 @@ class CBAView(View):
 
     def get(self, *args, **kwargs):
         if self.request.is_ajax():
-            self.load_components(self.root)
+            self._load_components(self.root)
 
             handler = self.request.GET.get("handler")
             event_id = self.request.GET.get("event_id")
