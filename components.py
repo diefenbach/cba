@@ -13,7 +13,7 @@ class Button(Component):
     """
     template = "cba/components/button.html"
 
-    def __init__(self, handler, value="", *args, **kwargs):
+    def __init__(self, handler=None, value="", *args, **kwargs):
         super(Button, self).__init__(*args, **kwargs)
         self.handler = handler
         self.value = value
@@ -26,26 +26,39 @@ class Group(Component):
 
 
 class HiddenInput(Component):
+    """Renders to a HTML input hidden tag.
+
+        value
+            The value of the hidden input field.
+    """
     template = "cba/components/hidden_input.html"
 
-    def __init__(self, id, value="", *args, **kwargs):
-        super(HiddenInput, self).__init__(id, *args, **kwargs)
+    def __init__(self, value="", *args, **kwargs):
+        super(HiddenInput, self).__init__(*args, **kwargs)
         self.value = value
 
 
 class Image(Component):
+    """Renders to a HTML img tag.
+
+        src
+            The url to the image file
+
+    """
     template = "cba/components/image.html"
 
-    def __init__(self, id, src, *args, **kwargs):
-        super(Image, self).__init__(id, *args, **kwargs)
+    def __init__(self, src, alt="", title="", *args, **kwargs):
+        super(Image, self).__init__(*args, **kwargs)
         self.src = src
+        self.alt = alt
+        self.title = title
 
 
 class Select(Component):
     template = "cba/components/select.html"
 
-    def __init__(self, id, options, actions=None, *args, **kwargs):
-        super(Select, self).__init__(id)
+    def __init__(self, options, *args, **kwargs):
+        super(Select, self).__init__(*args, **kwargs)
         self.options = options
 
     def get_name(self):

@@ -9,3 +9,4 @@
 *.vagrant
 src/
 project/
+*cache
