@@ -31,24 +31,9 @@
             data.handler = "{{ self.handler }}";
             data.csrfmiddlewaretoken = $('input[name=csrfmiddlewaretoken]').attr('value');
             data.event_id = "{{ self.event_id }}";
-            $.post("", data, result => {
-                for (const html of result.html) {
-                    if ($(html[0]).hasClass('render')) {
-                        $(html[0]).replaceWith(html[1]);
-                    } else {
-                        $(html[0]).parents('.render:first').replaceWith(html[1]);
-                    }
-                }
-                for (const message of result.messages) {
-                    const id = getUUID();
-                    $('#messages').append('<div class="ui large positive message" id="message-' + id + '">' + message + '</div>');
-                    setTimeout(() => {
-                        $('#message-' + id).fadeOut(500, function() {
-                            $(this).remove();
-                        });
-                    },
-                    1000);
-                }
+            $.post('', data, result => {
+                replaceHTML(result.html);
+                addMessages(result.messages);
             });
           },
           onHidden: function() {

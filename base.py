@@ -63,8 +63,11 @@ class Component(object):
         component.parent = self
         self._components[component.id] = component
 
-    def add_message(self, message):
-        self._messages.append(message)
+    def add_message(self, message, type):
+        self._messages.append({
+            "text": message,
+            "type": type,
+        })
 
     def get_messages(self):
         return self._messages

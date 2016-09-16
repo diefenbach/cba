@@ -2,3 +2,18 @@
     padding: 10px 0;
     color: red;
 }
+
+#messages {
+    position: fixed;
+    width: 400px;
+    z-index: 999999;
+    top: 10px;
+    right: 20px;
+}
+
+.ui.message {
+    position: relative !important;
+    z-index: 10;
+    margin: 2px 0;
+    opacity: .8;
+}
