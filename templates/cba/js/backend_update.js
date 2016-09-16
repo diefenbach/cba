@@ -1,16 +1,16 @@
 <script type='text/javascript'>
     $('#{{ component.id }}').on('click', function(event) {
-        var data = collect_components();
+        const data = collect_components();
         data["handler"] = $(this).attr("handler");
         data["event_id"] = $(this).attr("id");
-        $.get("/", data, function(data) {
-            for (var html in data['html']) {
-                var element = $(data['html'][html][0]);
-                if (element.hasClass("render")) {
-                    element.replaceWith(data['html'][html][1]);
+        data["csrfmiddlewaretoken"] = $("input[name=csrfmiddlewaretoken]").attr("value");
+        $.post("/perf", data, data => {
+            for (const html of data.html) {
+                if ($(html[0]).hasClass("render")) {
+                    $(html[0]).replaceWith(html[1]);
                 }
                 else {
-                    element.parents(".render:first").replaceWith(data['html'][html][1]);
+                    $(html[0]).parents(".render:first").replaceWith(html[1]);
                 }
             }
         });

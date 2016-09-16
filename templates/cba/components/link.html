@@ -1,0 +1,12 @@
+<div class="render">
+    <a class="{{ self.css_class }} {% if self.default_ajax %}default-ajax{% endif %}"
+       handler="{{ self.handler }}"
+       id="{{ self.id }}"
+       href="."
+        {% for name, value in self.attributes.items %}
+           {{ name }}="{{ value }}"
+        {% endfor %}>
+        {{ self.text }}
+    </a>
+    {{ js|safe }}
+</div>

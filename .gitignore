@@ -9,4 +9,5 @@
 *.vagrant
 src/
 project/
-*cache
+*.cache
+__pycache__

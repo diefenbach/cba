@@ -16,8 +16,8 @@ class Component(object):
     def __init__(self, id, initial_components=None, attributes=None, css_class=None, actions=None, *args, **kwargs):
         """
             id
-                The unique id of the compoment. This must be unique troughout the
-                whole application.
+                The unique id of the component. This must be unique troughout
+                the whole application.
 
             attributes
                 HTML attributes of the component.
@@ -30,6 +30,10 @@ class Component(object):
 
             template
                 The path to the template which is used to render the component.
+
+            actions
+                A list of actions which will be performed when the user
+                interacts with the component. (Not implemented yet).
         """
         self.id = id
         self.initial_components = initial_components or []
@@ -37,16 +41,18 @@ class Component(object):
         self.css_class = css_class
 
         self.actions = actions or []
-        self._html = None
-        self._components = OrderedDict()
         self.parent = None
+
+        self._components = OrderedDict()
+        self._html = None
+        self._messages = []
 
         if initial_components:
             self.initial_components = initial_components
         else:
             self.init_components()
 
-        self._adds_components()
+        self._add_components()
 
     def add_component(self, component):
         """Adds the given component as sub component to the current component.
@@ -57,9 +63,15 @@ class Component(object):
         component.parent = self
         self._components[component.id] = component
 
+    def add_message(self, message):
+        self._messages.append(message)
+
+    def get_messages(self):
+        return self._messages
+
     @property
     def components(self):
-        """Returns all direct sub components of the current component as list.
+        """Returns all direct child components of the current component as list.
         """
         return self._components.values()
 
@@ -103,7 +115,7 @@ class Component(object):
             "js": JSCreator(self, self.actions).create(),
         })
 
-    def _adds_components(self):
+    def _add_components(self):
         """Adds initial components into the default components structure.
         """
         if self.initial_components:

@@ -1,5 +1,5 @@
 <div class="render">
-    <button class="ui button {{ self.css_class }}"
+    <button class="ui button {{ self.css_class }} {% if self.default_ajax %}default-ajax{% endif %}"
             handler="{{ self.handler }}"
             id="{{ self.id }}"
             {% for name, value in self.attributes.items %}

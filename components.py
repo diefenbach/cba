@@ -8,19 +8,25 @@ class Button(Component):
             The method which is called when the button is clicked.
 
         value
-            The value of the button
+            The value of the button.
 
+        default_ajax
+            If set to true a click to the button will be processed by the
+            default cba ajax behaviour, which means the click event will be
+            sent to the given handler.
     """
     template = "cba/components/button.html"
 
-    def __init__(self, handler=None, value="", *args, **kwargs):
+    def __init__(self, handler=None, value="", default_ajax=True, *args, **kwargs):
         super(Button, self).__init__(*args, **kwargs)
+        self.default_ajax = default_ajax
         self.handler = handler
         self.value = value
 
 
 class Group(Component):
-    """A simple group to group compontens together for easier refresh.
+    """A simple group component to arrange compontens together. For instance for
+    styling reasons or for easier refresh of sub components.
     """
     template = "cba/components/group.html"
 
@@ -42,7 +48,13 @@ class Image(Component):
     """Renders to a HTML img tag.
 
         src
-            The url to the image file
+            The url to the image file.
+
+        alt
+            The content alt tag of the image file.
+
+        title
+            The content of the title tag of the image.
 
     """
     template = "cba/components/image.html"
@@ -52,6 +64,36 @@ class Image(Component):
         self.src = src
         self.alt = alt
         self.title = title
+
+
+class Link(Component):
+    template = "cba/components/link.html"
+
+    def __init__(self, handler=None, text="", default_ajax=True, *args, **kwargs):
+        super(Link, self).__init__(*args, **kwargs)
+        self.default_ajax = default_ajax
+        self.handler = handler
+        self.text = text
+
+
+class Message(Component):
+    template = "cba/components/message.html"
+
+    def __init__(self, id, text, *args, **kwargs):
+        super(Message, self).__init__(id, *args, **kwargs)
+        self.text = text
+
+
+class Modal(Component):
+
+    template = "cba/components/modal.html"
+
+    def __init__(self, event_id, handler, header=None, text=None, *args, **kwargs):
+        super(Modal, self).__init__(*args, **kwargs)
+        self.text = text
+        self.event_id = event_id
+        self.handler = handler
+        self.header = header
 
 
 class Select(Component):
