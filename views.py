@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
 
-from . import components
+from . utils import LazyEncoder
 # from . utils import time_it
 
 logger = logging.getLogger(__name__)
@@ -34,7 +34,7 @@ class CBAView(View):
     def post(self, *args, **kwargs):
         # time_it(self._load_data, func_args=[self.root], logger=performance_logger, log_message="Loaded in:")
         root = self.request.session["root"]
-        root._messages = []
+        self._clear_components_data(root)
         self._load_data(root)
 
         handler = self.request.POST.get("handler")
@@ -49,11 +49,9 @@ class CBAView(View):
                 break
             component = component.parent
 
-        self._collect_refreshed_components(root)
+        self._collect_components_data(root)
 
         # logger.debug("Refreshed components: {}".format(self._html))
-
-        self._clear_refreshed_components(root)
         self.request.session["root"] = root
 
         return HttpResponse(
@@ -61,22 +59,29 @@ class CBAView(View):
                 {
                     "html": self._html,
                     "messages": self._messages,
-                }
+                },
+                cls=LazyEncoder
             ),
             content_type='application/json'
         )
 
-    def _clear_refreshed_components(self, root):
-        self.root._messages = []
+    def _clear_components_data(self, root):
+        """Clears messsage and html of all components.
+        """
+        root._html = []
+        root._messages = []
         if hasattr(root, "components"):
             for component in root.components:
                 component._html = ""
                 component._messages = []
-                self._clear_refreshed_components(component)
+                self._clear_components_data(component)
 
-    def _collect_refreshed_components(self, root):
-        """Collects the html from all components which should be refreshed.
+    def _collect_components_data(self, root):
+        """Collects refreshed html and messages from all components.
         """
+        if root._html:
+            self._html.append(root._html)
+
         if root._messages:
             self._messages.extend(root._messages)
 
@@ -86,7 +91,7 @@ class CBAView(View):
                     self._html.append(component._html)
                 if component._messages:
                     self._messages.extend(component._messages)
-                self._collect_refreshed_components(component)
+                self._collect_components_data(component)
 
     def _load_data(self, root):
         """Loads components with values from the browser.

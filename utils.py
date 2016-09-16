@@ -1,5 +1,8 @@
 import datetime
+import json
 from django.template.loader import render_to_string
+from django.utils.encoding import force_unicode
+from django.utils.functional import Promise
 
 
 class JSCreator(object):
@@ -36,6 +39,15 @@ class JSCreator(object):
                     return self.create_backend_update(action)
         else:
             return ""
+
+
+class LazyEncoder(json.JSONEncoder):
+    """Encodes django's lazy i18n strings.
+    """
+    def default(self, obj):
+        if isinstance(obj, Promise):
+            return force_unicode(obj)
+        return obj
 
 
 def time_it(func, logger, log_message, func_args=None):
