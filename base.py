@@ -78,7 +78,7 @@ class Component(object):
         """
         return self._components.values()
 
-    def get_component(self, id, direct_only=False):
+    def get_component(self, id, direct_only=False, with_root=True):
         """Returns the component with the passed id.
 
         id
@@ -97,6 +97,31 @@ class Component(object):
                 temp = component.get_component(id, direct_only)
                 if temp:
                     return temp
+
+        # In case nothing has been found we try the parents also.
+        if with_root:
+            return self.get_root().get_component(id, with_root=False)
+
+    def get_root(self):
+        if self.parent is None:
+            return self
+        else:
+            component = self
+            while component.parent:
+                component = component.parent
+            return component
+
+    def get_request(self):
+        try:
+            return self.get_root().request
+        except AttributeError:
+            return None
+
+    def get_user(self):
+        try:
+            return self.get_request().user
+        except AttributeError:
+            return None
 
     def init_components(self):
         """Can be overriden to set the initial sub components of the current
