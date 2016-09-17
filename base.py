@@ -94,7 +94,7 @@ class Component(object):
             return component
         elif direct_only is False:
             for component in self.components:
-                temp = component.get_component(id, direct_only)
+                temp = component.get_component(id, direct_only, with_root)
                 if temp:
                     return temp
 
