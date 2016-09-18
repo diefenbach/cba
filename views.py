@@ -1,3 +1,4 @@
+import copy
 import json
 import logging
 
@@ -17,12 +18,11 @@ class CBAView(View):
 
     def __init__(self, **kwargs):
         super(CBAView, self).__init__(**kwargs)
-        self.root = self.root("root")
         self._html = []
         self._messages = []
 
     def get(self, *args, **kwargs):
-        # content = time_it(self.root.render, performance_logger, "Rendered in:")
+        self.root = self.root("root")
         content = self.root.render()
 
         self.request.session["root"] = self.root
@@ -32,14 +32,15 @@ class CBAView(View):
         })
 
     def post(self, *args, **kwargs):
-        # time_it(self._load_data, func_args=[self.root], logger=performance_logger, log_message="Loaded in:")
-        root = self.request.session["root"]
-        self._clear_components_data(root)
-        self._load_data(root)
+        # self.root = self.root("root")
+        self.root = self.request.session["root"]
+
+        self._clear_components_data(self.root)
+        self._load_data(self.root)
 
         handler = self.request.POST.get("handler")
         event_id = self.request.POST.get("event_id")
-        component = root.get_component(event_id)
+        component = self.root.get_component(event_id)
 
         # Bubbles up the components to find the handler
         while component:
@@ -49,10 +50,11 @@ class CBAView(View):
                 break
             component = component.parent
 
-        self._collect_components_data(root)
+        self._collect_components_data(self.root)
+        logger.debug("Refreshed components: {}".format(self._html))
+        logger.debug("Collected messages: {}".format(self._messages))
 
-        # logger.debug("Refreshed components: {}".format(self._html))
-        self.request.session["root"] = root
+        self.request.session["root"] = self.root
 
         return HttpResponse(
             json.dumps(
@@ -76,17 +78,18 @@ class CBAView(View):
                 component._messages = []
                 self._clear_components_data(component)
 
-    def _collect_components_data(self, root):
+    def _collect_components_data(self, component):
         """Collects refreshed html and messages from all components.
         """
-        if root._html:
-            self._html.append(root._html)
+        if component.is_root():
+            if component._html:
+                self._html.append(component._html)
 
-        if root._messages:
-            self._messages.extend(root._messages)
+            if component._messages:
+                self._messages.extend(component._messages)
 
-        if hasattr(root, "components"):
-            for component in root.components:
+        if hasattr(component, "components"):
+            for component in component.components:
                 if component._html:
                     self._html.append(component._html)
                 if component._messages:

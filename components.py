@@ -17,11 +17,11 @@ class Button(Component):
     """
     template = "cba/components/button.html"
 
-    def __init__(self, handler=None, value="", default_ajax=True, *args, **kwargs):
-        super(Button, self).__init__(*args, **kwargs)
-        self.default_ajax = default_ajax
-        self.handler = handler
+    def __init__(self, id, value="", handler=None, default_ajax=True, *args, **kwargs):
+        super(Button, self).__init__(id, *args, **kwargs)
         self.value = value
+        self.handler = handler
+        self.default_ajax = default_ajax
 
 
 class Group(Component):
@@ -142,17 +142,21 @@ class Tab(Component):
 class TextArea(Component):
     template = "cba/components/textarea.html"
 
-    def __init__(self, id, label=None, value="", rows=10, *args, **kwargs):
+    def __init__(self, id, label=None, value="", error=None, rows=10, *args, **kwargs):
         super(TextArea, self).__init__(id, *args, **kwargs)
         self.label = label
         self.rows = rows
         self.value = value
+        self.error = error
+
+    def clear(self):
+        self.value = ""
 
 
 class Text(Component):
     template = "cba/components/text.html"
 
-    def __init__(self, id, value, *args, **kwargs):
+    def __init__(self, id=None, value="", *args, **kwargs):
         super(Text, self).__init__(id, *args, **kwargs)
         self.value = value
 
@@ -162,6 +166,10 @@ class TextInput(Component):
 
     def __init__(self, id, value="", label=None, error=None, *args, **kwargs):
         super(TextInput, self).__init__(id, *args, **kwargs)
-        self.error = False
+        self.error = error
         self.label = label
         self.value = value
+
+    def clear(self):
+        self.error = ""
+        self.value = ""

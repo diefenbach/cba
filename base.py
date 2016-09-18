@@ -1,4 +1,5 @@
 import logging
+import uuid
 from collections import OrderedDict
 
 from django.template.loader import render_to_string
@@ -13,7 +14,7 @@ class Component(object):
     """
     template = None
 
-    def __init__(self, id, initial_components=None, attributes=None, css_class=None, actions=None, *args, **kwargs):
+    def __init__(self, id=None, request=None, initial_components=None, attributes=None, css_class=None, actions=None, *args, **kwargs):
         """
             id
                 The unique id of the component. This must be unique troughout
@@ -35,10 +36,11 @@ class Component(object):
                 A list of actions which will be performed when the user
                 interacts with the component. (Not implemented yet).
         """
-        self.id = id
+        self.id = id or uuid.uuid4()
         self.initial_components = initial_components or []
         self.attributes = attributes or {}
         self.css_class = css_class
+        self.request = request
 
         self.actions = actions or []
         self.parent = None
@@ -69,14 +71,17 @@ class Component(object):
             "type": type,
         })
 
-    def get_messages(self):
-        return self._messages
+    def clear(sefl):
+        pass
 
     @property
     def components(self):
         """Returns all direct child components of the current component as list.
         """
         return self._components.values()
+
+    def get_messages(self):
+        return self._messages
 
     def get_component(self, id, direct_only=False, with_root=True):
         """Returns the component with the passed id.
@@ -112,6 +117,8 @@ class Component(object):
             return component
 
     def get_request(self):
+        from cba import get_request
+        return get_request()
         try:
             return self.get_root().request
         except AttributeError:
@@ -129,10 +136,22 @@ class Component(object):
         """
         pass
 
+    def is_root(self):
+        if self.parent:
+            return False
+        else:
+            return True
+
     def refresh(self):
         """Rerenders the current component once the current request is returned
         to the browser.
         """
+        self._html = ["#{}".format(self.id), self.render()]
+
+    def refresh_all(self):
+        self._components = OrderedDict()
+        self.init_components()
+        self._add_components()
         self._html = ["#{}".format(self.id), self.render()]
 
     def render(self):
