@@ -10,7 +10,6 @@ from . utils import LazyEncoder
 # from . utils import time_it
 
 logger = logging.getLogger(__name__)
-performance_logger = logging.getLogger("cba.peformance")
 
 
 class CBAView(View):
@@ -33,7 +32,7 @@ class CBAView(View):
 
     def post(self, *args, **kwargs):
         # self.root = self.root("root")
-        self.root = self.request.session["root"]
+        self.root = self.request.session.get("root", self.root("root"))
 
         self._clear_components_data(self.root)
         self._load_data(self.root)
