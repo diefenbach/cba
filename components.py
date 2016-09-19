@@ -76,6 +76,25 @@ class Link(Component):
         self.text = text
 
 
+class Menu(Component):
+    template = "cba/components/menu.html"
+
+    def __init__(self, id=None, name="", *args, **kwargs):
+        super(Menu, self).__init__(id, *args, **kwargs)
+        self.name = name
+
+
+class MenuItem(Component):
+    template = "cba/components/menu_item.html"
+
+    def __init__(self, id=None, handler=None, href=None, name="", default_ajax=True, *args, **kwargs):
+        super(MenuItem, self).__init__(id, *args, **kwargs)
+        self.default_ajax = default_ajax
+        self.handler = handler
+        self.href = href
+        self.name = name
+
+
 class Message(Component):
     template = "cba/components/message.html"
 
@@ -85,7 +104,6 @@ class Message(Component):
 
 
 class Modal(Component):
-
     template = "cba/components/modal.html"
 
     def __init__(self, event_id, handler, header=None, text=None, *args, **kwargs):

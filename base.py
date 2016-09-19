@@ -157,10 +157,13 @@ class Component(object):
     def render(self):
         """Renders the current component as HTML.
         """
-        return render_to_string(self.template, {
-            "self": self,
-            "js": JSCreator(self, self.actions).create(),
-        })
+        if self.template:
+            return render_to_string(self.template, {
+                "self": self,
+                "js": JSCreator(self, self.actions).create(),
+            })
+        else:
+            return ""
 
     def _add_components(self):
         """Adds initial components into the default components structure.
