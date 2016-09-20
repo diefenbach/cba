@@ -41,16 +41,27 @@ function addMessages(messages) {
     }
 }
 
+function defaultAjaxAction(element) {
+    const data = collectComponents();
+    data.handler = element.attr('handler');
+    data.event_id = element.attr('id');
+    data.csrfmiddlewaretoken = $('input[name=csrfmiddlewaretoken]').attr('value');
+    $.post('', data, result => {
+        replaceHTML(result.html);
+        addMessages(result.messages);
+    });
+}
+
 $(() => {
     $('body').on('click', 'button.default-ajax, a.default-ajax', function(event) {
-        const data = collectComponents();
-        data.handler = $(this).attr('handler');
-        data.event_id = $(this).attr('id');
-        data.csrfmiddlewaretoken = $('input[name=csrfmiddlewaretoken]').attr('value');
-        $.post('', data, result => {
-            replaceHTML(result.html);
-            addMessages(result.messages);
-        });
+        defaultAjaxAction($(this));
+        return false;
+    });
+});
+
+$(() => {
+    $('body').on('change', 'input.default-ajax', function(event) {
+        defaultAjaxAction($(this));
         return false;
     });
 });

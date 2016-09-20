@@ -13,6 +13,7 @@ class Component(object):
     """A component is a part of a HTML application.
     """
     template = None
+    remove_after_render = False
 
     def __init__(self, id=None, request=None, initial_components=None, attributes=None, css_class=None, actions=None, *args, **kwargs):
         """
@@ -65,7 +66,7 @@ class Component(object):
         component.parent = self
         self._components[component.id] = component
 
-    def add_message(self, message, type):
+    def add_message(self, message, type="info"):
         self._messages.append({
             "text": message,
             "type": type,
@@ -158,6 +159,9 @@ class Component(object):
         """Renders the current component as HTML.
         """
         if self.template:
+            if self.remove_after_render:
+                del self.parent._components[self.id]
+
             return render_to_string(self.template, {
                 "self": self,
                 "js": JSCreator(self, self.actions).create(),

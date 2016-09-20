@@ -1,0 +1,46 @@
+<div class="render" id="{{ self.id }}">
+    <div class="ui small modal">
+        {% if self.header %}
+            <div class="header">
+              {{ self.header }}
+            </div>
+        {% endif %}
+        {% if self.text %}
+            <div class="content">
+              <p>
+                {{ self.text }}
+              </p>
+            </div>
+        {% endif %}
+        <div class="actions">
+          <div class="ui negative deny button">
+            No
+          </div>
+          <div class="ui positive approve right labeled icon button">
+            Yes
+            <i class="checkmark icon"></i>
+          </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+      $(function() {
+        $('.ui.small.modal')
+        .modal({
+          onApprove: function() {
+            var data = {};
+            data.handler = "{{ self.handler }}";
+            data.csrfmiddlewaretoken = $('input[name=csrfmiddlewaretoken]').attr('value');
+            data.event_id = "{{ self.event_id }}";
+            $.post('', data, result => {
+                replaceHTML(result.html);
+                addMessages(result.messages);
+            });
+          },
+          onHidden: function() {
+            $('.ui.small.modal').remove();
+          }
+        })
+        .modal('show');
+      });
+    </script>
+</script>

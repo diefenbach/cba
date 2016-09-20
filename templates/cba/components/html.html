@@ -1,0 +1,10 @@
+<div class="render">
+    <{{self.tag}} class="component"
+         id="{{ self.id }}"
+         {% for name, value in self.attributes.items %}
+             {{ name }}="{{ value }}"
+         {% endfor %}>
+            {{ self.text|safe }}
+    </{{self.tag}}>
+    {{ js|safe }}
+</div>

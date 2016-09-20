@@ -44,6 +44,15 @@ class HiddenInput(Component):
         self.value = value
 
 
+class Html(Component):
+    template = "cba/components/html.html"
+
+    def __init__(self, tag="div", text="", *args, **kwargs):
+        super(Html, self).__init__(*args, **kwargs)
+        self.tag = tag
+        self.text = text
+
+
 class Image(Component):
     """Renders to a HTML img tag.
 
@@ -103,14 +112,24 @@ class Message(Component):
         self.text = text
 
 
-class Modal(Component):
-    template = "cba/components/modal.html"
+class ConfirmModal(Component):
+    template = "cba/components/confirm_modal.html"
+    remove_after_render = True
 
     def __init__(self, event_id, handler, header=None, text=None, *args, **kwargs):
-        super(Modal, self).__init__(*args, **kwargs)
+        super(ConfirmModal, self).__init__(*args, **kwargs)
         self.text = text
         self.event_id = event_id
         self.handler = handler
+        self.header = header
+
+
+class Modal(Component):
+    template = "cba/components/modal.html"
+    remove_after_render = True
+
+    def __init__(self, header=None, *args, **kwargs):
+        super(Modal, self).__init__(*args, **kwargs)
         self.header = header
 
 
