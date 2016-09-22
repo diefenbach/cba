@@ -1,0 +1,9 @@
+<!-- Column -->
+<div class="{{ self.width }} wide column{% if self.css_class %} {{ self.css_class }}{% endif %}"
+     {% for name, value in self.attributes.items %}
+        {{ name }}="{{ value }}"
+     {% endfor %}>
+    {% for component in self.components %}
+        {{ component.render }}
+    {% endfor %}
+</div>

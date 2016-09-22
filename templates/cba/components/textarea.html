@@ -1,7 +1,8 @@
-<div class="ui form render">
+<!-- TextArea -->
+<div class="field render">
     <div class="field">
         {% if self.label %}
-            <label>{{ self.label }}</label>
+            <div class="ui sub header">{{ self.label }}</div>
         {% endif %}
         {% if self.error %}
           <div class="error">

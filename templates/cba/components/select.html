@@ -1,14 +1,27 @@
-<div class="render">
-    <select class="component {{ self.css_class }}"
+<div class="render field">
+    {% if self.label %}
+        <div class="ui sub header">{{ self.label }}</div>
+    {% endif %}
+    {% if self.error %}
+      <div class="error">
+        {{ self.error }}
+      </div>
+    {% endif %}
+    <select class="ui fluid multiple search dropdown component{% if self.css_class %} {{ self.css_class }}{% endif %}"
             id="{{ self.id }}"
             name="{{ self.id }}"
+            multiple=""
             {% for name, value in self.attributes.items %}
                 {{ name }}="{{ value }}"
             {% endfor %}>
-
             {% for option in self.options %}
-                <option value="{{ option.value }}">{{ option.name }}</option>
+                <option value="{{ option.value }}" {% if option.value in self.value %}selected=""{% endif %}>{{ option.name }}</option>
             {% endfor %}
     </select>
     {{ js|safe }}
+    <script type="text/javascript">
+        $('.ui.dropdown').dropdown({
+            "allowAdditions": true,
+        });
+    </script>
 </div>

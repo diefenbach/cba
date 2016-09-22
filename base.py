@@ -15,7 +15,7 @@ class Component(object):
     template = None
     remove_after_render = False
 
-    def __init__(self, id=None, request=None, initial_components=None, attributes=None, css_class=None, actions=None, *args, **kwargs):
+    def __init__(self, id=None, request=None, initial_components=None, attributes=None, css_class="", actions=None, *args, **kwargs):
         """
             id
                 The unique id of the component. This must be unique troughout
@@ -37,7 +37,7 @@ class Component(object):
                 A list of actions which will be performed when the user
                 interacts with the component. (Not implemented yet).
         """
-        self.id = id or uuid.uuid4()
+        self.id = id or str(uuid.uuid4())
         self.initial_components = initial_components or []
         self.attributes = attributes or {}
         self.css_class = css_class
@@ -72,7 +72,7 @@ class Component(object):
             "type": type,
         })
 
-    def clear(sefl):
+    def clear(self):
         pass
 
     @property

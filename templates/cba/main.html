@@ -10,11 +10,8 @@
     <link rel="stylesheet" type="text/css" href="{% static 'cba/cba.css' %}">
 </head>
 <body>
-    <div style="padding:20px">
-        <div id="messages">
-        </div>
-        {% csrf_token %}
-        {{ content|safe }}
-    </div>
+    <div id="messages"></div>
+    {% csrf_token %}
+    {{ content|safe }}
 </body>
 </html>

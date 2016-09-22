@@ -1,3 +1,4 @@
+{% load i18n %}
 <div class="render">
     <div id="{{ self.id }}"
          class="ui small modal">
@@ -11,8 +12,14 @@
                 {{ component.render }}
             {% endfor %}
         </div>
+        {% if self.close_button %}
+          <div class="actions">
+              <div class="ui cancel button">
+                  {% trans "Close" %}
+              </div>
+          </div>
+        {% endif %}
     </div>
-
     <script type="text/javascript">
         $(function() {
             $('#' + '{{ self.id }}')

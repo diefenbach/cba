@@ -1,13 +1,11 @@
-<div class="render">
-    <button id="{{ self.id }}"
-            class="ui button {{ self.css_class }} {% if self.default_ajax %}default-ajax{% endif %}"
-            {% if self.handler %}
-                handler="{{ self.handler }}"
-            {% endif %}
-            {% for name, value in self.attributes.items %}
-                {{ name }}="{{ value }}"
-            {% endfor %}>
-        {{ self.value }}
-    </button>
-    {{ js|safe }}
-</div>
+<button id="{{ self.id }}"
+        class="ui button render {{ self.css_class }} {% if self.default_ajax %}default-ajax{% endif %}"
+        {% if self.handler %}
+            handler="{{ self.handler }}"
+        {% endif %}
+        {% for name, value in self.attributes.items %}
+            {{ name }}="{{ value }}"
+        {% endfor %}>
+    {{ self.value }}
+</button>
+

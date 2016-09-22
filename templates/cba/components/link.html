@@ -1,5 +1,6 @@
+<!-- Link Start -->
 <div class="render">
-    <a class="{{ self.css_class }} {% if self.default_ajax %}default-ajax{% endif %}"
+    <a class="{% if self.css_class %}{{ self.css_class }} {% endif %}{% if self.default_ajax %}default-ajax{% endif %}"
        handler="{{ self.handler }}"
        id="{{ self.id }}"
        href="."

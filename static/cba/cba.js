@@ -1,3 +1,5 @@
+DEBUG = true;
+
 function getUUID() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
         const r = Math.random() * 16 | 0;
@@ -9,7 +11,7 @@ function getUUID() {
 function collectComponents() {
     const object = {};
 
-    $('input.component, textarea.component').each(function() {
+    $('input.component, textarea.component, select').each(function() {
         const id = $(this).attr('id');
         const value = $(this).val();
         object[id] = value;
@@ -46,6 +48,9 @@ function defaultAjaxAction(element) {
     data.handler = element.attr('handler');
     data.event_id = element.attr('id');
     data.csrfmiddlewaretoken = $('input[name=csrfmiddlewaretoken]').attr('value');
+    if (DEBUG) {
+        console.log(data);
+    }
     $.post('', data, result => {
         replaceHTML(result.html);
         addMessages(result.messages);

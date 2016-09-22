@@ -1,5 +1,5 @@
 <a id="{{ self.id }}"
-   class="item {% if item.css_class %}{{ self.css_class }} {% endif %}{% if self.default_ajax %}default-ajax{% endif %}"
+   class="item{% if item.css_class %} {{ self.css_class }}{% endif %}{% if self.default_ajax %} default-ajax{% endif %}"
    {% if self.handler %}
        handler="{{ self.handler }}"
    {% endif %}

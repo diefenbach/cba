@@ -41,6 +41,8 @@ class CBAView(View):
         event_id = self.request.POST.get("event_id")
         component = self.root.get_component(event_id)
 
+        logger.debug("Handler: {} / Component: {}".format(handler, component))
+
         # Bubbles up the components to find the handler
         while component:
             if hasattr(component, handler):
@@ -50,7 +52,7 @@ class CBAView(View):
             component = component.parent
 
         self._collect_components_data(self.root)
-        logger.debug("Refreshed components: {}".format(self._html))
+        # logger.debug("Refreshed components: {}".format(self._html))
         logger.debug("Collected messages: {}".format(self._messages))
 
         self.request.session["root"] = self.root
@@ -102,4 +104,9 @@ class CBAView(View):
             for component in root.components:
                 if component.id in self.request.POST:
                     root._components[component.id].value = self.request.POST.get(component.id)
+                else:
+                    # List elements
+                    list_id = "{}[]".format(component.id)
+                    if list_id in self.request.POST:
+                        root._components[component.id].value = self.request.POST.getlist(list_id)
                 self._load_data(component)

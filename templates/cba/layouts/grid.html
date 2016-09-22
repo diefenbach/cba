@@ -1,0 +1,6 @@
+<div class="ui container form grid{% if self.css_class %} {{ self.css_class }}{% endif %}">
+    {% for component in self.components %}
+        {{ component.render }}
+    {% endfor %}
+</div>
+

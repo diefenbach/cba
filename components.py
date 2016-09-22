@@ -17,7 +17,7 @@ class Button(Component):
     """
     template = "cba/components/button.html"
 
-    def __init__(self, id, value="", handler=None, default_ajax=True, *args, **kwargs):
+    def __init__(self, id=None, value="", handler=None, default_ajax=True, *args, **kwargs):
         super(Button, self).__init__(id, *args, **kwargs)
         self.value = value
         self.handler = handler
@@ -44,11 +44,11 @@ class HiddenInput(Component):
         self.value = value
 
 
-class Html(Component):
+class HTML(Component):
     template = "cba/components/html.html"
 
     def __init__(self, tag="div", text="", *args, **kwargs):
-        super(Html, self).__init__(*args, **kwargs)
+        super(HTML, self).__init__(*args, **kwargs)
         self.tag = tag
         self.text = text
 
@@ -128,22 +128,30 @@ class Modal(Component):
     template = "cba/components/modal.html"
     remove_after_render = True
 
-    def __init__(self, header=None, *args, **kwargs):
+    def __init__(self, header=None, close_button=True, *args, **kwargs):
         super(Modal, self).__init__(*args, **kwargs)
         self.header = header
+        self.close_button = close_button
 
 
 class Select(Component):
     template = "cba/components/select.html"
 
-    def __init__(self, options, *args, **kwargs):
-        super(Select, self).__init__(*args, **kwargs)
-        self.options = options
+    def __init__(self, id, label=None, value=None, options=None, *args, **kwargs):
+        super(Select, self).__init__(id, *args, **kwargs)
+        self.label = label
+        self.options = options or []
+        self.value = value
 
-    def get_name(self):
+    def get_names(self):
+        names = []
         for option in self.options:
-            if str(option["value"]) == self.value:
-                return option["name"]
+            if str(option["value"]) in self.values:
+                self.names.append(option["name"])
+        return names
+
+    def clear(self):
+        self.value = None
 
 
 class Table(Component):
@@ -201,11 +209,12 @@ class Text(Component):
 class TextInput(Component):
     template = "cba/components/text_input.html"
 
-    def __init__(self, id, value="", label=None, error=None, *args, **kwargs):
+    def __init__(self, id=None, value="", label=None, placeholder=None, error=None, *args, **kwargs):
         super(TextInput, self).__init__(id, *args, **kwargs)
         self.error = error
         self.label = label
         self.value = value
+        self.placeholder = placeholder
 
     def clear(self):
         self.error = ""
