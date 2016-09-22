@@ -1,5 +1,5 @@
 <div class="render">
-    <{{self.tag}} class="component"
+    <{{self.tag}} class="component{% if self.css_class %} {{ self.css_class}}{% endif %}"
          id="{{ self.id }}"
          {% for name, value in self.attributes.items %}
              {{ name }}="{{ value }}"

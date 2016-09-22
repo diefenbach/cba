@@ -15,8 +15,9 @@ class Component(object):
     template = None
     remove_after_render = False
 
-    def __init__(self, id=None, request=None, initial_components=None, attributes=None, css_class="", actions=None, *args, **kwargs):
-        """
+    def __init__(self, id=None, request=None, initial_components=None, attributes=None, css_class=None, actions=None, *args, **kwargs):
+        """Base class of all components.
+
             id
                 The unique id of the component. This must be unique troughout
                 the whole application.
@@ -67,12 +68,17 @@ class Component(object):
         self._components[component.id] = component
 
     def add_message(self, message, type="info"):
+        """Adds a message. All messages are displayed to the user after the
+        current request has been responed to the browser.
+        """
         self._messages.append({
             "text": message,
             "type": type,
         })
 
     def clear(self):
+        """Clears the value of the component.
+        """
         pass
 
     @property
@@ -80,9 +86,6 @@ class Component(object):
         """Returns all direct child components of the current component as list.
         """
         return self._components.values()
-
-    def get_messages(self):
-        return self._messages
 
     def get_component(self, id, direct_only=False, with_root=True):
         """Returns the component with the passed id.
@@ -109,6 +112,8 @@ class Component(object):
             return self.get_root().get_component(id, with_root=False)
 
     def get_root(self):
+        """Returns the root component.
+        """
         if self.parent is None:
             return self
         else:
@@ -118,6 +123,8 @@ class Component(object):
             return component
 
     def get_request(self):
+        """Returns the current request.
+        """
         from cba import get_request
         return get_request()
         try:
@@ -126,6 +133,8 @@ class Component(object):
             return None
 
     def get_user(self):
+        """Returns the current user.
+        """
         try:
             return self.get_request().user
         except AttributeError:
@@ -138,6 +147,8 @@ class Component(object):
         pass
 
     def is_root(self):
+        """Returns True if the component is the root component.
+        """
         if self.parent:
             return False
         else:
@@ -150,6 +161,8 @@ class Component(object):
         self._html = ["#{}".format(self.id), self.render()]
 
     def refresh_all(self):
+        """Refresh the component and reloads the initial sub components.
+        """
         self._components = OrderedDict()
         self.init_components()
         self._add_components()

@@ -1,4 +1,4 @@
-<div class="ui menu inverted">
+<div class="ui menu{% if self.css_class %} {{ self.css_class}}{% endif %}">
     <div class="ui container">
         {% for component in self.components %}
            {{ component.render }}
