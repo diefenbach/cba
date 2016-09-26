@@ -7,10 +7,10 @@
         {{ self.error }}
       </div>
     {% endif %}
-    <select class="ui fluid multiple search dropdown component{% if self.css_class %} {{ self.css_class }}{% endif %}"
+    <select class="ui fluid search dropdown component{% if self.css_class %} {{ self.css_class }}{% endif %}"
             id="{{ self.id }}"
             name="{{ self.id }}"
-            multiple=""
+            {% if self.multiple %}multiple=""{% endif %}
             {% for name, value in self.attributes.items %}
                 {{ name }}="{{ value }}"
             {% endfor %}>

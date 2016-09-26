@@ -1,28 +1,35 @@
-<table class="render ui table"
-       id="{{ self.id }}"
-       {% for name, value in self.attributes.items %}
-           {{ name }}="{{ value }}"
-       {% endfor %} >
-    <thead>
-        <tr>
-            {% for column in self.columns %}
-                <th>
-                    {{ column }}
-                </th>
-            {% endfor %}
-        </tr>
-    </thead>
-    {% if self.data %}
-        <tbody>
-            {% for row in self.data %}
-                <tr>
-                    {% for column in row %}
-                        <td>
-                            {{ column }}
-                        </td>
-                    {% endfor %}
-                    </tr>
-            {% endfor %}
-        </tbody>
+<div class="render">
+    {% if self.label %}
+        <div class="ui sub header">{{ self.label }}</div>
     {% endif %}
-</table>
+    <table class="ui table"
+           id="{{ self.id }}"
+           {% for name, value in self.attributes.items %}
+               {{ name }}="{{ value }}"
+           {% endfor %} >
+        <thead>
+            <tr>
+                {% for column in self.columns %}
+                    <th>
+                        {{ column }}
+                    </th>
+                {% endfor %}
+            </tr>
+        </thead>
+        {% if self.data %}
+            <tbody>
+                {% for row in self.data %}
+                    <tr class="default-ajax"
+                        handler="handle_edit_note"
+                        id="edit-note-388">
+                        {% for column in row %}
+                            <td>
+                                {{ column }}
+                            </td>
+                        {% endfor %}
+                        </tr>
+                {% endfor %}
+            </tbody>
+        {% endif %}
+    </table>
+</div>

@@ -52,7 +52,7 @@ class CBAView(View):
             component = component.parent
 
         self._collect_components_data(self.root)
-        # logger.debug("Refreshed components: {}".format(self._html))
+        logger.debug("Refreshed components: {}".format(self._html))
         logger.debug("Collected messages: {}".format(self._messages))
 
         self.request.session["root"] = self.root

@@ -200,9 +200,10 @@ class Select(Component):
     """
     template = "cba/components/select.html"
 
-    def __init__(self, id, label=None, value=None, options=None, *args, **kwargs):
+    def __init__(self, id, label=None, value=None, options=None, multiple=False, *args, **kwargs):
         super(Select, self).__init__(id, *args, **kwargs)
         self.label = label
+        self.multiple = multiple
         self.options = options or []
         self.value = value
 
@@ -230,10 +231,11 @@ class Table(Component):
     """
     template = "cba/components/table.html"
 
-    def __init__(self, columns, data=None, *args, **kwargs):
+    def __init__(self, columns, data=None, label=None, selected=None, *args, **kwargs):
         super(Table, self).__init__(*args, **kwargs)
-        self.data = data or []
         self.columns = columns
+        self.data = data or []
+        self.label = label
 
     def add_row(self, data):
         """Adds a row to the table.

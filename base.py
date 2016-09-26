@@ -168,6 +168,44 @@ class Component(object):
         self._add_components()
         self._html = ["#{}".format(self.id), self.render()]
 
+    def remove_component(self, id):
+        """Removes a component from sub components of the current component.
+        Returns ``True`` when it was successfully, otherwise ``False``.
+
+        id
+            The id of the component which should be removed.
+        """
+        try:
+            del self._components[id]
+        except KeyError:
+            return False
+        else:
+            return True
+
+    def replace_component(self, id, component):
+        """Replaces a component with another.
+
+        id
+            The id of the component which should be replaced.
+
+        component
+            The component which should replace the removed one.
+        """
+        old_component = self.get_component(id)
+        parent = old_component.parent
+        parent.remove_component(id)
+        parent.add_component(component)
+
+    def replace_with(self, component):
+        """Replaces this component with the given one.
+
+        component
+            The component which should replace the removed one.
+        """
+        parent = self.parent
+        parent.remove_component(self.id)
+        parent.add_component(component)
+
     def render(self):
         """Renders the current component as HTML.
         """

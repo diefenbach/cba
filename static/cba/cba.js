@@ -58,7 +58,7 @@ function defaultAjaxAction(element) {
 }
 
 $(() => {
-    $('body').on('click', 'button.default-ajax, a.default-ajax', function(event) {
+    $('body').on('click', '.default-ajax', function(event) {
         defaultAjaxAction($(this));
         return false;
     });
