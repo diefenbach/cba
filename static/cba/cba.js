@@ -13,7 +13,11 @@ function collectComponents() {
 
     $('input.component, textarea.component, select').each(function() {
         const id = $(this).attr('id');
-        const value = $(this).val();
+        let value = $(this).val();
+        // jquery doesn't post empty lists
+        if (value == false) {
+            value = '';
+        }
         object[id] = value;
     });
 
@@ -62,11 +66,15 @@ $(() => {
         defaultAjaxAction($(this));
         return false;
     });
-});
 
-$(() => {
     $('body').on('change', 'input.default-ajax', function(event) {
         defaultAjaxAction($(this));
         return false;
     });
+
+    $('body').on('click', 'tr', function(event) {
+        $(this).siblings('tr').removeClass('selected');
+        $(this).addClass('selected');
+    });
 });
+

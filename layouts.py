@@ -8,7 +8,7 @@ class Grid(Component):
 class Column(Component):
     template = "cba/layouts/column.html"
     WIDTH = ["love", "one", "two", "three", "four", "five", "six", "seven",
-             "eight", "nine", "ten", "eleven", "twelve", "thirdteen",
+             "eight", "nine", "ten", "eleven", "twelve", "thirteen",
              "fourteen", "fivteen", "sixteen"]
 
     def __init__(self, id=None, width=16, *args, **kwargs):

@@ -21,3 +21,11 @@
 .padding-top {
     padding-top: 20px !important;
 }
+
+.clickable {
+    cursor: pointer;
+}
+
+.selected {
+    background: #eee;
+}

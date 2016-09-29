@@ -69,9 +69,9 @@ class Component(object):
 
     def add_message(self, message, type="info"):
         """Adds a message. All messages are displayed to the user after the
-        current request has been responed to the browser.
+        current request has been returned to the browser.
         """
-        self._messages.append({
+        self.get_root()._messages.append({
             "text": message,
             "type": type,
         })
@@ -110,6 +110,16 @@ class Component(object):
         # In case nothing has been found we try the parents also.
         if with_root:
             return self.get_root().get_component(id, with_root=False)
+
+    def get_from_session(self, key, default=None):
+        """Gets a value from the session.
+
+            key
+                The key under which the value has been saved. When the key
+                doesn't exist the method returns ``None``.
+        """
+        request = self.get_request()
+        return request.session.get(key, default)
 
     def get_root(self):
         """Returns the root component.
@@ -219,6 +229,17 @@ class Component(object):
             })
         else:
             return ""
+
+    def set_to_session(self, key, value):
+        """Saves a value to the session.
+
+            key
+                The key under which the value is saved.
+            value
+                The value to be saved.
+        """
+        request = self.get_request()
+        request.session[key] = value
 
     def _add_components(self):
         """Adds initial components into the default components structure.

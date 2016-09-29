@@ -231,27 +231,40 @@ class Table(Component):
     """
     template = "cba/components/table.html"
 
-    def __init__(self, columns, data=None, label=None, selected=None, *args, **kwargs):
+    def __init__(self, columns, label=None, selected=None, *args, **kwargs):
         super(Table, self).__init__(*args, **kwargs)
         self.columns = columns
-        self.data = data or []
         self.label = label
 
-    def add_row(self, data):
-        """Adds a row to the table.
-
-            data
-                A list of items which is added to the table. The length must
-                be commpliant to the list of columns.
+    def clear(self):
+        """Deletes all rows of the table.
         """
-        temp = []
-        for item in data:
-            if isinstance(item, Component):
-                self.add_component(item)
-                temp.append(item.render())
-            else:
-                temp.append(item)
-        self.data.append(temp)
+        self._components.clear()
+
+
+class TableRow(Component):
+    """Represents a table.
+
+        default_ajax
+            If set to true a click at the row will be processed by the default
+            CBA ajax behaviour, which means the click event will be sent via a
+            post Ajax call to the handler.
+
+        handler
+            The method which is called when the button is clicked.
+    """
+    template = "cba/components/table_row.html"
+
+    def __init__(self, handler=None, default_ajax=True, *args, **kwargs):
+        super(TableRow, self).__init__(*args, **kwargs)
+        self.handler = handler
+        self.default_ajax = default_ajax
+
+
+class TableColumn(Component):
+    """Represents a table column.
+    """
+    template = "cba/components/table_column.html"
 
 
 class Tab(Component):

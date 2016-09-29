@@ -5,6 +5,9 @@
              {{ name }}="{{ value }}"
          {% endfor %}>
             {{ self.text|safe }}
+            {% for component in self.components %}
+                {{ component.render }}
+            {% endfor %}
     </{{self.tag}}>
     {{ js|safe }}
 </div>

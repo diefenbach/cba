@@ -1,0 +1,12 @@
+<td class="component render{% if self.default_ajax %} default-ajax{% endif %}{% if self.css_class %} {{ self.css_class}}{% endif %}"
+    {% if self.handler %}
+        handler="{{ self.handler }}"
+    {% endif %}
+    {% for name, value in self.attributes.items %}
+        {{ name }}="{{ value }}"
+    {% endfor %}>
+    {% for component in self.components %}
+        {{ component.render }}
+    {% endfor %}
+</td>
+

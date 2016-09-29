@@ -1,5 +1,5 @@
 <!-- Link Start -->
-<div class="render">
+<span class="render">
     <a class="{% if self.css_class %}{{ self.css_class }} {% endif %}{% if self.default_ajax %}default-ajax{% endif %}"
        handler="{{ self.handler }}"
        id="{{ self.id }}"
@@ -10,4 +10,4 @@
         {{ self.text }}
     </a>
     {{ js|safe }}
-</div>
+</span>

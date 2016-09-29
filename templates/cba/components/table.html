@@ -16,18 +16,10 @@
                 {% endfor %}
             </tr>
         </thead>
-        {% if self.data %}
+        {% if self.components %}
             <tbody>
-                {% for row in self.data %}
-                    <tr class="default-ajax"
-                        handler="handle_edit_note"
-                        id="edit-note-388">
-                        {% for column in row %}
-                            <td>
-                                {{ column }}
-                            </td>
-                        {% endfor %}
-                        </tr>
+                {% for component in self.components %}
+                    {{ component.render }}
                 {% endfor %}
             </tbody>
         {% endif %}
