@@ -67,6 +67,10 @@ $(() => {
         return false;
     });
 
+    $('body').on('keyup', '.keyup', function(event) {
+        defaultAjaxAction($(this));
+    });
+
     $('body').on('change', 'input.default-ajax', function(event) {
         defaultAjaxAction($(this));
         return false;

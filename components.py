@@ -112,8 +112,9 @@ class Menu(Component):
     """
     template = "cba/components/menu.html"
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, vertical=False, *args, **kwargs):
         super(Menu, self).__init__(*args, **kwargs)
+        self.vertical = vertical
 
 
 class MenuItem(Component):
@@ -133,11 +134,12 @@ class MenuItem(Component):
     """
     template = "cba/components/menu_item.html"
 
-    def __init__(self, handler=None, href=None, name="", default_ajax=True, *args, **kwargs):
+    def __init__(self, handler=None, href=None, label=None, name="", default_ajax=True, *args, **kwargs):
         super(MenuItem, self).__init__(*args, **kwargs)
         self.default_ajax = default_ajax
         self.handler = handler
         self.href = href
+        self.label = label
         self.name = name
 
 
@@ -337,9 +339,10 @@ class TextInput(Component):
     """
     template = "cba/components/text_input.html"
 
-    def __init__(self, id=None, value="", label=None, placeholder=None, error=None, *args, **kwargs):
+    def __init__(self, id=None, value="", label=None, placeholder=None, error=None, handler=None, *args, **kwargs):
         super(TextInput, self).__init__(id, *args, **kwargs)
         self.error = error
+        self.handler = handler
         self.label = label
         self.placeholder = placeholder
         self.value = value

@@ -1,10 +1,16 @@
 <a id="{{ self.id }}"
-   class="item{% if item.css_class %} {{ self.css_class }}{% endif %}{% if self.default_ajax %} default-ajax{% endif %}"
-   {% if self.handler %}
-       handler="{{ self.handler }}"
-   {% endif %}
-   {% if self.href %}
+   class="item{% if self.css_class %} {{ self.css_class }}{% endif %}{% if self.default_ajax %} default-ajax{% endif %}"
+    {% for name, value in self.attributes.items %}
+        {{ name }}="{{ value }}"
+    {% endfor %}
+    {% if self.handler %}
+        handler="{{ self.handler }}"
+    {% endif %}
+    {% if self.href %}
         href="{{ self.href }}"
-   {% endif %}>
+    {% endif %}>
+    {% if self.label %}
+        <div class="ui label">{{ self.label }}</div>
+    {% endif %}
     {{ self.name }}
 </a>

@@ -1,0 +1,12 @@
+<div class="ui container {% if self.css_class %} {{ self.css_class }}{% endif %}">
+    <div class="split-wrapper">
+        {% for component in self.components %}
+            <div id="split-{{ component.id }}" class="split split-item split-{{ self.direction }}">
+                {{ component.render }}
+            </div>
+        {% endfor %}
+    </div>
+    <script type="text/javascript">
+    Split([{% for component in self.components %}"#split-{{ component.id }}" {% if not forloop.last %}, {% endif %}{% endfor %}], {direction: '{{ self.direction }}', snapOffset: 0, minSize: 0, sizes: [25, 75]});
+    </script>
+ </div>

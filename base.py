@@ -15,7 +15,7 @@ class Component(object):
     template = None
     remove_after_render = False
 
-    def __init__(self, id=None, request=None, initial_components=None, attributes=None, css_class=None, actions=None, *args, **kwargs):
+    def __init__(self, id=None, request=None, initial_components=None, attributes=None, css_class=None, actions=None, event=None, *args, **kwargs):
         """Base class of all components.
 
             id
@@ -42,6 +42,7 @@ class Component(object):
         self.initial_components = initial_components or []
         self.attributes = attributes or {}
         self.css_class = css_class
+        self.event = event
         self.request = request
 
         self.actions = actions or []

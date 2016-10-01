@@ -22,6 +22,10 @@
     padding-top: 20px !important;
 }
 
+.padding-bottom {
+    padding-bottom: 20px !important;
+}
+
 .clickable {
     cursor: pointer;
 }
@@ -29,3 +33,44 @@
 .selected {
     background: #eee;
 }
+
+/* split pane start */
+.split-wrapper {
+    border: 1px solid #ddd;
+    height: 80vh;
+  }
+
+.split {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.split-item {
+  padding: 10px;
+}
+
+.gutter {
+  background-color: #eee;
+  background-repeat: no-repeat;
+  background-position: 50%;
+}
+
+.gutter.gutter-horizontal {
+  background-image: url('./img/vertical.png');
+  cursor: col-resize;
+}
+
+.gutter.gutter-vertical {
+  background-image: url('./img/horizontal.png');
+  cursor: row-resize;
+}
+
+.split.split-horizontal, .gutter.gutter-horizontal {
+  height: 100%;
+  float: left;
+}
+
+/* split pane end */

@@ -8,11 +8,12 @@
         {{ self.error }}
       </div>
     {% endif %}
-    <input class="component"
+    <input class="component {% if self.event %} {{self.event}}{% endif %}"
            id="{{ self.id }}"
            name="{{ self.id }}"
            type="text"
            value="{{ self.value }}"
+           {% if self.handler %}handler="{{ self.handler }}"{% endif %}
            {% if self.placeholder %}placeholder="{{ self.placeholder }}"{% endif %}
            {% for name, value in self.attributes.items %}
                {{ name }}="{{ value }}"
