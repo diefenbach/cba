@@ -1,7 +1,7 @@
 API
 ===
 
-Base Classes
+Base classes
 ############
 
 .. autoclass:: cba.base.Component
@@ -13,7 +13,7 @@ Base Classes
 
 .. _default-components-label:
 
-Default Components
+Default components
 ##################
 
 .. autoclass:: cba.components.Button

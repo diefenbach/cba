@@ -43,15 +43,18 @@
   <div class="section" id="api">
 <h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="base-classes">
-<h2>Base Classes<a class="headerlink" href="#base-classes" title="Permalink to this headline">¶</a></h2>
+<h2>Base classes<a class="headerlink" href="#base-classes" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="cba.base.Component">
 <em class="property">class </em><code class="descclassname">cba.base.</code><code class="descname">Component</code><span class="sig-paren">(</span><em>id=None</em>, <em>attributes=None</em>, <em>css_class=None</em>, <em>handler=None</em>, <em>initial_components=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.base.Component" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class of all components.</p>
 <dl class="docutils">
 <dt>attributes</dt>
-<dd>HTML attributes of the component. A dictonary with attribute
-name, value pairs, e.g. {&#8220;style&#8221;: &#8220;color:red&#8221;}</dd>
+<dd><p class="first">A dictonary of HTML attributes, e.g.:</p>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;style&quot;</span><span class="p">:</span> <span class="s2">&quot;color:red&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</dd>
 <dt>css_class</dt>
 <dd>The css class of the component. A string.</dd>
 <dt>id</dt>
@@ -59,7 +62,7 @@ name, value pairs, e.g. {&#8220;style&#8221;: &#8220;color:red&#8221;}</dd>
 the whole application. If the id is not given a UUID4 based
 id is created automatically.</dd>
 <dt>handler</dt>
-<dd><p class="first">A dictonary with events and handler methods, e.g.:</p>
+<dd><p class="first">A dictonary with events and handlers, e.g.:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">handlers</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;click&quot;</span><span class="p">:</span> <span class="s2">&quot;server:handle_save&quot;</span><span class="p">,</span>
     <span class="s2">&quot;change&quot;</span><span class="p">:</span> <span class="s2">&quot;client:my_js_function&quot;</span><span class="p">,</span>
@@ -86,18 +89,19 @@ it has been rendered.</dd>
 <dl class="method">
 <dt id="cba.base.Component.add_component">
 <code class="descname">add_component</code><span class="sig-paren">(</span><em>component</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.base.Component.add_component" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds the given component as sub component to the current component.</p>
+<dd><p>Adds the given component to the current component.</p>
 <dl class="docutils">
 <dt>component</dt>
-<dd>The component which is added to the current component</dd>
+<dd>The component which should be added.</dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="cba.base.Component.add_message">
 <code class="descname">add_message</code><span class="sig-paren">(</span><em>message</em>, <em>type='info'</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.base.Component.add_message" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds a message. All messages are displayed to the user after the
-current request has been returned to the browser.</p>
+<dd><p>Adds a message.</p>
+<p>All messages are displayed to the user after the current request has
+been returned to the browser.</p>
 </dd></dl>
 
 <dl class="method">
@@ -110,7 +114,8 @@ specific values.</p>
 <dl class="attribute">
 <dt id="cba.base.Component.components">
 <code class="descname">components</code><a class="headerlink" href="#cba.base.Component.components" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns all direct child components of the current component as list.</p>
+<dd><p>Returns all direct child components of the current component as a
+list.</p>
 </dd></dl>
 
 <dl class="method">
@@ -240,7 +245,7 @@ Returns <code class="docutils literal"><span class="pre">True</span></code> when
 
 </div>
 <div class="section" id="default-components">
-<span id="default-components-label"></span><h2>Default Components<a class="headerlink" href="#default-components" title="Permalink to this headline">¶</a></h2>
+<span id="default-components-label"></span><h2>Default components<a class="headerlink" href="#default-components" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="cba.components.Button">
 <em class="property">class </em><code class="descclassname">cba.components.</code><code class="descname">Button</code><span class="sig-paren">(</span><em>value=''</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.components.Button" title="Permalink to this definition">¶</a></dt>
@@ -270,7 +275,7 @@ styling reasons or to easier refresh its sub components.</p>
 
 <dl class="class">
 <dt id="cba.components.HTML">
-<em class="property">class </em><code class="descclassname">cba.components.</code><code class="descname">HTML</code><span class="sig-paren">(</span><em>handler=None</em>, <em>tag='div'</em>, <em>text=''</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.components.HTML" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cba.components.</code><code class="descname">HTML</code><span class="sig-paren">(</span><em>tag='div'</em>, <em>text=''</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.components.HTML" title="Permalink to this definition">¶</a></dt>
 <dd><p>A HTML tag.</p>
 <dl class="docutils">
 <dt>tag</dt>
@@ -282,7 +287,7 @@ styling reasons or to easier refresh its sub components.</p>
 
 <dl class="class">
 <dt id="cba.components.Image">
-<em class="property">class </em><code class="descclassname">cba.components.</code><code class="descname">Image</code><span class="sig-paren">(</span><em>src=''</em>, <em>alt=''</em>, <em>title=''</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.components.Image" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cba.components.</code><code class="descname">Image</code><span class="sig-paren">(</span><em>alt=''</em>, <em>src=''</em>, <em>title=''</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.components.Image" title="Permalink to this definition">¶</a></dt>
 <dd><p>A HTML image component.</p>
 <dl class="docutils">
 <dt>alt</dt>
@@ -296,11 +301,9 @@ styling reasons or to easier refresh its sub components.</p>
 
 <dl class="class">
 <dt id="cba.components.Link">
-<em class="property">class </em><code class="descclassname">cba.components.</code><code class="descname">Link</code><span class="sig-paren">(</span><em>handler=None</em>, <em>text=''</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.components.Link" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cba.components.</code><code class="descname">Link</code><span class="sig-paren">(</span><em>text=''</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.components.Link" title="Permalink to this definition">¶</a></dt>
 <dd><p>A HTML link.</p>
 <dl class="docutils">
-<dt>handler</dt>
-<dd>The method which is called when the button is clicked.</dd>
 <dt>text</dt>
 <dd>The content of the HTML tag.</dd>
 </dl>
@@ -318,7 +321,7 @@ styling reasons or to easier refresh its sub components.</p>
 
 <dl class="class">
 <dt id="cba.components.MenuItem">
-<em class="property">class </em><code class="descclassname">cba.components.</code><code class="descname">MenuItem</code><span class="sig-paren">(</span><em>handler=None</em>, <em>href=None</em>, <em>label=None</em>, <em>name=''</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.components.MenuItem" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cba.components.</code><code class="descname">MenuItem</code><span class="sig-paren">(</span><em>href=None</em>, <em>label=None</em>, <em>name=''</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.components.MenuItem" title="Permalink to this definition">¶</a></dt>
 <dd><p>An item a menu.</p>
 <dl class="docutils">
 <dt>handler</dt>
@@ -391,18 +394,14 @@ been approved.</dd>
 
 <dl class="class">
 <dt id="cba.components.TableRow">
-<em class="property">class </em><code class="descclassname">cba.components.</code><code class="descname">TableRow</code><span class="sig-paren">(</span><em>handler=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.components.TableRow" title="Permalink to this definition">¶</a></dt>
-<dd><p>Represents a table.</p>
-<dl class="docutils">
-<dt>handler</dt>
-<dd>The method which is called when the button is clicked.</dd>
-</dl>
+<em class="property">class </em><code class="descclassname">cba.components.</code><code class="descname">TableRow</code><span class="sig-paren">(</span><em>id=None</em>, <em>attributes=None</em>, <em>css_class=None</em>, <em>handler=None</em>, <em>initial_components=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.components.TableRow" title="Permalink to this definition">¶</a></dt>
+<dd><p>A table row.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="cba.components.TableColumn">
-<em class="property">class </em><code class="descclassname">cba.components.</code><code class="descname">TableColumn</code><span class="sig-paren">(</span><em>handler=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.components.TableColumn" title="Permalink to this definition">¶</a></dt>
-<dd><p>Represents a table column.</p>
+<em class="property">class </em><code class="descclassname">cba.components.</code><code class="descname">TableColumn</code><span class="sig-paren">(</span><em>id=None</em>, <em>attributes=None</em>, <em>css_class=None</em>, <em>handler=None</em>, <em>initial_components=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.components.TableColumn" title="Permalink to this definition">¶</a></dt>
+<dd><p>A table column.</p>
 </dd></dl>
 
 <dl class="class">
@@ -455,7 +454,7 @@ been approved.</dd>
 
 <dl class="class">
 <dt id="cba.components.TextInput">
-<em class="property">class </em><code class="descclassname">cba.components.</code><code class="descname">TextInput</code><span class="sig-paren">(</span><em>id=None</em>, <em>value=''</em>, <em>label=None</em>, <em>placeholder=None</em>, <em>error=None</em>, <em>handler=None</em>, <em>icon=None</em>, <em>icon_position='left'</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.components.TextInput" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cba.components.</code><code class="descname">TextInput</code><span class="sig-paren">(</span><em>id=None</em>, <em>value=''</em>, <em>label=None</em>, <em>placeholder=None</em>, <em>error=None</em>, <em>icon=None</em>, <em>icon_position='left'</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.components.TextInput" title="Permalink to this definition">¶</a></dt>
 <dd><p>An HTML text input.</p>
 <dl class="docutils">
 <dt>error</dt>
@@ -493,8 +492,8 @@ displayed within the input field.</dd>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">API</a><ul>
-<li><a class="reference internal" href="#base-classes">Base Classes</a></li>
-<li><a class="reference internal" href="#default-components">Default Components</a></li>
+<li><a class="reference internal" href="#base-classes">Base classes</a></li>
+<li><a class="reference internal" href="#default-components">Default components</a></li>
 </ul>
 </li>
 </ul>

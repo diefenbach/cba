@@ -11,8 +11,9 @@ class Component(object):
     """Base class of all components.
 
         attributes
-            HTML attributes of the component. A dictonary with attribute
-            name, value pairs, e.g. {"style": "color:red"}
+            A dictonary of HTML attributes, e.g.::
+
+                {"style": "color:red"}
 
         css_class
             The css class of the component. A string.
@@ -73,17 +74,19 @@ class Component(object):
         self._add_components()
 
     def add_component(self, component):
-        """Adds the given component as sub component to the current component.
+        """Adds the given component to the current component.
 
         component
-            The component which is added to the current component
+            The component which should be added.
         """
         component.parent = self
         self._components[component.id] = component
 
     def add_message(self, message, type="info"):
-        """Adds a message. All messages are displayed to the user after the
-        current request has been returned to the browser.
+        """Adds a message.
+
+        All messages are displayed to the user after the current request has
+        been returned to the browser.
         """
         self.get_root()._messages.append({
             "text": message,
@@ -98,7 +101,8 @@ class Component(object):
 
     @property
     def components(self):
-        """Returns all direct child components of the current component as list.
+        """Returns all direct child components of the current component as a
+        list.
         """
         return self._components.values()
 
