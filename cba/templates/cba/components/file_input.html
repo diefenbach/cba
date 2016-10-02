@@ -1,0 +1,28 @@
+<!-- TextInput -->
+<div class="render field">
+    {% if self.label %}
+        <div class="ui sub header">{{ self.label }}</div>
+    {% endif %}
+    {% if self.error %}
+      <div class="error">
+        {{ self.error }}
+      </div>
+    {% endif %}
+    {% if self.icon %}<div class="ui {{ self.icon_position }} icon input">
+        <i class="{{ self.icon }} icon"></i>
+    {% endif %}
+        <input class="component{% for event in self.handler.keys %} {{ event }}{% endfor %}"
+               id="{{ self.id }}"
+               name="{{ self.id }}"
+               type="file"
+               value="{{ self.value }}"
+            {% for event, handler in self.handler.items %}
+                {{ event }}_handler="{{ handler }}"
+            {% endfor %}
+            {% if self.placeholder %}placeholder="{{ self.placeholder }}"{% endif %}
+            {% for name, value in self.attributes.items %}
+               {{ name }}="{{ value }}"
+            {% endfor %} />
+        {{ js|safe }}
+    {% if self.icon %}</div>{% endif %}
+</div>

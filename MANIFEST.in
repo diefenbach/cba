@@ -1,5 +1,4 @@
 include README.txt
 recursive-include docs *
 recursive-include cba/static *
-recursive-include cba/static *
 recursive-include cba/templates *

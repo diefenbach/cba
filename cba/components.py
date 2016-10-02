@@ -42,6 +42,47 @@ class ConfirmModal(Component):
         self.text = text
 
 
+class FileInput(Component):
+    """An HTML file input.
+
+        error
+            The current validation error of the text input.
+
+        icon
+            An optional icon of the text input, see http://semantic-ui.com/elements/icon.html
+            for more.
+
+        icon_position
+            The position of the icon (one of ``left`` or ``right``).
+
+        label
+            An optional label of the text input.
+
+        placeholder
+            The optional placeholder of the text input. If given it is
+            displayed within the input field.
+
+        value
+            The current value of the text input.
+    """
+    template = "cba/components/file_input.html"
+
+    def __init__(self, id=None, value="", label=None, placeholder=None, error=None, icon=None, icon_position="left", *args, **kwargs):
+        super(FileInput, self).__init__(id, *args, **kwargs)
+        self.error = error
+        self.icon = icon
+        self.icon_position = icon_position
+        self.label = label
+        self.placeholder = placeholder
+        self.value = value
+
+    def clear(self):
+        """Sets the value and error messages to empty strings.
+        """
+        self.error = ""
+        self.value = ""
+
+
 class Group(Component):
     """A simple group component to arrange compontens together. For instance for
     styling reasons or to easier refresh its sub components.

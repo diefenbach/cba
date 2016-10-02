@@ -5,7 +5,7 @@ from setuptools import setup
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.rst')).read()
 
-setup(name='cba',
+setup(name='django-cba',
       version="0.0",
       description='CBA - Component Based Applications',
       long_description=README,
@@ -16,6 +16,11 @@ setup(name='cba',
           'Operating System :: OS Independent',
           'Programming Language :: Python',
       ],
+      package_data={
+          'cba': [
+              'locale/*/LC_MESSAGES/*',
+          ],
+      },
       keywords='django web applications framework',
       author='Kai Diefenbach',
       author_email='kai.diefenbach@iqpp.de',

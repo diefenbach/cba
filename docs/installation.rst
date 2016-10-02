@@ -18,7 +18,9 @@ Example Application
 ===================
 
 1. Install cba-notes
+1. Add settings middleware
 2. Add URL
 3. migrate
+5. create superuser
 4. runserver
 
