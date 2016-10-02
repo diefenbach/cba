@@ -4,50 +4,63 @@ from collections import OrderedDict
 
 from django.template.loader import render_to_string
 
-from . utils import JSCreator
-
 logger = logging.getLogger(__name__)
 
 
 class Component(object):
-    """A component is a part of a HTML application.
+    """Base class of all components.
+
+        attributes
+            HTML attributes of the component. A dictonary with attribute
+            name, value pairs, e.g. {"style": "color:red"}
+
+        css_class
+            The css class of the component. A string.
+
+        id
+            The unique id of the component. This must be unique troughout
+            the whole application. If the id is not given a UUID4 based
+            id is created automatically.
+
+        handler
+            A dictonary with events and handlers, e.g.::
+
+                handlers = {
+                    "click": "server:handle_save",
+                    "change": "client:my_js_function",
+                }
+
+            The events could be any javascript event. The handler could
+            be a method of the component instance which has "catched" the
+            event or one of it's parent components (handler with the prefix
+            ``server``) or a javascript method ( handler with the prefix
+            ``client``).
+
+        initial_components
+            The initial sub components of this component.
+
+        parent
+            The parent component of the component. This is set automically
+            Only the root component has a parent of `None`.
+
+        template
+            The path to the template which is used to render the component.
+
+        remove_after_render
+            If true the component is removed from the component tree after
+            it has been rendered.
     """
     template = None
     remove_after_render = False
 
-    def __init__(self, id=None, request=None, initial_components=None, attributes=None, css_class=None, actions=None, event=None, *args, **kwargs):
-        """Base class of all components.
-
-            id
-                The unique id of the component. This must be unique troughout
-                the whole application.
-
-            attributes
-                HTML attributes of the component.
-
-            css_class
-                The css class of the component.
-
-            initial_components
-                The initial sub components of this components.
-
-            template
-                The path to the template which is used to render the component.
-
-            actions
-                A list of actions which will be performed when the user
-                interacts with the component. (Not implemented yet).
-        """
+    def __init__(self, id=None, attributes=None, css_class=None, handler=None, initial_components=None, *args, **kwargs):
         self.id = id or str(uuid.uuid4())
-        self.initial_components = initial_components or []
         self.attributes = attributes or {}
         self.css_class = css_class
-        self.event = event
-        self.request = request
+        self.handler = handler or {}
+        self.initial_components = initial_components or []
 
-        self.actions = actions or []
         self.parent = None
-
         self._components = OrderedDict()
         self._html = None
         self._messages = []
@@ -78,7 +91,8 @@ class Component(object):
         })
 
     def clear(self):
-        """Clears the value of the component.
+        """Clears the component. Can be overriden by sub classes to clear
+        specific values.
         """
         pass
 
@@ -91,13 +105,19 @@ class Component(object):
     def get_component(self, id, direct_only=False, with_root=True):
         """Returns the component with the passed id.
 
+        Starts the search within the sub components of this component (but see
+        also ``with_root``).
+
         id
             The unique id of the component which should be returned.
 
         direct_only
-            If set to True only the direct sub components of this component
-            are taken into account. Otherwise all child components of the
-            component sub tree will be taken into account.
+            If set to True only the direct sub components of this component are
+            taken into account. Otherwise all child components of the component
+            sub tree will be taken into account.
+
+        with_root
+            If true a second search is started with root as base.
         """
         component = self._components.get(id)
         if component:
@@ -117,7 +137,10 @@ class Component(object):
 
             key
                 The key under which the value has been saved. When the key
-                doesn't exist the method returns ``None``.
+                doesn't exist the method returns ``default``.
+
+            default
+                The value the method returns if key is not existing.
         """
         request = self.get_request()
         return request.session.get(key, default)
@@ -207,16 +230,6 @@ class Component(object):
         parent.remove_component(id)
         parent.add_component(component)
 
-    def replace_with(self, component):
-        """Replaces this component with the given one.
-
-        component
-            The component which should replace the removed one.
-        """
-        parent = self.parent
-        parent.remove_component(self.id)
-        parent.add_component(component)
-
     def render(self):
         """Renders the current component as HTML.
         """
@@ -226,7 +239,6 @@ class Component(object):
 
             return render_to_string(self.template, {
                 "self": self,
-                "js": JSCreator(self, self.actions).create(),
             })
         else:
             return ""

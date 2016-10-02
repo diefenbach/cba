@@ -47,9 +47,9 @@ function addMessages(messages) {
     }
 }
 
-function defaultAjaxAction(element) {
+function defaultAjaxAction(element, handler) {
     const data = collectComponents();
-    data.handler = element.attr('handler');
+    data.handler = handler;
     data.event_id = element.attr('id');
     data.csrfmiddlewaretoken = $('input[name=csrfmiddlewaretoken]').attr('value');
     if (DEBUG) {
@@ -61,18 +61,35 @@ function defaultAjaxAction(element) {
     });
 }
 
+function defaultJSAction(element, handler) {
+    const fn = window[handler];
+    fn(element);
+}
+
+
+function handleEvent(element, event) {
+    const handlerString = element.attr(`${event.type}_handler`);
+    const handler = handlerString.split(':');
+    if (handler[0] === 'server') {
+        defaultAjaxAction(element, handler[1]);
+    } else if (handler[0] === 'client') {
+        defaultJSAction(element, handler[1]);
+    }
+}
+
 $(() => {
-    $('body').on('click', '.default-ajax', function(event) {
-        defaultAjaxAction($(this));
+    $('body').on('click', '.click', function(event) {
+        handleEvent($(this), event);
+        return false;
+    });
+
+    $('body').on('change', '.change', function(event) {
+        handleEvent($(this), event);
         return false;
     });
 
     $('body').on('keyup', '.keyup', function(event) {
-        defaultAjaxAction($(this));
-    });
-
-    $('body').on('change', 'input.default-ajax', function(event) {
-        defaultAjaxAction($(this));
+        handleEvent($(this), event);
         return false;
     });
 

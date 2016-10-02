@@ -13,6 +13,10 @@ logger = logging.getLogger(__name__)
 
 
 class CBAView(View):
+    """The default base class.
+
+    All views of an cba application should be inherit from this class.
+    """
     template = "cba/main.html"
 
     def __init__(self, **kwargs):

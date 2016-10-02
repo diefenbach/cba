@@ -4,24 +4,42 @@ from . base import Component
 class Button(Component):
     """A HTML button.
 
-        default_ajax
-            If set to true a click to the button will be processed by the
-            default CBA ajax behaviour, which means the click event will be
-            sent via a post Ajax call to the handler.
-
-        handler
-            The method which is called when the button is clicked.
-
         value
             The value of the button.
     """
     template = "cba/components/button.html"
 
-    def __init__(self, value="", handler=None, default_ajax=True, *args, **kwargs):
+    def __init__(self, value="", *args, **kwargs):
         super(Button, self).__init__(*args, **kwargs)
         self.value = value
+
+
+class ConfirmModal(Component):
+    """A convenient modal dialog with a yes and no button. When the dialog is
+       answered with yes the handler method is called via an ajax request.
+
+        event_id
+            The event_id which is passed to the backend when the dialog has
+            been approved.
+
+        handler
+            The method which is called when the dialog has been approved.
+
+        header
+            The header of the dialog which is displayed to the user.
+
+        text
+            The text of the dialog which is displayed to the user.
+    """
+    template = "cba/components/confirm_modal.html"
+    remove_after_render = True
+
+    def __init__(self, event_id, handler, header=None, text=None, *args, **kwargs):
+        super(ConfirmModal, self).__init__(*args, **kwargs)
+        self.event_id = event_id
         self.handler = handler
-        self.default_ajax = default_ajax
+        self.header = header
+        self.text = text
 
 
 class Group(Component):
@@ -32,7 +50,7 @@ class Group(Component):
 
 
 class HiddenInput(Component):
-    """Renders to a HTML input hidden tag.
+    """A HTML hidden input field.
 
         value
             The value of the hidden input field.
@@ -64,11 +82,11 @@ class HTML(Component):
 class Image(Component):
     """A HTML image component.
 
-        src
-            The url to the image file.
-
         alt
             The content alt tag of the image file.
+
+        src
+            The url to the image file.
 
         title
             The content of the title tag of the image.
@@ -76,99 +94,62 @@ class Image(Component):
     """
     template = "cba/components/image.html"
 
-    def __init__(self, src="", alt="", title="", *args, **kwargs):
+    def __init__(self, alt="", src="", title="", *args, **kwargs):
         super(Image, self).__init__(*args, **kwargs)
-        self.src = src
         self.alt = alt
+        self.src = src
         self.title = title
 
 
 class Link(Component):
     """A HTML link.
 
-        handler
-            The method which is called when the button is clicked.
-
         text
             The content of the HTML tag.
-
-        default_ajax
-            If set to true a click to the button will be processed by the
-            default CBA ajax behaviour, which means the click event will be
-            sent via a post Ajax call to the handler.
-
     """
     template = "cba/components/link.html"
 
-    def __init__(self, handler=None, text="", default_ajax=True, *args, **kwargs):
+    def __init__(self, text="", *args, **kwargs):
         super(Link, self).__init__(*args, **kwargs)
-        self.default_ajax = default_ajax
-        self.handler = handler
         self.text = text
 
 
 class Menu(Component):
     """The root container of a pop up menu.
+
+        direction
+            The direction of the menu. One of ``vertical`` or ``horizonal``.
+
     """
     template = "cba/components/menu.html"
 
-    def __init__(self, vertical=False, *args, **kwargs):
+    def __init__(self, direction="horizonal", *args, **kwargs):
         super(Menu, self).__init__(*args, **kwargs)
-        self.vertical = vertical
+        self.direction = direction
 
 
 class MenuItem(Component):
-    """An item of a pop up menu.
-
-        name
-            The name of the menu item, which is displayed to the customer
+    """An item a menu.
 
         handler
             The method which is called when the button is clicked.
 
-        default_ajax
-            If set to true a click to the button will be processed by the
-            default CBA ajax behaviour, which means the click event will be
-            sent via a post Ajax call to the handler.
+        href
+            Optional URL the item links to.
 
+        label
+            Optional label of the menu item.
+
+        name
+            The name of the menu item. This is displayed to the user.
     """
     template = "cba/components/menu_item.html"
 
-    def __init__(self, handler=None, href=None, label=None, name="", default_ajax=True, *args, **kwargs):
+    def __init__(self, href=None, label=None, name="", *args, **kwargs):
         super(MenuItem, self).__init__(*args, **kwargs)
-        self.default_ajax = default_ajax
-        self.handler = handler
         self.href = href
         self.label = label
         self.name = name
-
-
-class ConfirmModal(Component):
-    """A convenient modal dialog with a yes and no button. When the dialog is
-       answered with yes the handler method is called via an ajax request.
-
-        event_id
-            The event_id which is passed to the backend when the dialog has
-            been approved.
-
-        handler
-            The method which is called when the dialog has been approved.
-
-        header
-            The header of the dialog which is displayed to the user.
-
-        text
-            The text of the dialog which is displayed to the user.
-    """
-    template = "cba/components/confirm_modal.html"
-    remove_after_render = True
-
-    def __init__(self, event_id, handler, header=None, text=None, *args, **kwargs):
-        super(ConfirmModal, self).__init__(*args, **kwargs)
-        self.text = text
-        self.event_id = event_id
-        self.handler = handler
-        self.header = header
 
 
 class Modal(Component):
@@ -245,26 +226,13 @@ class Table(Component):
 
 
 class TableRow(Component):
-    """Represents a table.
-
-        default_ajax
-            If set to true a click at the row will be processed by the default
-            CBA ajax behaviour, which means the click event will be sent via a
-            post Ajax call to the handler.
-
-        handler
-            The method which is called when the button is clicked.
+    """A table row.
     """
     template = "cba/components/table_row.html"
 
-    def __init__(self, handler=None, default_ajax=True, *args, **kwargs):
-        super(TableRow, self).__init__(*args, **kwargs)
-        self.handler = handler
-        self.default_ajax = default_ajax
-
 
 class TableColumn(Component):
-    """Represents a table column.
+    """A table column.
     """
     template = "cba/components/table_column.html"
 
@@ -293,17 +261,17 @@ class TabItem(Component):
 class TextArea(Component):
     """A HTML Textarea
 
+        error
+            The current validation error of the text area.
+
         label
-            The optional label of the text area.
+            An optional label of the text area.
 
         rows
             The amount of rows of the text area.
 .
         value
             The current value of the text area.
-
-        error
-            The current validation error of the text area.
     """
     template = "cba/components/textarea.html"
 
@@ -327,8 +295,15 @@ class TextInput(Component):
         error
             The current validation error of the text input.
 
+        icon
+            An optional icon of the text input, see http://semantic-ui.com/elements/icon.html
+            for more.
+
+        icon_position
+            The position of the icon (one of ``left`` or ``right``).
+
         label
-            The optional label of the text input.
+            An optional label of the text input.
 
         placeholder
             The optional placeholder of the text input. If given it is
@@ -339,16 +314,17 @@ class TextInput(Component):
     """
     template = "cba/components/text_input.html"
 
-    def __init__(self, id=None, value="", label=None, placeholder=None, error=None, handler=None, *args, **kwargs):
+    def __init__(self, id=None, value="", label=None, placeholder=None, error=None, icon=None, icon_position="left", *args, **kwargs):
         super(TextInput, self).__init__(id, *args, **kwargs)
         self.error = error
-        self.handler = handler
+        self.icon = icon
+        self.icon_position = icon_position
         self.label = label
         self.placeholder = placeholder
         self.value = value
 
     def clear(self):
-        """Sets the value an error to empty strings.
+        """Sets the value and error messages to empty strings.
         """
         self.error = ""
         self.value = ""

@@ -1,4 +1,4 @@
-<div class="ui menu{% if self.vertical %} vertical{% endif %}{% if self.css_class %} {{ self.css_class}}{% endif %}">
+<div class="ui menu {{ self.direction }}{% if self.css_class %} {{ self.css_class}}{% endif %}">
     <div class="ui container">
         {% for name, value in self.attributes.items %}
             {{ name }}="{{ value }}"

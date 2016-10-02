@@ -1,7 +1,8 @@
-<td class="component render{% if self.default_ajax %} default-ajax{% endif %}{% if self.css_class %} {{ self.css_class}}{% endif %}"
-    {% if self.handler %}
-        handler="{{ self.handler }}"
-    {% endif %}
+<td id="{{ self.id }}"
+    class="component render{% if self.css_class %} {{ self.css_class}}{% endif %}{% for event in self.handler.keys %} {{ event }}{% endfor %}"
+    {% for event, handler in self.handler.items %}
+        {{ event }}_handler="{{ handler }}"
+    {% endfor %}
     {% for name, value in self.attributes.items %}
         {{ name }}="{{ value }}"
     {% endfor %}>

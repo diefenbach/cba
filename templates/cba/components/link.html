@@ -1,9 +1,11 @@
 <!-- Link Start -->
 <span class="render">
-    <a class="{% if self.css_class %}{{ self.css_class }} {% endif %}{% if self.default_ajax %}default-ajax{% endif %}"
-       handler="{{ self.handler }}"
+    <a class="{% if self.css_class %}{{ self.css_class }} {% endif %}{% for event in self.handler.keys %} {{ event }}{% endfor %}"
        id="{{ self.id }}"
        href="."
+        {% for event, handler in self.handler.items %}
+            {{ event }}_handler="{{ handler }}"
+        {% endfor %}
         {% for name, value in self.attributes.items %}
            {{ name }}="{{ value }}"
         {% endfor %}>

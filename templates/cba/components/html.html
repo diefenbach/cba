@@ -1,8 +1,11 @@
 <div class="render">
-    <{{self.tag}} class="component{% if self.css_class %} {{ self.css_class}}{% endif %}"
+    <{{self.tag}} class="component{% if self.css_class %} {{ self.css_class}}{% endif %}{% for event in self.handler.keys %} {{ event }}{% endfor %}"
          id="{{ self.id }}"
          {% for name, value in self.attributes.items %}
              {{ name }}="{{ value }}"
+         {% endfor %}
+         {% for event, handler in self.handler.items %}
+             {{ event }}_handler="{{ handler }}"
          {% endfor %}>
             {{ self.text|safe }}
             {% for component in self.components %}
