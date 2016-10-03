@@ -4,6 +4,9 @@ from collections import OrderedDict
 
 from django.template.loader import render_to_string
 
+from cba import get_request
+
+
 logger = logging.getLogger(__name__)
 
 
@@ -73,6 +76,8 @@ class Component(object):
 
         self._add_components()
 
+        self.after_initial_components()
+
     def add_component(self, component):
         """Adds the given component to the current component.
 
@@ -93,6 +98,11 @@ class Component(object):
             "type": type,
         })
 
+    def after_initial_components(self):
+        """Can be overriden by sub classes.
+        """
+        pass
+
     def clear(self):
         """Clears the component. Can be overriden by sub classes to clear
         specific values.
@@ -105,6 +115,11 @@ class Component(object):
         list.
         """
         return self._components.values()
+
+    @classmethod
+    def clear_session(cls):
+        request = cls.get_request()
+        del request.session["cba"]
 
     def get_component(self, id, direct_only=False, with_root=True):
         """Returns the component with the passed id.
@@ -147,7 +162,7 @@ class Component(object):
                 The value the method returns if key is not existing.
         """
         request = self.get_request()
-        return request.session.get(key, default)
+        return request.session.get("cba", {}).get(key, default)
 
     def get_root(self):
         """Returns the root component.
@@ -163,12 +178,7 @@ class Component(object):
     def get_request(self):
         """Returns the current request.
         """
-        from cba import get_request
         return get_request()
-        try:
-            return self.get_root().request
-        except AttributeError:
-            return None
 
     def get_user(self):
         """Returns the current user.
@@ -256,7 +266,7 @@ class Component(object):
                 The value to be saved.
         """
         request = self.get_request()
-        request.session[key] = value
+        request.session.setdefault("cba", {})[key] = value
 
     def _add_components(self):
         """Adds initial components into the default components structure.

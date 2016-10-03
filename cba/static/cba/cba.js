@@ -9,17 +9,27 @@ function getUUID() {
 }
 
 function collectComponents() {
-    const object = {};
+    const object = new FormData();
 
-    $('input.component, textarea.component, select').each(function() {
+    $('input.component, textarea.component, select.component').each(function() {
         const id = $(this).attr('id');
-        let value = $(this).val();
-        // jquery doesn't post empty lists
-        if (value == false) {
-            value = '';
+        let value = '';
+
+        if ($(this).attr('type') == 'file') {
+            $('input[type=file].component').each(function() {
+                value = $(this)[0].files[0];
+            });
+        } else {
+            value = $(this).val();
+            // jquery doesn't post empty lists
+            if (value == false) {
+                value = '';
+            }
         }
-        object[id] = value;
+
+        object.append(id, value);
     });
+
 
     return object;
 }
@@ -49,15 +59,24 @@ function addMessages(messages) {
 
 function defaultAjaxAction(element, handler) {
     const data = collectComponents();
-    data.handler = handler;
-    data.event_id = element.attr('id');
-    data.csrfmiddlewaretoken = $('input[name=csrfmiddlewaretoken]').attr('value');
+    data.append('handler', handler);
+    data.append('event_id', element.attr('id'));
+    data.append('csrfmiddlewaretoken', $('input[name=csrfmiddlewaretoken]').attr('value'));
+
     if (DEBUG) {
         console.log(data);
     }
-    $.post('', data, result => {
-        replaceHTML(result.html);
-        addMessages(result.messages);
+
+    $.ajax({
+        url: '',
+        type: 'POST',
+        data: data,
+        processData: false,
+        contentType: false,
+        success: result => {
+            replaceHTML(result.html);
+            addMessages(result.messages);
+        },
     });
 }
 

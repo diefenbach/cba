@@ -89,6 +89,11 @@ class Group(Component):
     """
     template = "cba/components/group.html"
 
+    def clear(self):
+        """Deletes all sub components.
+        """
+        self._components.clear()
+
 
 class HiddenInput(Component):
     """A HTML hidden input field.
@@ -114,10 +119,10 @@ class HTML(Component):
     """
     template = "cba/components/html.html"
 
-    def __init__(self, tag="div", text="", *args, **kwargs):
+    def __init__(self, tag="div", content="", *args, **kwargs):
         super(HTML, self).__init__(*args, **kwargs)
         self.tag = tag
-        self.text = text
+        self.content = content
 
 
 class Image(Component):

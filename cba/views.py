@@ -25,9 +25,16 @@ class CBAView(View):
         self._messages = []
 
     def get(self, *args, **kwargs):
+        """Handles the starting get request.
+        """
+        # Remove any CBA related stuff from session.
+        try:
+            del self.request.session["cba"]
+        except KeyError:
+            pass
+
         self.root = self.root("root")
         content = self.root.render()
-
         self.request.session["root"] = self.root
 
         return render(self.request, self.template, {
@@ -35,6 +42,8 @@ class CBAView(View):
         })
 
     def post(self, *args, **kwargs):
+        """Handles all subsequent ajax calls.
+        """
         self.root = self.request.session.get("root")
 
         self._clear_components_data(self.root)
@@ -105,6 +114,8 @@ class CBAView(View):
         """
         if hasattr(root, "components"):
             for component in root.components:
+                if component.id in self.request.FILES:
+                    root._components[component.id].value = self.request.FILES.get(component.id)
                 if component.id in self.request.POST:
                     root._components[component.id].value = self.request.POST.get(component.id)
                 else:
