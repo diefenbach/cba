@@ -14,6 +14,24 @@ class Button(Component):
         self.value = value
 
 
+class Checkbox(Component):
+    """A HTML checkbox.
+
+        label
+            The label of the checkbox
+
+        type
+            The type of the checkbox. One of None, "toggle", "slider".
+    """
+    template = "cba/components/checkbox.html"
+
+    def __init__(self, label=None, type=None, *args, **kwargs):
+        super(Checkbox, self).__init__(*args, **kwargs)
+        self.label = label
+        self.type = type
+        self.value = None
+
+
 class ConfirmModal(Component):
     """A convenient modal dialog with a ``yes`` and ``no`` button. When the
        dialog is answered with ``yes`` the handler method is called via an ajax

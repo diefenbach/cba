@@ -1,0 +1,14 @@
+<div class="field render">
+    <div class="ui{% if self.type %} {{ self.type }}{% endif %} checkbox">
+        {% if self.label %}
+            <label>{{ self.label }}</label>
+        {% endif %}
+        <input id="{{ self.id }}"
+               class="component{% if self.css_class %} css_class{% endif %}"
+               type="checkbox"
+               name="{{ self.id }}" />
+    </div>
+    <script type="text/javascript">
+        $('.ui.checkbox').checkbox();
+    </script>
+</div>

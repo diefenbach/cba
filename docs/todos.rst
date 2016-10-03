@@ -13,10 +13,15 @@ CBA
 - Adapt FileInput for single files
 - Improve Split layout
 - Add an image list component (carousel, lightbox, etc.)
-- Add a checkbox component
 - Add a radio box component
+- Add a checkbox group?
+- Add a radio box group?
 - Add drag'n drop
 - Clean up / optimize Javascript and CSS
+
+Done
+----
+- Add a checkbox component
 
 Notes
 -----
