@@ -58,24 +58,32 @@ class FileInput(Component):
         label
             An optional label of the text input.
 
+        multiple
+            If true multiple files can be uploaded at once.
+
         placeholder
             The optional placeholder of the text input. If given it is
             displayed within the input field.
+
+        to_delete
+            The file ids which are marked as to be deleted.
 
         value
             The current value of the text input.
     """
     template = "cba/components/file_input.html"
 
-    def __init__(self, id=None, value="", label=None, multiple=False, placeholder=None, error=None, icon=None, icon_position="left", *args, **kwargs):
+    def __init__(self, id=None, files=None, value="", label=None, multiple=False, placeholder=None, error=None, icon=None, icon_position="left", to_delete=None, *args, **kwargs):
         super(FileInput, self).__init__(id, *args, **kwargs)
         self.error = error
+        self.files = files or []
         self.icon = icon
         self.icon_position = icon_position
         self.label = label
         self.multiple = multiple
         self.placeholder = placeholder
         self.value = value
+        self.to_delete = to_delete or []
 
     def clear(self):
         """Sets the value and error messages to empty strings.

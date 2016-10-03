@@ -34,6 +34,15 @@
     background: #eee;
 }
 
+.file-input.delete-files {
+  padding-bottom: 10px;
+}
+
+.delete-files-wrapper {
+  padding-right: 30px;
+  float: left;
+}
+
 /* split pane start */
 .split-wrapper {
     border: 1px solid #ddd;

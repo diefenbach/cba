@@ -24,5 +24,19 @@
             {% for name, value in self.attributes.items %}
                {{ name }}="{{ value }}"
             {% endfor %} />
-    {% if self.icon %}</div>{% endif %}
+        {% if self.icon %}</div>{% endif %}
+
+    {% if self.files %}
+        <div class="file-input delete-files">
+            <div class="ui sub header" style="padding:20px 0 10px 0">
+              Delete Files
+            </div>
+            {% for file in self.files %}
+                <div class="file-input delete-files-wrapper">
+                    <input class="component" type="checkbox" name="delete-{{ self.id }}" value="{{ file.id }}" />
+                    <img src="{{ file.file.url }}" width="64px" />
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 </div>

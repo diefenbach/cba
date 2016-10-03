@@ -16,13 +16,18 @@ function collectComponents() {
 
         if ($(this).attr('type') == 'file') {
             $('input[type=file].component').each(function() {
-                let i = 0;
                 for (const file of $(this)[0].files) {
                     object.append(id, file);
                 }
             });
+        } else if ($(this).attr('type') == 'checkbox') {
+            if ($(this).is(':checked')) {
+                const value = $(this).val();
+                const name = $(this).attr('name');
+                object.append(name, value);
+            }
         } else {
-            value = $(this).val();
+            let value = $(this).val();
             // jquery doesn't post empty lists
             if (value == false) {
                 value = '';
@@ -116,6 +121,11 @@ $(() => {
     $('body').on('click', 'tr', function(event) {
         $(this).siblings('tr').removeClass('selected');
         $(this).addClass('selected');
+    });
+
+    $('body').on('click', '.file-input img', function(event) {
+        const checkbox = $(this).siblings('input');
+        checkbox.prop('checked', !checkbox.prop('checked'));
     });
 });
 
