@@ -1,4 +1,4 @@
-<!-- TextInput -->
+<!-- FileInput -->
 <div class="render field">
     {% if self.label %}
         <div class="ui sub header">{{ self.label }}</div>
@@ -14,6 +14,7 @@
         <input class="component{% for event in self.handler.keys %} {{ event }}{% endfor %}"
                id="{{ self.id }}"
                name="{{ self.id }}"
+               {% if self.multiple %}multiple{% endif %}
                type="file"
                value="{{ self.value }}"
             {% for event, handler in self.handler.items %}
@@ -23,6 +24,5 @@
             {% for name, value in self.attributes.items %}
                {{ name }}="{{ value }}"
             {% endfor %} />
-        {{ js|safe }}
     {% if self.icon %}</div>{% endif %}
 </div>

@@ -67,12 +67,13 @@ class FileInput(Component):
     """
     template = "cba/components/file_input.html"
 
-    def __init__(self, id=None, value="", label=None, placeholder=None, error=None, icon=None, icon_position="left", *args, **kwargs):
+    def __init__(self, id=None, value="", label=None, multiple=False, placeholder=None, error=None, icon=None, icon_position="left", *args, **kwargs):
         super(FileInput, self).__init__(id, *args, **kwargs)
         self.error = error
         self.icon = icon
         self.icon_position = icon_position
         self.label = label
+        self.multiple = multiple
         self.placeholder = placeholder
         self.value = value
 

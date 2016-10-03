@@ -13,11 +13,13 @@ function collectComponents() {
 
     $('input.component, textarea.component, select.component').each(function() {
         const id = $(this).attr('id');
-        let value = '';
 
         if ($(this).attr('type') == 'file') {
             $('input[type=file].component').each(function() {
-                value = $(this)[0].files[0];
+                let i = 0;
+                for (const file of $(this)[0].files) {
+                    object.append(id, file);
+                }
             });
         } else {
             value = $(this).val();
@@ -25,9 +27,8 @@ function collectComponents() {
             if (value == false) {
                 value = '';
             }
+            object.append(id, value);
         }
-
-        object.append(id, value);
     });
 
 
