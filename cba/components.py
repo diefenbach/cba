@@ -15,21 +15,23 @@ class Button(Component):
 
 
 class ConfirmModal(Component):
-    """A convenient modal dialog with a yes and no button. When the dialog is
-       answered with yes the handler method is called via an ajax request.
+    """A convenient modal dialog with a ``yes`` and ``no`` button. When the
+       dialog is answered with ``yes`` the handler method is called via an ajax
+       request.
 
         event_id
-            The event_id which is passed to the backend when the dialog has
-            been approved.
+            The event_id, which is passed to the backend, when the dialog has
+            been answered with yes.
 
         handler
-            The method which is called when the dialog has been approved.
+            The method, which is called, when the dialog has been answered with
+            yes.
 
         header
-            The header of the dialog which is displayed to the user.
+            The header of the dialog.
 
         text
-            The text of the dialog which is displayed to the user.
+            The text of the dialog.
     """
     template = "cba/components/confirm_modal.html"
     remove_after_render = True

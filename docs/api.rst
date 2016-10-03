@@ -19,6 +19,9 @@ Default components
 .. autoclass:: cba.components.Button
     :members:
 
+.. autoclass:: cba.components.ConfirmModal
+    :members:
+
 .. autoclass:: cba.components.FileInput
     :members:
 
@@ -43,7 +46,7 @@ Default components
 .. autoclass:: cba.components.MenuItem
     :members:
 
-.. autoclass:: cba.components.ConfirmModal
+.. autoclass:: cba.components.Modal
     :members:
 
 .. autoclass:: cba.components.Select
@@ -68,4 +71,21 @@ Default components
     :members:
 
 .. autoclass:: cba.components.TextInput
+    :members:
+
+.. _default-layouts-label:
+
+Default Layouts
+###############
+
+.. autoclass:: cba.layouts.Column
+    :members:
+
+.. autoclass:: cba.layouts.Grid
+    :members:
+
+.. autoclass:: cba.layouts.Row
+    :members:
+
+.. autoclass:: cba.layouts.Split
     :members:

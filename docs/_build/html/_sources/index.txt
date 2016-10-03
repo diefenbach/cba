@@ -18,8 +18,7 @@ Overview
 - The whole application can be build with ``Python`` only (but don't have to.
   Own CSS and Javascript can be provided as well).
 - CBA comes with a set of core components, see :ref:`the API documentation
-  <default-components-label>` for more.
-- More specific ones can be added easily.
+  <default-components-label>` for more. Own components can be added easily.
 - CBA is build on top of ``Django``, which means, all ``Django`` features are
   available, e.g. the ORM, the authentication system or the i18n framework.
 - CBA is inspired by EPFL http://pyramid-epfl.readthedocs.io/.
@@ -66,6 +65,7 @@ Contents
    :maxdepth: 2
 
    installation.rst
+   todos.rst
    api.rst
 
 

@@ -1,4 +1,4 @@
-<input class="component render {{ self.css_class }}"
+<input class="component render{% if self.css_class %} {{ self.css_class }}{% endif %}"
        id="{{ self.id }}"
        name="{{ self.id }}"
        type="hidden"

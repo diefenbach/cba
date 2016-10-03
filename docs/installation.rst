@@ -1,5 +1,5 @@
-Installation
-============
+Install CBA
+===========
 
 1. Create a virtual environment
 2. Install Django
@@ -14,8 +14,8 @@ $ pip install https://github.com/diefenbach/cba/archive/master.zip
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
-Example Application
-===================
+Install the Notes reference application
+=======================================
 
 1. Install cba-notes
 1. Add settings middleware

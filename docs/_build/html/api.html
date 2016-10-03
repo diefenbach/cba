@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="CBA 0.1 documentation" href="index.html" />
-    <link rel="prev" title="&lt;no title&gt;" href="overview.html" />
+    <link rel="prev" title="Todos" href="todos.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -275,12 +275,38 @@ Returns <code class="docutils literal"><span class="pre">True</span></code> when
 </dd></dl>
 
 <dl class="class">
+<dt id="cba.components.ConfirmModal">
+<em class="property">class </em><code class="descclassname">cba.components.</code><code class="descname">ConfirmModal</code><span class="sig-paren">(</span><em>event_id</em>, <em>handler</em>, <em>header=None</em>, <em>text=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.components.ConfirmModal" title="Permalink to this definition">¶</a></dt>
+<dd><p>A convenient modal dialog with a <code class="docutils literal"><span class="pre">yes</span></code> and <code class="docutils literal"><span class="pre">no</span></code> button. When the
+dialog is answered with <code class="docutils literal"><span class="pre">yes</span></code> the handler method is called via an ajax
+request.</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>event_id</dt>
+<dd>The event_id, which is passed to the backend, when the dialog has
+been answered with yes.</dd>
+<dt>handler</dt>
+<dd>The method, which is called, when the dialog has been answered with
+yes.</dd>
+<dt>header</dt>
+<dd>The header of the dialog.</dd>
+<dt>text</dt>
+<dd>The text of the dialog.</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="class">
 <dt id="cba.components.FileInput">
-<em class="property">class </em><code class="descclassname">cba.components.</code><code class="descname">FileInput</code><span class="sig-paren">(</span><em>id=None</em>, <em>files=None</em>, <em>value=''</em>, <em>label=None</em>, <em>multiple=False</em>, <em>placeholder=None</em>, <em>error=None</em>, <em>icon=None</em>, <em>icon_position='left'</em>, <em>to_delete=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.components.FileInput" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cba.components.</code><code class="descname">FileInput</code><span class="sig-paren">(</span><em>id=None</em>, <em>error=None</em>, <em>existing_files=None</em>, <em>icon=None</em>, <em>icon_position='left'</em>, <em>label=None</em>, <em>multiple=False</em>, <em>to_delete=None</em>, <em>value=''</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.components.FileInput" title="Permalink to this definition">¶</a></dt>
 <dd><p>An HTML file input.</p>
 <dl class="docutils">
 <dt>error</dt>
 <dd>The current validation error of the text input.</dd>
+<dt>existing_files</dt>
+<dd>A list of existing files which will be displayed for optional
+deletion. The file instances must have an <code class="docutils literal"><span class="pre">id</span></code> and an <code class="docutils literal"><span class="pre">url</span></code>
+attribute.</dd>
 <dt>icon</dt>
 <dd>An optional icon of the text input, see <a class="reference external" href="http://semantic-ui.com/elements/icon.html">http://semantic-ui.com/elements/icon.html</a>
 for more.</dd>
@@ -290,9 +316,6 @@ for more.</dd>
 <dd>An optional label of the text input.</dd>
 <dt>multiple</dt>
 <dd>If true multiple files can be uploaded at once.</dd>
-<dt>placeholder</dt>
-<dd>The optional placeholder of the text input. If given it is
-displayed within the input field.</dd>
 <dt>to_delete</dt>
 <dd>The file ids which are marked as to be deleted.</dd>
 <dt>value</dt>
@@ -392,23 +415,15 @@ styling reasons or to easier refresh its sub components.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="cba.components.ConfirmModal">
-<em class="property">class </em><code class="descclassname">cba.components.</code><code class="descname">ConfirmModal</code><span class="sig-paren">(</span><em>event_id</em>, <em>handler</em>, <em>header=None</em>, <em>text=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.components.ConfirmModal" title="Permalink to this definition">¶</a></dt>
-<dd><p>A convenient modal dialog with a yes and no button. When the dialog is
-answered with yes the handler method is called via an ajax request.</p>
-<blockquote>
-<div><dl class="docutils">
-<dt>event_id</dt>
-<dd>The event_id which is passed to the backend when the dialog has
-been approved.</dd>
-<dt>handler</dt>
-<dd>The method which is called when the dialog has been approved.</dd>
+<dt id="cba.components.Modal">
+<em class="property">class </em><code class="descclassname">cba.components.</code><code class="descname">Modal</code><span class="sig-paren">(</span><em>header=None</em>, <em>close_button=True</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.components.Modal" title="Permalink to this definition">¶</a></dt>
+<dd><p>A modal dialog.</p>
+<dl class="docutils">
 <dt>header</dt>
 <dd>The header of the dialog which is displayed to the user.</dd>
-<dt>text</dt>
-<dd>The text of the dialog which is displayed to the user.</dd>
+<dt>close_button</dt>
+<dd>When set to True a close button is displayed.</dd>
 </dl>
-</div></blockquote>
 </dd></dl>
 
 <dl class="class">
@@ -437,8 +452,8 @@ been approved.</dd>
 <dl class="docutils">
 <dt>columns</dt>
 <dd>A list of strings which represent the header of the table.</dd>
-<dt>data</dt>
-<dd>A list of list which represents the rows and columns of the table.</dd>
+<dt>label</dt>
+<dd>An option label of the table.</dd>
 </dl>
 <dl class="method">
 <dt id="cba.components.Table.clear">
@@ -537,6 +552,49 @@ displayed within the input field.</dd>
 </dd></dl>
 
 </div>
+<div class="section" id="default-layouts">
+<span id="default-layouts-label"></span><h2>Default Layouts<a class="headerlink" href="#default-layouts" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="cba.layouts.Column">
+<em class="property">class </em><code class="descclassname">cba.layouts.</code><code class="descname">Column</code><span class="sig-paren">(</span><em>id=None</em>, <em>width=16</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.layouts.Column" title="Permalink to this definition">¶</a></dt>
+<dd><p>A column of a grid.</p>
+<dl class="docutils">
+<dt>width</dt>
+<dd>The width of the column. Valid values are 1-16. A row consist of
+maxmimal 16 columns but can be ended explicitly.</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="cba.layouts.Grid">
+<em class="property">class </em><code class="descclassname">cba.layouts.</code><code class="descname">Grid</code><span class="sig-paren">(</span><em>id=None</em>, <em>attributes=None</em>, <em>css_class=None</em>, <em>handler=None</em>, <em>initial_components=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.layouts.Grid" title="Permalink to this definition">¶</a></dt>
+<dd><p>A CSS grid layout.</p>
+<p>A grid consists arbitrary rows and 16 columns per row. see <a class="reference external" href="http://semantic-ui.com/collections/grid.html">http://semantic-ui.com/collections/grid.html</a>
+for more.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="cba.layouts.Row">
+<em class="property">class </em><code class="descclassname">cba.layouts.</code><code class="descname">Row</code><span class="sig-paren">(</span><em>id=None</em>, <em>attributes=None</em>, <em>css_class=None</em>, <em>handler=None</em>, <em>initial_components=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.layouts.Row" title="Permalink to this definition">¶</a></dt>
+<dd><p>A row of a grid.</p>
+<p>It can be used to end a row explicitly.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="cba.layouts.Split">
+<em class="property">class </em><code class="descclassname">cba.layouts.</code><code class="descname">Split</code><span class="sig-paren">(</span><em>id=None</em>, <em>direction='vertical'</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.layouts.Split" title="Permalink to this definition">¶</a></dt>
+<dd><p>Splits the screen in two or more panels.</p>
+<p>All direct sub components are splitted into an own panel. Split components
+can be nested.</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>direction</dt>
+<dd>The direction of the splitting. One of <code class="docutils literal"><span class="pre">vertical</span></code> or <code class="docutils literal"><span class="pre">horizontal</span></code>.</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</div>
 </div>
 
 
@@ -550,6 +608,7 @@ displayed within the input field.</dd>
 <li><a class="reference internal" href="#">API</a><ul>
 <li><a class="reference internal" href="#base-classes">Base classes</a></li>
 <li><a class="reference internal" href="#default-components">Default components</a></li>
+<li><a class="reference internal" href="#default-layouts">Default Layouts</a></li>
 </ul>
 </li>
 </ul>
@@ -557,7 +616,7 @@ displayed within the input field.</dd>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="overview.html" title="previous chapter">&lt;no title&gt;</a></li>
+      <li>Previous: <a href="todos.html" title="previous chapter">Todos</a></li>
   </ul></li>
 </ul>
 </div>

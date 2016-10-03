@@ -18,7 +18,7 @@ def test_hidden_input_render():
     html = hidden_input.render()
 
     expected_html = """
-        <input class="form-control component render None"
+        <input class="component render"
                id="hidden-1"
                name="hidden-1"
                type="hidden"
@@ -45,14 +45,9 @@ def test_button_render():
     html = button.render()
 
     expected_html = """
-        <div class="render">
-            <button class="ui button None"
-                    handler="None"
-                    id="button-1"
-                    >
-                OK
-            </button>
-        </div>
+        <button id="button-1"
+                class="ui button render">
+            OK
+        </button>
     """
-
     assert "".join(html.split()) == "".join(expected_html.split())
