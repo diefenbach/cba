@@ -115,7 +115,10 @@ class CBAView(View):
         if hasattr(root, "components"):
             for component in root.components:
                 if component.id in self.request.FILES:
-                    root._components[component.id].value = self.request.FILES.getlist(component.id)
+                    if component.multiple:
+                        root._components[component.id].value = self.request.FILES.getlist(component.id)
+                    else:
+                        root._components[component.id].value = self.request.FILES.get(component.id)
                 if component.id in self.request.POST:
                     root._components[component.id].value = self.request.POST.get(component.id)
                 # The FileInput component sends ids of images which should be delete. Per

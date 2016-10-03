@@ -15,11 +15,9 @@ function collectComponents() {
         const id = $(this).attr('id');
 
         if ($(this).attr('type') == 'file') {
-            $('input[type=file].component').each(function() {
-                for (const file of $(this)[0].files) {
-                    object.append(id, file);
-                }
-            });
+            for (const file of $(this)[0].files) {
+                object.append(id, file);
+            }
         } else if ($(this).attr('type') == 'checkbox') {
             if ($(this).is(':checked')) {
                 const value = $(this).val();
