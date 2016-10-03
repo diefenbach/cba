@@ -32,11 +32,16 @@
               Delete Files
             </div>
             {% for file in self.files %}
-                <div class="file-input delete-files-wrapper">
-                    <input class="component" type="checkbox" name="delete-{{ self.id }}" value="{{ file.id }}" />
+                <div class="delete-files-wrapper">
+                    <div class="ui checkbox" style="float:left">
+                      <input class="component" type="checkbox" name="delete-{{ self.id }}" value="{{ file.id }}" />
+                    </div>
                     <img src="{{ file.file.url }}" width="64px" />
                 </div>
             {% endfor %}
         </div>
     {% endif %}
+    <script type="text/javascript">
+        $('.ui.checkbox').checkbox();
+    </script>
 </div>

@@ -122,7 +122,7 @@ $(() => {
     });
 
     $('body').on('click', '.file-input img', function(event) {
-        const checkbox = $(this).siblings('input');
+        const checkbox = $(this).siblings('.checkbox').children('input');
         checkbox.prop('checked', !checkbox.prop('checked'));
     });
 });
