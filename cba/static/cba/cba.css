@@ -26,6 +26,18 @@
     padding-bottom: 20px !important;
 }
 
+.margin-bottom-small {
+  margin-bottom: 10px !important;
+}
+
+.margin-bottom-middle {
+  margin-bottom: 20px !important;
+}
+
+.margin-bottom-large {
+  margin-bottom: 30px !important;
+}
+
 .clickable {
     cursor: pointer;
 }

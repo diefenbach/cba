@@ -105,6 +105,12 @@ been returned to the browser.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="cba.base.Component.after_initial_components">
+<code class="descname">after_initial_components</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cba.base.Component.after_initial_components" title="Permalink to this definition">¶</a></dt>
+<dd><p>Can be overriden by sub classes.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="cba.base.Component.clear">
 <code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cba.base.Component.clear" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clears the component. Can be overriden by sub classes to clear
@@ -241,6 +247,18 @@ Returns <code class="docutils literal"><span class="pre">True</span></code> when
 <em class="property">class </em><code class="descclassname">cba.views.</code><code class="descname">CBAView</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.views.CBAView" title="Permalink to this definition">¶</a></dt>
 <dd><p>The default base class.</p>
 <p>All views of an cba application should be inherit from this class.</p>
+<dl class="method">
+<dt id="cba.views.CBAView.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.views.CBAView.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles the starting get request.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cba.views.CBAView.post">
+<code class="descname">post</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.views.CBAView.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles all subsequent ajax calls.</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -257,10 +275,48 @@ Returns <code class="docutils literal"><span class="pre">True</span></code> when
 </dd></dl>
 
 <dl class="class">
+<dt id="cba.components.FileInput">
+<em class="property">class </em><code class="descclassname">cba.components.</code><code class="descname">FileInput</code><span class="sig-paren">(</span><em>id=None</em>, <em>files=None</em>, <em>value=''</em>, <em>label=None</em>, <em>multiple=False</em>, <em>placeholder=None</em>, <em>error=None</em>, <em>icon=None</em>, <em>icon_position='left'</em>, <em>to_delete=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.components.FileInput" title="Permalink to this definition">¶</a></dt>
+<dd><p>An HTML file input.</p>
+<dl class="docutils">
+<dt>error</dt>
+<dd>The current validation error of the text input.</dd>
+<dt>icon</dt>
+<dd>An optional icon of the text input, see <a class="reference external" href="http://semantic-ui.com/elements/icon.html">http://semantic-ui.com/elements/icon.html</a>
+for more.</dd>
+<dt>icon_position</dt>
+<dd>The position of the icon (one of <code class="docutils literal"><span class="pre">left</span></code> or <code class="docutils literal"><span class="pre">right</span></code>).</dd>
+<dt>label</dt>
+<dd>An optional label of the text input.</dd>
+<dt>multiple</dt>
+<dd>If true multiple files can be uploaded at once.</dd>
+<dt>placeholder</dt>
+<dd>The optional placeholder of the text input. If given it is
+displayed within the input field.</dd>
+<dt>to_delete</dt>
+<dd>The file ids which are marked as to be deleted.</dd>
+<dt>value</dt>
+<dd>The current value of the text input.</dd>
+</dl>
+<dl class="method">
+<dt id="cba.components.FileInput.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cba.components.FileInput.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the value and error messages to empty strings.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="cba.components.Group">
 <em class="property">class </em><code class="descclassname">cba.components.</code><code class="descname">Group</code><span class="sig-paren">(</span><em>id=None</em>, <em>attributes=None</em>, <em>css_class=None</em>, <em>handler=None</em>, <em>initial_components=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.components.Group" title="Permalink to this definition">¶</a></dt>
 <dd><p>A simple group component to arrange compontens together. For instance for
 styling reasons or to easier refresh its sub components.</p>
+<dl class="method">
+<dt id="cba.components.Group.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cba.components.Group.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes all sub components.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -275,7 +331,7 @@ styling reasons or to easier refresh its sub components.</p>
 
 <dl class="class">
 <dt id="cba.components.HTML">
-<em class="property">class </em><code class="descclassname">cba.components.</code><code class="descname">HTML</code><span class="sig-paren">(</span><em>tag='div'</em>, <em>text=''</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.components.HTML" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cba.components.</code><code class="descname">HTML</code><span class="sig-paren">(</span><em>tag='div'</em>, <em>content=''</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#cba.components.HTML" title="Permalink to this definition">¶</a></dt>
 <dd><p>A HTML tag.</p>
 <dl class="docutils">
 <dt>tag</dt>

@@ -19,6 +19,9 @@ Default components
 .. autoclass:: cba.components.Button
     :members:
 
+.. autoclass:: cba.components.FileInput
+    :members:
+
 .. autoclass:: cba.components.Group
     :members:
 

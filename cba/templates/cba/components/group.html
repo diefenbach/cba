@@ -1,10 +1,12 @@
-<!-- Group -->
-<div class="ui render component{% if self.css_class %} {{ self.css_class }}{% endif %}"
-     id="{{ self.id }}"
-    {% for name, value in self.attributes.items %}
-        {{ name }}="{{ value }}"
-    {% endfor %}>
-    {% for component in self.components %}
-        {{ component.render }}
-    {% endfor %}
+<div class="render">
+    <!-- Group -->
+    <div class="ui component{% if self.css_class %} {{ self.css_class }}{% endif %}"
+         id="{{ self.id }}"
+        {% for name, value in self.attributes.items %}
+            {{ name }}="{{ value }}"
+        {% endfor %}>
+        {% for component in self.components %}
+            {{ component.render }}
+        {% endfor %}
+    </div>
 </div>

@@ -26,12 +26,12 @@
             {% endfor %} />
         {% if self.icon %}</div>{% endif %}
 
-    {% if self.files %}
+    {% if self.existing_files %}
         <div class="file-input delete-files">
             <div class="ui sub header" style="padding:20px 0 10px 0">
               Delete Files
             </div>
-            {% for file in self.files %}
+            {% for file in self.existing_files %}
                 <div class="delete-files-wrapper">
                     <div class="ui checkbox" style="float:left">
                       <input class="component" type="checkbox" name="delete-{{ self.id }}" value="{{ file.id }}" />

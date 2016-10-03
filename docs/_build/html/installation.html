@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>&lt;no title&gt; &#8212; CBA 0.1 documentation</title>
+    <title>Installation &#8212; CBA 0.1 documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -39,13 +39,44 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  
+  <div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<ol class="arabic simple">
+<li>Create a virtual environment</li>
+<li>Install Django</li>
+<li>Create a new Django project</li>
+</ol>
+<p>4. Add SESSION_SERIALIZER
+3. Install CBA</p>
+<p>$ pip install <a class="reference external" href="https://github.com/diefenbach/cba/archive/master.zip">https://github.com/diefenbach/cba/archive/master.zip</a></p>
+<ol class="arabic simple" start="4">
+<li>Add CBA to your installed apps</li>
+<li>migrate</li>
+</ol>
+<p>SESSION_SERIALIZER = &#8216;django.contrib.sessions.serializers.PickleSerializer&#8217;</p>
+</div>
+<div class="section" id="example-application">
+<h1>Example Application<a class="headerlink" href="#example-application" title="Permalink to this headline">¶</a></h1>
+<p>1. Install cba-notes
+1. Add settings middleware
+2. Add URL
+3. migrate
+5. create superuser
+4. runserver</p>
+</div>
+
 
           </div>
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Installation</a></li>
+<li><a class="reference internal" href="#example-application">Example Application</a></li>
+</ul>
+<div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>

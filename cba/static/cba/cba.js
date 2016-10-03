@@ -11,7 +11,7 @@ function getUUID() {
 function collectComponents() {
     const object = new FormData();
 
-    $('input.component, textarea.component, select.component').each(function() {
+    $('input.component, textarea.component, select').each(function() {
         const id = $(this).attr('id');
 
         if ($(this).attr('type') == 'file') {
@@ -23,6 +23,10 @@ function collectComponents() {
                 const value = $(this).val();
                 const name = $(this).attr('name');
                 object.append(name, value);
+            }
+        } else if ($(this).is('select')) {
+            for (const value of $(this).val()) {
+                object.append(`${id}[]`, value);
             }
         } else {
             let value = $(this).val();
@@ -74,7 +78,7 @@ function defaultAjaxAction(element, handler) {
     $.ajax({
         url: '',
         type: 'POST',
-        data: data,
+        data,
         processData: false,
         contentType: false,
         success: result => {

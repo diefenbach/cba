@@ -211,7 +211,7 @@ class Component(object):
     def refresh_all(self):
         """Refresh the component and reloads the initial sub components.
         """
-        self._components = OrderedDict()
+        self._components.clear()
         self.init_components()
         self._add_components()
         self._html = ["#{}".format(self.id), self.render()]

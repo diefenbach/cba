@@ -92,7 +92,7 @@ class CBAView(View):
                 self._clear_components_data(component)
 
     def _collect_components_data(self, component):
-        """Collects refreshed html and messages from all components.
+        """Collects refreshed HTML and messages from all components.
         """
         if component.is_root():
             if component._html:
@@ -114,20 +114,25 @@ class CBAView(View):
         """
         if hasattr(root, "components"):
             for component in root.components:
+
                 if component.id in self.request.FILES:
                     if component.multiple:
                         root._components[component.id].value = self.request.FILES.getlist(component.id)
                     else:
                         root._components[component.id].value = self.request.FILES.get(component.id)
+
                 if component.id in self.request.POST:
                     root._components[component.id].value = self.request.POST.get(component.id)
+
                 # The FileInput component sends ids of images which should be delete. Per
                 # convention these are send with the key "delete"-<component.id>.
                 if "delete-{}".format(component.id) in self.request.POST:
                     root._components[component.id].to_delete = self.request.POST.getlist("delete-{}".format(component.id))
+
                 else:
                     # List elements
                     list_id = "{}[]".format(component.id)
                     if list_id in self.request.POST:
                         root._components[component.id].value = self.request.POST.getlist(list_id)
+
                 self._load_data(component)

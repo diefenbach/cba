@@ -15,7 +15,8 @@ Overview
   CBA.
 - All components and their values are accessible during run time.
 - All components can be changed and refreshed separately.
-- The whole application can be build with ``Python`` only.
+- The whole application can be build with ``Python`` only (but don't have to.
+  Own CSS and Javascript can be provided as well).
 - CBA comes with a set of core components, see :ref:`the API documentation
   <default-components-label>` for more.
 - More specific ones can be added easily.
@@ -25,6 +26,8 @@ Overview
 
 Example
 =======
+
+The following is a simplified example.
 
 .. code-block:: Python
 
@@ -62,7 +65,7 @@ Contents
 .. toctree::
    :maxdepth: 2
 
-   overview.rst
+   installation.rst
    api.rst
 
 

@@ -48,6 +48,11 @@ class FileInput(Component):
         error
             The current validation error of the text input.
 
+        existing_files
+            A list of existing files which will be displayed for optional
+            deletion. The file instances must have an ``id`` and an ``url``
+            attribute.
+
         icon
             An optional icon of the text input, see http://semantic-ui.com/elements/icon.html
             for more.
@@ -61,10 +66,6 @@ class FileInput(Component):
         multiple
             If true multiple files can be uploaded at once.
 
-        placeholder
-            The optional placeholder of the text input. If given it is
-            displayed within the input field.
-
         to_delete
             The file ids which are marked as to be deleted.
 
@@ -73,23 +74,26 @@ class FileInput(Component):
     """
     template = "cba/components/file_input.html"
 
-    def __init__(self, id=None, files=None, value="", label=None, multiple=False, placeholder=None, error=None, icon=None, icon_position="left", to_delete=None, *args, **kwargs):
+    def __init__(self, id=None, error=None, existing_files=None, icon=None,
+                 icon_position="left", label=None, multiple=False, to_delete=None,
+                 value="", *args, **kwargs):
         super(FileInput, self).__init__(id, *args, **kwargs)
         self.error = error
-        self.files = files or []
+        self.existing_files = existing_files or []
         self.icon = icon
         self.icon_position = icon_position
         self.label = label
         self.multiple = multiple
-        self.placeholder = placeholder
-        self.value = value
         self.to_delete = to_delete or []
+        self.value = value
 
     def clear(self):
         """Sets the value and error messages to empty strings.
         """
-        self.error = ""
+        self.error = None
         self.value = ""
+        self.to_delete = None
+        self.existing_files = []
 
 
 class Group(Component):
@@ -264,8 +268,8 @@ class Table(Component):
         columns
             A list of strings which represent the header of the table.
 
-        data
-            A list of list which represents the rows and columns of the table.
+        label
+            An option label of the table.
     """
     template = "cba/components/table.html"
 
