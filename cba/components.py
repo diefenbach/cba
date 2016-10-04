@@ -14,6 +14,35 @@ class Button(Component):
         self.value = value
 
 
+class RadioCheckboxGroup(Component):
+    """A group of radio checkboxes.
+
+        label
+            The label of the checkbox
+    """
+    template = "cba/components/radio_checkbox_group.html"
+
+    def __init__(self, label=None, *args, **kwargs):
+        super(RadioCheckboxGroup, self).__init__(*args, **kwargs)
+        self.label = label
+        self.value = None
+
+
+class RadioCheckbox(Component):
+    """A radio checkboxes.
+
+        label
+            The label of the checkbox
+    """
+    template = "cba/components/radio_checkbox.html"
+
+    def __init__(self, checked=False, label=None, name="", value=False, *args, **kwargs):
+        super(RadioCheckbox, self).__init__(*args, **kwargs)
+        self.checked = checked
+        self.label = label
+        self.value = value
+
+
 class Checkbox(Component):
     """A HTML checkbox.
 

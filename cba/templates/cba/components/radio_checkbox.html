@@ -1,20 +1,19 @@
 <div class="field render">
-    <div class="ui{% if self.type %} {{ self.type }}{% endif %} checkbox">
+    <div class="ui radio checkbox">
         {% if self.label %}
             <label>{{ self.label }}</label>
         {% endif %}
         <input id="{{ self.id }}"
                class="component{% if self.css_class %} css_class{% endif %}"
-               type="checkbox"
-               name="{{ self.id }}"
+               type="radio"
+               name="{{ self.parent.id }}"
+               value="{{ self.value }}"
+               {% if self.checked %}checked{% endif %}
                {% for event, handler in self.handler.items %}
                    {{ event }}_handler="{{ handler }}"
                {% endfor %}
                {% for name, value in self.attributes.items %}
                    {{ name }}="{{ value }}"
-               {% endfor %}/>
+               {% endfor %}>
     </div>
-    <script type="text/javascript">
-        $('.ui.checkbox').checkbox();
-    </script>
 </div>

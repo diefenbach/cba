@@ -24,6 +24,12 @@ function collectComponents() {
                 const name = $(this).attr('name');
                 object.append(name, value);
             }
+        } else if ($(this).attr('type') == 'radio') {
+            if ($(this).is(':checked')) {
+                const value = $(this).val();
+                const name = $(this).attr('name');
+                object.append(name, value);
+            }
         } else if ($(this).is('select')) {
             for (const value of $(this).val()) {
                 object.append(`${id}[]`, value);

@@ -17,6 +17,7 @@ CBA
 - Add a checkbox group?
 - Add a radio box group?
 - Add drag'n drop
+- Add table with dataprovider (pagination, lazy load, etc)
 - Clean up / optimize Javascript and CSS
 
 Done
