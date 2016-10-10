@@ -1,4 +1,5 @@
 <div class="render">
+     {% if self.displayed == False %}style="display:none"{% endif %}
     <!-- Group -->
     <div class="ui component{% if self.css_class %} {{ self.css_class }}{% endif %}"
          id="{{ self.id }}"
@@ -6,7 +7,11 @@
             {{ name }}="{{ value }}"
         {% endfor %}>
         {% for component in self.components %}
-            {{ component.render }}
+            {% if self.tag %}
+                <{{self.tag}}>{{ component.render }}</{{self.tag}}>
+            {% else %}
+                {{ component.render }}
+            {% endif %}
         {% endfor %}
     </div>
 </div>

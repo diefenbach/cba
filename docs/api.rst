@@ -67,7 +67,7 @@ Default components
 .. autoclass:: cba.components.TabItem
     :members:
 
-.. autoclass:: cba.components.TextArea
+.. autoclass:: cba.components.Textarea
     :members:
 
 .. autoclass:: cba.components.TextInput

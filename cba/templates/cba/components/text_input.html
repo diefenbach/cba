@@ -23,6 +23,11 @@
             {% for name, value in self.attributes.items %}
                {{ name }}="{{ value }}"
             {% endfor %} />
-        {{ js|safe }}
+        {% if self.javascript %}
+            <script type="text/javascript">
+                {{ self.javascript|safe }}
+            </script>
+        {% endif %}
+
     {% if self.icon %}</div>{% endif %}
 </div>

@@ -1,5 +1,9 @@
 <button id="{{ self.id }}"
-        class="ui button render{% if self.css_class %} {{ self.css_class }}{% endif %}{% for event in self.handler.keys %} {{ event }}{% endfor %}"
+        class="ui button render
+              {% if self.css_class %}{{ self.css_class }}{% endif %}
+              {% for event in self.handler.keys %}{{ event }}{% endfor %}"
+        {% if self.displayed == False %}style="display:none"{% endif %}
+        {% if self.disabled %}disabled{% endif %}
         {% for event, handler in self.handler.items %}
             {{ event }}_handler="{{ handler }}"
         {% endfor %}

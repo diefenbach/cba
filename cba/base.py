@@ -21,6 +21,12 @@ class Component(object):
         css_class
             The css class of the component. A string.
 
+        disabled
+            If ``True`` the component is disabled. Default is ``False``
+
+        display
+            if ``False`` the component is hidden. Default is False.
+
         id
             The unique id of the component. This must be unique troughout
             the whole application. If the id is not given a UUID4 based
@@ -57,12 +63,19 @@ class Component(object):
     template = None
     remove_after_render = False
 
-    def __init__(self, id=None, attributes=None, css_class=None, handler=None, initial_components=None, *args, **kwargs):
+    def __init__(self, id=None, attributes=None, css_class=None, disabled=False,
+                 displayed=True, draggable=False, droppable=False, handler=None,
+                 initial_components=None, javascript="", *args, **kwargs):
         self.id = id or str(uuid.uuid4())
         self.attributes = attributes or {}
         self.css_class = css_class
+        self.disabled = disabled
+        self.displayed = displayed
+        self.draggable = draggable
+        self.droppable = droppable
         self.handler = handler or {}
         self.initial_components = initial_components or []
+        self.javascript = javascript
 
         self.parent = None
         self._components = OrderedDict()

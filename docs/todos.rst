@@ -14,15 +14,16 @@ CBA
 - Improve Split layout
 - Add an image list component (carousel, lightbox, etc.)
 - Add a radio box component
-- Add a checkbox group?
-- Add a radio box group?
 - Add drag'n drop
 - Add table with dataprovider (pagination, lazy load, etc)
 - Clean up / optimize Javascript and CSS
+- Add global Javascript helper which can be called from handler with arguments
 
 Done
 ----
 - Add a checkbox component
+- Add a checkbox group?
+- Add a radio box group?
 
 Notes
 -----

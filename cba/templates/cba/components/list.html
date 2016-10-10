@@ -1,0 +1,17 @@
+<{{ self.type }}
+    class="render
+    {% if self.disabled %}disabled{% endif %}
+    {% for event in self.handler.keys %} {{ event }}{% endfor %}"
+    {% if self.displayed == False %}style="display:none"{% endif %}
+    {% for event, handler in self.handler.items %}
+        {{ event }}_handler="{{ handler }}"
+    {% endfor %}
+    {% for key, value in self.attributes.items %}
+       {{ key }}="{{ value }}"
+    {% endfor %} />
+    {% for component in self.components %}
+        <li>
+            {{ component.render }}
+        </li>
+    {% endfor %}
+</{{ self.type }}>

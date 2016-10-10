@@ -1,4 +1,5 @@
-<div class="render field">
+<div class="render field"
+    {% if self.displayed == False %}style="display:none"{% endif %}>
     {% if self.label %}
         <div class="ui sub header">{{ self.label }}</div>
     {% endif %}
@@ -7,21 +8,32 @@
         {{ self.error }}
       </div>
     {% endif %}
-    <select class="ui fluid search dropdown component{% if self.css_class %} {{ self.css_class }}{% endif %}"
+    <select class="ui fluid search dropdown component
+                  {% if self.css_class %}{{ self.css_class }}{% endif %}
+                  {% if self.disabled %}disabled{% endif %}
+                  {% for event in self.handler.keys %}{{ event }}{% endfor %}"
             id="{{ self.id }}"
             name="{{ self.id }}"
             {% if self.multiple %}multiple=""{% endif %}
             {% for name, value in self.attributes.items %}
                 {{ name }}="{{ value }}"
+            {% endfor %}
+            {% for event, handler in self.handler.items %}
+                {{ event }}_handler="{{ handler }}"
             {% endfor %}>
             {% for option in self.options %}
-                <option value="{{ option.value }}" {% if option.value in self.value %}selected=""{% endif %}>{{ option.name }}</option>
+                {% if self.multiple %}
+                    <option value="{{ option.value }}" {% if option.value in self.value %}selected=""{% endif %}>{{ option.name }}</option>
+                {% else %}
+                    <option value="{{ option.value }}" {% if option.value == self.value %}selected=""{% endif %}>{{ option.name }}</option>
+                {% endif %}
             {% endfor %}
     </select>
-    {{ js|safe }}
     <script type="text/javascript">
         $('.ui.dropdown').dropdown({
-            "allowAdditions": true,
+            {% if self.allow_additions %}
+                "allowAdditions": true,
+            {% endif %}
         });
     </script>
 </div>

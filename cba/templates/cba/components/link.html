@@ -1,15 +1,18 @@
 <!-- Link Start -->
-<span class="render">
-    <a class="{% if self.css_class %}{{ self.css_class }} {% endif %}{% for event in self.handler.keys %} {{ event }}{% endfor %}"
+<span class="render"
+    {% if self.displayed == False %}style="display:none"{% endif %}>
+    <a class="{% if self.css_class %}{{ self.css_class }}{% endif %}
+              {% for event in self.handler.keys %} {{ event }}{% endfor %}
+              {% if self.disabled %}disabled{% endif %}"
        id="{{ self.id }}"
-       href="."
-        {% for event, handler in self.handler.items %}
-            {{ event }}_handler="{{ handler }}"
-        {% endfor %}
-        {% for name, value in self.attributes.items %}
-           {{ name }}="{{ value }}"
-        {% endfor %}>
+       href="{{ self.href }}"
+       {% if self.target %}{{ self.target }}{% endif %}
+       {% for event, handler in self.handler.items %}
+           {{ event }}_handler="{{ handler }}"
+       {% endfor %}
+       {% for name, value in self.attributes.items %}
+          {{ name }}="{{ value }}"
+       {% endfor %}>
         {{ self.text }}
     </a>
-    {{ js|safe }}
 </span>

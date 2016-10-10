@@ -1,7 +1,14 @@
-<div class="render">
-    <img class="{ self.css_class }}"
+<div class="render"
+    {% if self.displayed == False %}style="display:none"{% endif %}>
+    <img class="{ self.css_class }}
+         {% for event in self.handler.keys %} {{ event }}{% endfor %}
+         {% if self.disabled %}disabled{% endif %}"
          id="{{ self.id }}"
          src="{{ self.src }}"
+         {% for event, handler in self.handler.items %}
+             {{ event }}_handler="{{ handler }}"
+         {% endfor %}
+         {% if self.disabled %}disabled{% endif %}
          {% for key, value in self.attributes.items %}
             {{ key }}="{{ value }}"
          {% endfor %} />

@@ -14,35 +14,6 @@ class Button(Component):
         self.value = value
 
 
-class RadioCheckboxGroup(Component):
-    """A group of radio checkboxes.
-
-        label
-            The label of the checkbox
-    """
-    template = "cba/components/radio_checkbox_group.html"
-
-    def __init__(self, label=None, *args, **kwargs):
-        super(RadioCheckboxGroup, self).__init__(*args, **kwargs)
-        self.label = label
-        self.value = None
-
-
-class RadioCheckbox(Component):
-    """A radio checkboxes.
-
-        label
-            The label of the checkbox
-    """
-    template = "cba/components/radio_checkbox.html"
-
-    def __init__(self, checked=False, label=None, name="", value=False, *args, **kwargs):
-        super(RadioCheckbox, self).__init__(*args, **kwargs)
-        self.checked = checked
-        self.label = label
-        self.value = value
-
-
 class Checkbox(Component):
     """A HTML checkbox.
 
@@ -54,10 +25,25 @@ class Checkbox(Component):
     """
     template = "cba/components/checkbox.html"
 
-    def __init__(self, label=None, type=None, *args, **kwargs):
+    def __init__(self, checked=False, label="", type=None, value="", *args, **kwargs):
         super(Checkbox, self).__init__(*args, **kwargs)
         self.label = label
         self.type = type
+        self.checked = checked
+        self.value = value
+
+
+class CheckboxGroup(Component):
+    """A group of checkboxes.
+
+        label
+            The label of the checkbox
+    """
+    template = "cba/components/checkbox_group.html"
+
+    def __init__(self, label=None, *args, **kwargs):
+        super(CheckboxGroup, self).__init__(*args, **kwargs)
+        self.label = label
         self.value = None
 
 
@@ -148,8 +134,16 @@ class FileInput(Component):
 class Group(Component):
     """A simple group component to arrange compontens together. For instance for
     styling reasons or to easier refresh its sub components.
+
+        tag
+            Optional tag, which is, when given, wrapped around every sub
+            component.
     """
     template = "cba/components/group.html"
+
+    def __init__(self, tag=None, *args, **kwargs):
+        super(Group, self).__init__(*args, **kwargs)
+        self.tag = tag
 
     def clear(self):
         """Deletes all sub components.
@@ -214,12 +208,34 @@ class Link(Component):
 
         text
             The content of the HTML tag.
+
+        href
+            The href of the link.
+
+        target
+            The target of the link.
     """
     template = "cba/components/link.html"
 
-    def __init__(self, text="", *args, **kwargs):
+    def __init__(self, href=".", target=None, text="", *args, **kwargs):
         super(Link, self).__init__(*args, **kwargs)
+        self.href = href
+        self.target = target
         self.text = text
+
+
+class List(Component):
+    """The root container of a pop up menu.
+
+        type
+            The type of the list. One of ``ul`` or ``ol``.
+
+    """
+    template = "cba/components/list.html"
+
+    def __init__(self, type="ul", *args, **kwargs):
+        super(List, self).__init__(*args, **kwargs)
+        self.type = type
 
 
 class Menu(Component):
@@ -278,21 +294,61 @@ class Modal(Component):
         self.close_button = close_button
 
 
+class RadioCheckbox(Component):
+    """A radio checkboxes.
+
+        label
+            The label of the checkbox
+    """
+    template = "cba/components/radio_checkbox.html"
+
+    def __init__(self, checked=False, label="", name="", value="", *args, **kwargs):
+        super(RadioCheckbox, self).__init__(*args, **kwargs)
+        self.checked = checked
+        self.label = label
+        self.value = value
+
+
+class RadioCheckboxGroup(Component):
+    """A group of radio checkboxes.
+
+        label
+            The label of the checkbox
+    """
+    template = "cba/components/radio_checkbox_group.html"
+
+    def __init__(self, label=None, *args, **kwargs):
+        super(RadioCheckboxGroup, self).__init__(*args, **kwargs)
+        self.label = label
+        self.value = None
+
+
 class Select(Component):
     """A HTML Select box.
 
-        label
+    Args:
+        allow_additions (boolean)
+            If true, the user is allowed to add new entries.
+
+        label (string)
             An optional label for the select box.
 
-        options
-            Options which can be selected by the user.
+        multiple (boolean)
+            if true multiple selections are possible.
 
-        The current value (selected values) of the select box.
+        options (list)
+            Options which can be selected.
+
+        value (string or list)
+            The current selected value(s) of the select box. A string  when
+            ``multiple`` is False, otherwise a list. These can be set
+            programmatically or by the browser.
     """
     template = "cba/components/select.html"
 
-    def __init__(self, id, label=None, value=None, options=None, multiple=False, *args, **kwargs):
+    def __init__(self, id=None, allow_additions=False, label=None, multiple=False, options=None, value=None, *args, **kwargs):
         super(Select, self).__init__(id, *args, **kwargs)
+        self.allow_additions = allow_additions
         self.label = label
         self.multiple = multiple
         self.options = options or []
@@ -366,7 +422,7 @@ class TabItem(Component):
         self.title = title
 
 
-class TextArea(Component):
+class Textarea(Component):
     """A HTML Textarea
 
         error
@@ -384,7 +440,7 @@ class TextArea(Component):
     template = "cba/components/textarea.html"
 
     def __init__(self, label=None, value="", error=None, rows=10, *args, **kwargs):
-        super(TextArea, self).__init__(*args, **kwargs)
+        super(Textarea, self).__init__(*args, **kwargs)
         self.error = error
         self.label = label
         self.rows = rows
@@ -422,7 +478,7 @@ class TextInput(Component):
     """
     template = "cba/components/text_input.html"
 
-    def __init__(self, id=None, value="", label=None, placeholder=None, error=None, icon=None, icon_position="left", *args, **kwargs):
+    def __init__(self, id=None, value="", label=None, placeholder=None, error=None, icon=None, icon_position="right", *args, **kwargs):
         super(TextInput, self).__init__(id, *args, **kwargs)
         self.error = error
         self.icon = icon

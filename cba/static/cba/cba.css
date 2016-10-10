@@ -1,3 +1,9 @@
+.disabled {
+   pointer-events: none;
+   cursor: default;
+   opacity: 0.6;
+}
+
 .error {
     padding: 10px 0;
     color: red;
@@ -26,14 +32,36 @@
     padding-bottom: 20px !important;
 }
 
+.mt,
+.mts,
+.margin-top,
+.margin-top-small {
+  margin-top: 10px !important;
+}
+
+.mtl,
+.margin-top-large {
+  margin-top: 30px !important;
+}
+
+.mtm,
+.margin-top-middle {
+  margin-top: 20px !important;
+}
+
+.mb,
+.mbs,
+.margin-bottom,
 .margin-bottom-small {
   margin-bottom: 10px !important;
 }
 
+.mbm,
 .margin-bottom-middle {
   margin-bottom: 20px !important;
 }
 
+.mbl,
 .margin-bottom-large {
   margin-bottom: 30px !important;
 }

@@ -1,7 +1,10 @@
 <!-- FileInput -->
-<div class="render field">
+<div class="render field"
+     {% if self.displayed == False %}style="display:none"{% endif %}>
     {% if self.label %}
-        <div class="ui sub header">{{ self.label }}</div>
+        <div class="ui sub header">
+          {{ self.label }}
+        </div>
     {% endif %}
     {% if self.error %}
       <div class="error">
@@ -14,6 +17,7 @@
         <input class="component{% for event in self.handler.keys %} {{ event }}{% endfor %}"
                id="{{ self.id }}"
                name="{{ self.id }}"
+               {% if self.disabled %}disabled{% endif %}
                {% if self.multiple %}multiple{% endif %}
                type="file"
                value="{{ self.value }}"

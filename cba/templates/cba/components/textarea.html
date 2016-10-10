@@ -1,5 +1,6 @@
-<div class="field render">
-    <!-- TextArea -->
+<div class="field render"
+     {% if self.displayed == False %}style="display:none"{% endif %}>
+    <!-- Textarea -->
     <div class="field">
         {% if self.label %}
             <div class="ui sub header">{{ self.label }}</div>
@@ -9,9 +10,16 @@
             {{ self.error }}
           </div>
         {% endif %}
-        <textarea class="form-control component"
+        <textarea class="form-control component
+                         {% if self.css_class %}{{ self.css_class }}{% endif %}
+                         {% if self.disabled %}disabled{% endif %}
+                         {% for event in self.handler.keys %}{{ event }}{% endfor %}"
+                  {% if self.disabled %}disabled{% endif %}
                   id="{{ self.id }}"
                   rows="{{ self.rows }}"
+                  {% for event, handler in self.handler.items %}
+                      {{ event }}_handler="{{ handler }}"
+                  {% endfor %}
                   {% for name, value in self.attributes.items %}
                       {{ name }}="{{ value }}"
                   {% endfor %}>{{ self.value }}</textarea>

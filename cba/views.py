@@ -49,19 +49,30 @@ class CBAView(View):
         self._clear_components_data(self.root)
         self._load_data(self.root)
 
+        # event_id is always the event triggering component. For DnD this means
+        # event_id is the droppable and source_id is the dragged item. For non
+        # DnD events source_id is None.
         handler = self.request.POST.get("handler")
         event_id = self.request.POST.get("event_id")
+        source_id = self.request.POST.get("source_id")
         component = self.root.get_component(event_id)
 
         logger.debug("Handler: {} / Component: {}".format(handler, component))
 
         # Bubbles up the components to find the handler
+        handler_found = False
         while component:
             if hasattr(component, handler):
                 component.event_id = event_id
+                component.source_id = source_id
                 getattr(component, handler)()
+                handler_found = True
                 break
             component = component.parent
+
+        if handler_found is False:
+            logger.error("Handler {} not found".format(handler))
+            raise AttributeError("Handler {} not found".format(handler))
 
         self._collect_components_data(self.root)
         logger.debug("Refreshed components: {}".format(self._html))
@@ -112,6 +123,7 @@ class CBAView(View):
     def _load_data(self, root):
         """Loads components with values from the browser.
         """
+        logger.debug("load data for {}".format(root))
         if hasattr(root, "components"):
             for component in root.components:
                 if component.id in self.request.POST:

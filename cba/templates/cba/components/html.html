@@ -1,12 +1,14 @@
 <div class="render">
-    <{{self.tag}} class="component{% if self.css_class %} {{ self.css_class}}{% endif %}{% for event in self.handler.keys %} {{ event }}{% endfor %}"
+    {% if self.displayed == False %}style="display:none"{% endif %}
+    <{{self.tag}} class="component{% if self.css_class %} {{ self.css_class}}{% endif %}{% if self.draggable %} draggable{% endif %}{% if self.droppable %} droppable{% endif %} {% for event in self.handler.keys %} {{ event }}{% endfor %}"
          id="{{ self.id }}"
          {% for name, value in self.attributes.items %}
              {{ name }}="{{ value }}"
          {% endfor %}
          {% for event, handler in self.handler.items %}
              {{ event }}_handler="{{ handler }}"
-         {% endfor %}>
+         {% endfor %}
+         {% if self.draggable %}draggable="true"{% endif %}>
             {{ self.content|safe }}
             {% for component in self.components %}
                 {{ component.render }}

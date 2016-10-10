@@ -1,4 +1,5 @@
-<div class="field render">
+<div class="field render"
+    {% if self.displayed == False %}style="display:none"{% endif %}>
     <div class="ui{% if self.type %} {{ self.type }}{% endif %} checkbox">
         {% if self.label %}
             <label>{{ self.label }}</label>
@@ -6,7 +7,10 @@
         <input id="{{ self.id }}"
                class="component{% if self.css_class %} css_class{% endif %}"
                type="checkbox"
-               name="{{ self.id }}"
+               name="{{ self.parent.id }}"
+               value="{{ self.value }}"
+               {% if self.parent.disabled or self.disabled %}disabled{% endif %}
+               {% if self.checked %}checked{% endif %}
                {% for event, handler in self.handler.items %}
                    {{ event }}_handler="{{ handler }}"
                {% endfor %}
@@ -14,7 +18,4 @@
                    {{ name }}="{{ value }}"
                {% endfor %}/>
     </div>
-    <script type="text/javascript">
-        $('.ui.checkbox').checkbox();
-    </script>
 </div>
