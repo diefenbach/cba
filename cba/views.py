@@ -53,9 +53,11 @@ class CBAView(View):
         # event_id is the droppable and source_id is the dragged item. For non
         # DnD events source_id is None.
         handler = self.request.POST.get("handler")
-        event_id = self.request.POST.get("event_id")
+        element_id = self.request.POST.get("element_id")
+        component_id = self.request.POST.get("component_id")
+        component_value = self.request.POST.get("component_value")
         source_id = self.request.POST.get("source_id")
-        component = self.root.get_component(event_id)
+        component = self.root.get_component(component_id)
 
         logger.debug("Handler: {} / Component: {}".format(handler, component))
 
@@ -63,7 +65,9 @@ class CBAView(View):
         handler_found = False
         while component:
             if hasattr(component, handler):
-                component.event_id = event_id
+                component.element_id = element_id
+                component.component_id = component_id
+                component.component_value = component_value
                 component.source_id = source_id
                 getattr(component, handler)()
                 handler_found = True
@@ -142,7 +146,7 @@ class CBAView(View):
 
                 # The FileInput component sends ids of images which should be delete. Per
                 # convention these are send with the key "delete"-<component.id>.
-                if "delete-{}".format(component.id) in self.request.POST:
-                    root._components[component.id].to_delete = self.request.POST.getlist("delete-{}".format(component.id))
+                if "delete-{}[]".format(component.id) in self.request.POST:
+                    root._components[component.id].to_delete = self.request.POST.getlist("delete-{}[]".format(component.id))
 
                 self._load_data(component)

@@ -80,10 +80,11 @@ class ConfirmModal(Component):
 class FileInput(Component):
     """An HTML file input.
 
-        error
+    Args:
+        error (string)
             The current validation error of the text input.
 
-        existing_files
+        existing_files (list of File instances)
             A list of existing files which will be displayed for optional
             deletion. The file instances must have an ``id`` and an ``url``
             attribute.
@@ -105,7 +106,8 @@ class FileInput(Component):
             The file ids which are marked as to be deleted.
 
         value
-            The current value of the text input.
+            The current selected value(s) of the select box. A string  when
+            ``multiple`` is False, otherwise a list.
     """
     template = "cba/components/file_input.html"
 
@@ -370,7 +372,7 @@ class Select(Component):
 class Table(Component):
     """A HTML table
 
-        columns
+        headers
             A list of strings which represent the header of the table.
 
         label
@@ -378,15 +380,67 @@ class Table(Component):
     """
     template = "cba/components/table.html"
 
-    def __init__(self, columns, label=None, selected=None, *args, **kwargs):
-        super(Table, self).__init__(*args, **kwargs)
-        self.columns = columns
+    def __init__(self, headers, pagination=10, page=1, label=None, selected=None, *args, **kwargs):
+        self.headers = headers
         self.label = label
+        self.page = page
+        self.pagination = pagination
+        super(Table, self).__init__(*args, **kwargs)
+
+    def after_initial_components(self):
+        range = self.get_range(1)
+        self.load_data(range["start"], range["end"])
+
+    def load_data(self, start, end):
+        self.clear()
+        for row in self.get_data(start=start, end=end):
+            table_row = TableRow()
+            for column in row:
+                if isinstance(column, Component):
+                    table_column = TableColumn(initial_components=[column])
+                else:
+                    table_column = TableColumn(content=column)
+                table_row.add_component(table_column)
+
+            self.add_component(table_row)
+
+    def has_pagination(self):
+        return (self.get_count() / self.pagination) > 1
+
+    def set_page(self, page):
+        self.page = page
+        range = self.get_range(page)
+        self.load_data(range["start"], range["end"])
+        self.refresh()
 
     def clear(self):
         """Deletes all rows of the table.
         """
         self._components.clear()
+
+    def get_pages_range(self):
+        return range(1, self.get_count() / self.pagination)
+
+    def get_range(self, page):
+        start = self.pagination * (page-1)
+        end = self.pagination * page + 1
+        return {"start": start, "end": end}
+
+    def has_previous(self):
+        return self.page > 1
+
+    def has_next(self):
+        return self.page < ((self.get_count() / self.pagination) - 1)
+
+    def handle_pagination(self):
+        if self.component_value == "next":
+            page = self.page + 1
+        elif self.component_value == "previous":
+            page = self.page - 1
+        else:
+            page = int(self.component_value)
+
+        self.set_page(page)
 
 
 class TableRow(Component):
@@ -399,6 +453,10 @@ class TableColumn(Component):
     """A table column.
     """
     template = "cba/components/table_column.html"
+
+    def __init__(self, content="", *args, **kwargs):
+        super(TableColumn, self).__init__(*args, **kwargs)
+        self.content = content
 
 
 class Tab(Component):

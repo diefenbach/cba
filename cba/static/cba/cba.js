@@ -81,8 +81,13 @@ const CBA = {
             data.append('source_id', event.originalEvent.dataTransfer.getData('text'));
         } catch (e) {}
 
+        const elementId = element.attr('id');
+        const componentId = element.attr('cid') || elementId;
+        const componentValue = element.attr('component-value') || componentId;
         data.append('handler', handler);
-        data.append('event_id', element.attr('id'));
+        data.append('element_id', elementId);
+        data.append('component_id', componentId);
+        data.append('component_value', componentValue);
         data.append('csrfmiddlewaretoken', $('input[name=csrfmiddlewaretoken]').attr('value'));
 
         if (CBA.DEBUG) {

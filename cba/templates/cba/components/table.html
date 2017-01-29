@@ -2,6 +2,7 @@
     {% if self.label %}
         <div class="ui sub header">{{ self.label }}</div>
     {% endif %}
+
     <table class="ui table"
            id="{{ self.id }}"
            {% for name, value in self.attributes.items %}
@@ -9,9 +10,9 @@
            {% endfor %} >
         <thead>
             <tr>
-                {% for column in self.columns %}
+                {% for header in self.headers %}
                     <th>
-                        {{ column }}
+                        {{ header }}
                     </th>
                 {% endfor %}
             </tr>
@@ -23,5 +24,36 @@
                 {% endfor %}
             </tbody>
         {% endif %}
-    </table>
+        {% if self.has_pagination %}
+            <tfoot>
+                <tr>
+                    <th colspan="{{ self.headers|length }}">
+                        <div class="ui right floated pagination menu">
+                            {% if self.has_previous %}
+                                <a cid="{{ self.id }}" component-value="previous" class="icon item click" click_handler="server:handle_pagination">
+                                    <i class="left chevron icon"></i>
+                                </a>
+                            {% else %}
+                                <a cid="{{ self.id }}" class="icon item disabled">
+                                    <i class="left chevron icon"></i>
+                                </a>
+                            {% endif %}
+                            {% for page in self.get_pages_range %}
+                                <a cid="{{ self.id }}" component-value="{{ page }}" class="item click {% if page == self.page %}active{% endif %}" click_handler="server:handle_pagination">{{ page }}</a>
+                            {% endfor %}
+                            {% if self.has_next %}
+                                <a cid="{{ self.id }}" component-value="next" class="icon item click" click_handler="server:handle_pagination">
+                                    <i class="right chevron icon"></i>
+                                </a>
+                            {% else %}
+                                <a cid="{{ self.id }}" class="icon item disabled">
+                                    <i class="right chevron icon"></i>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </th>
+                </tr>
+            </tfoot>
+        {% endif %}
+        </table>
 </div>

@@ -6,6 +6,7 @@
     {% for name, value in self.attributes.items %}
         {{ name }}="{{ value }}"
     {% endfor %}>
+    {{ self.content|safe }}
     {% for component in self.components %}
         {{ component.render }}
     {% endfor %}
