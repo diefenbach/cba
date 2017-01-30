@@ -108,7 +108,7 @@ const CBA = {
     },
 
     defaultJSAction: (element, event, handler) => {
-        const fn = CBA[handler];
+        const fn = window[handler];
         fn(element);
     },
 
