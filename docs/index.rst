@@ -65,6 +65,7 @@ Contents
    :maxdepth: 2
 
    installation.rst
+   misc.rst
    todos.rst
    api.rst
 
