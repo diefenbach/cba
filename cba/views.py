@@ -49,9 +49,9 @@ class CBAView(View):
         self._clear_components_data(self.root)
         self._load_data(self.root)
 
-        # event_id is always the event triggering component. For DnD this means
-        # event_id is the droppable and source_id is the dragged item. For non
-        # DnD events source_id is None.
+        # component_id is always the event triggering component. For DnD this
+        # means component_id is the droppable and source_id is the dragged
+        # item. For non DnD events source_id is None.
         handler = self.request.POST.get("handler")
         element_id = self.request.POST.get("element_id")
         component_id = self.request.POST.get("component_id")
