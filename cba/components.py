@@ -1,3 +1,4 @@
+import sys
 from . base import Component
 
 
@@ -52,9 +53,9 @@ class ConfirmModal(Component):
        dialog is answered with ``yes`` the handler method is called via an ajax
        request.
 
-        event_id
-            The event_id, which is passed to the backend, when the dialog has
-            been answered with yes.
+        component_value
+            Value which is passed to the backend, when the dialog has been
+            answered with yes.
 
         handler
             The method, which is called, when the dialog has been answered with
@@ -67,11 +68,11 @@ class ConfirmModal(Component):
             The text of the dialog.
     """
     template = "cba/components/confirm_modal.html"
-    remove_after_render = True
+    # remove_after_render = True
 
-    def __init__(self, event_id, handler, header=None, text=None, *args, **kwargs):
+    def __init__(self, component_value, handler, header=None, text=None, *args, **kwargs):
         super(ConfirmModal, self).__init__(*args, **kwargs)
-        self.event_id = event_id
+        self.component_value = component_value
         self.handler = handler
         self.header = header
         self.text = text
@@ -369,6 +370,23 @@ class Select(Component):
         self.value = None
 
 
+class TableDataProvider(object):
+    def __init__(self):
+        self.data = []
+
+    def get_headers(self):
+        return None
+
+    def get_rows(self, start, end):
+        return self.data[start:end]
+
+    def total_rows(self):
+        return len(self.data)
+
+    def get_column_definitions(self):
+        return None
+
+
 class Table(Component):
     """A HTML table
 
@@ -377,37 +395,87 @@ class Table(Component):
 
         label
             An option label of the table.
+
+        pagination
+            The amount of rows per page. If not given the Table is not paginated.
+
+        page
+            The current page of the table
+
+        data_provider
+            The data provider which provides the rows and columns of the table
     """
     template = "cba/components/table.html"
 
-    def __init__(self, headers, pagination=10, page=1, label=None, selected=None, *args, **kwargs):
-        self.headers = headers
+    def __init__(self, headers=None, pagination=None, page=1, label=None, data_provider=None, *args, **kwargs):
         self.label = label
         self.page = page
         self.pagination = pagination
+        self.data_provider = data_provider
+
+        if headers:
+            self.headers = headers
+        else:
+            self.headers = self.data_provider.get_headers()
+
         super(Table, self).__init__(*args, **kwargs)
 
-    def after_initial_components(self):
-        range = self.get_range(1)
-        self.load_data(range["start"], range["end"])
+    def total_rows(self):
+        return self.data_provider.total_rows()
 
-    def load_data(self, start, end):
+    def load_data(self, start=None, end=None):
+        definitions = self.data_provider.get_column_definitions()
+
         self.clear()
-        for row in self.get_data(start=start, end=end):
-            table_row = TableRow()
-            for column in row:
+
+        if start is None and end is None:
+            range = self.get_range(page=1)
+            start = range["start"]
+            end = range["end"]
+
+        for row in self.data_provider.get_rows(start, end):
+            table_row = TableRow(
+                id=row.get("id"),
+                component_value=row.get("component_value"),
+                css_class=row.get("css_class"),
+                selected=row.get("selected"),
+                handler={"click": "server:handle_show_note"},
+            )
+
+            # A TableColumn can have components or simple text.
+            for i, column in enumerate(row["data"]):
                 if isinstance(column, Component):
                     table_column = TableColumn(initial_components=[column])
                 else:
-                    table_column = TableColumn(content=column)
+                    try:
+                        definition = definitions[i]
+                    except (IndexError, TypeError):
+                        definition = None
+
+                    if not definition:
+                        table_column = TableColumn(content=column)
+                    else:
+                        table_column = TableColumn(
+                            initial_components=[definition(
+                                value=column
+                            )]
+                        )
+
                 table_row.add_component(table_column)
 
             self.add_component(table_row)
 
     def has_pagination(self):
-        return (self.get_count() / self.pagination) > 1
+        """Returns True if the table is paginated
+        """
+        if self.pagination:
+            return (self.total_rows() / self.pagination) > 1
+        else:
+            return None
 
     def set_page(self, page):
+        """Sets the current page of the table
+        """
         self.page = page
         range = self.get_range(page)
         self.load_data(range["start"], range["end"])
@@ -419,20 +487,36 @@ class Table(Component):
         self._components.clear()
 
     def get_pages_range(self):
-        return range(1, self.get_count() / self.pagination)
+        """Returns the range of pages which are displayed for pagination.
+        """
+        return range(1, (self.total_rows() / self.pagination) + 1)
 
     def get_range(self, page):
-        start = self.pagination * (page-1)
-        end = self.pagination * page + 1
+        """Returns the range of rows which should be displayed
+        """
+        if self.has_pagination():
+            start = self.pagination * (page - 1)
+            end = self.pagination * page
+        else:
+            start = 0
+            end = sys.maxint
+
         return {"start": start, "end": end}
 
     def has_previous(self):
+        """Returns True if there is a previous page.
+        """
         return self.page > 1
 
     def has_next(self):
-        return self.page < ((self.get_count() / self.pagination) - 1)
+        """Returns True if there is a next page.
+        """
+        return self.page < ((self.total_rows() / self.pagination) - 1)
 
     def handle_pagination(self):
+        """Handles the clicks for pagination.
+        """
+
         if self.component_value == "next":
             page = self.page + 1
         elif self.component_value == "previous":
@@ -447,6 +531,10 @@ class TableRow(Component):
     """A table row.
     """
     template = "cba/components/table_row.html"
+
+    def __init__(self, selected=False, *args, **kwargs):
+        super(TableRow, self).__init__(*args, **kwargs)
+        self.selected = selected
 
 
 class TableColumn(Component):

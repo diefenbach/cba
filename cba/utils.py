@@ -1,6 +1,6 @@
 import datetime
 import json
-from django.template.loader import render_to_string
+from cba import get_request
 from django.utils.encoding import force_unicode
 from django.utils.functional import Promise
 
@@ -22,5 +22,32 @@ def time_it(func, logger, log_message, func_args=None):
         result = func()
 
     end = datetime.datetime.now()
-    logger.debug("{}: {}".format(log_message, end-start))
+    logger.debug("{}: {}".format(log_message, end - start))
     return result
+
+
+def get_from_session(key, default=None):
+    """Gets a value from the session.
+
+        key
+            The key under which the value has been saved. When the key
+            doesn't exist the method returns ``default``.
+
+        default
+            The value the method returns if key is not existing.
+    """
+
+    request = get_request()
+    return request.session.get("cba", {}).get(key, default)
+
+
+def set_to_session(key, value):
+    """Saves a value to the session.
+
+        key
+            The key under which the value is saved.
+        value
+            The value to be saved.
+    """
+    request = get_request()
+    request.session.setdefault("cba", {})[key] = value

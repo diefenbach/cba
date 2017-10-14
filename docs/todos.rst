@@ -9,13 +9,13 @@ CBA
 - Add continous integration
 - Use Python 3
 - Implement history (back button)
-- Implement escape button for search and edit form
 - Adapt FileInput for single files
 - Improve Split layout
 - Add an image list component (carousel, lightbox, etc.)
 - Add table with dataprovider (pagination, lazy load, etc)
 - Clean up / optimize Javascript and CSS
 - Add global Javascript helper which can be called from handler with arguments
+- Implement confirm modal with DefaultAjax
 
 Done
 ----
@@ -29,3 +29,4 @@ Notes
 -----
 
 - Add german translation
+- Implement escape button for search and edit form

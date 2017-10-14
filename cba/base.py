@@ -1,11 +1,17 @@
+import json
 import logging
 import uuid
 from collections import OrderedDict
 
 from django.template.loader import render_to_string
 
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.views.generic import View
+
 from cba import get_request
 
+from . utils import LazyEncoder
 
 logger = logging.getLogger(__name__)
 
@@ -63,10 +69,12 @@ class Component(object):
     template = None
     remove_after_render = False
 
-    def __init__(self, id=None, attributes=None, css_class=None, disabled=False,
-                 displayed=True, draggable=False, droppable=False, handler=None,
-                 initial_components=None, javascript="", *args, **kwargs):
+    def __init__(self, id=None, component_value=None, attributes=None,
+                 css_class=None, disabled=False, displayed=True, draggable=False,
+                 droppable=False, handler=None, initial_components=None,
+                 javascript="", *args, **kwargs):
         self.id = id or str(uuid.uuid4())
+        self.component_value = component_value
         self.attributes = attributes or {}
         self.css_class = css_class
         self.disabled = disabled
@@ -78,8 +86,15 @@ class Component(object):
         self.javascript = javascript
 
         self.parent = None
+
+        # Internal dictonary to hold the sub components of the component.
         self._components = OrderedDict()
+
+        # Internal attribute to collect html of refreshed.
         self._html = None
+
+        # Internal attribute to collect messages which should be displayed to
+        # the user.
         self._messages = []
 
         if initial_components:
@@ -112,7 +127,7 @@ class Component(object):
         })
 
     def after_initial_components(self):
-        """Can be overriden by sub classes.
+        """Hook which can be overriden by sub classes.
         """
         pass
 
@@ -163,19 +178,6 @@ class Component(object):
         # In case nothing has been found we try the parents also.
         if with_root:
             return self.get_root().get_component(id, with_root=False)
-
-    def get_from_session(self, key, default=None):
-        """Gets a value from the session.
-
-            key
-                The key under which the value has been saved. When the key
-                doesn't exist the method returns ``default``.
-
-            default
-                The value the method returns if key is not existing.
-        """
-        request = self.get_request()
-        return request.session.get("cba", {}).get(key, default)
 
     def get_root(self):
         """Returns the root component.
@@ -270,17 +272,6 @@ class Component(object):
         else:
             return ""
 
-    def set_to_session(self, key, value):
-        """Saves a value to the session.
-
-            key
-                The key under which the value is saved.
-            value
-                The value to be saved.
-        """
-        request = self.get_request()
-        request.session.setdefault("cba", {})[key] = value
-
     def _add_components(self):
         """Adds initial components into the default components structure.
         """
@@ -293,3 +284,147 @@ class Component(object):
 
         if self.initial_components:
             self.initial_components = []
+
+
+class CBAView(View):
+    """The default base class.
+
+    All views of an cba application should be inherit from this class.
+    """
+    template = "cba/main.html"
+
+    def __init__(self, **kwargs):
+        super(CBAView, self).__init__(**kwargs)
+        self._html = []
+        self._messages = []
+
+    def get(self, *args, **kwargs):
+        """Handles the starting get request.
+        """
+        # Remove any CBA related stuff from session.
+        try:
+            del self.request.session["cba"]
+        except KeyError:
+            pass
+
+        self.root = self.root(id="root")
+        content = self.root.render()
+        self.request.session["root"] = self.root
+
+        return render(self.request, self.template, {
+            "content": content,
+        })
+
+    def post(self, *args, **kwargs):
+        """Handles all subsequent ajax calls.
+        """
+        self.root = self.request.session.get("root")
+
+        self._clear_components_data(self.root)
+        self._load_data(self.root)
+
+        # component_id is always the event triggering component. For DnD this
+        # means component_id is the droppable and source_id is the dragged
+        # item. For non DnD events source_id is None.
+        handler = self.request.POST.get("handler")
+        element_id = self.request.POST.get("element_id")
+        component_id = self.request.POST.get("component_id")
+        component_value = self.request.POST.get("component_value")
+        source_id = self.request.POST.get("source_id")
+        component = self.root.get_component(component_id)
+
+        logger.debug("Handler: {} / Component: {}".format(handler, component))
+
+        # Bubbles up the components to find the handler
+        handler_found = False
+        while component:
+            if hasattr(component, handler):
+                component.element_id = element_id
+                component.component_id = component_id
+                component.component_value = component_value
+                component.source_id = source_id
+                getattr(component, handler)()
+                handler_found = True
+                break
+            component = component.parent
+
+        if handler_found is False:
+            logger.error("Handler {} not found".format(handler))
+            raise AttributeError("Handler {} not found".format(handler))
+
+        self._collect_components_data(self.root)
+        logger.debug("Refreshed components: {}".format(self._html))
+        logger.debug("Collected messages: {}".format(self._messages))
+
+        self.request.session["root"] = self.root
+
+        return HttpResponse(
+            json.dumps(
+                {
+                    "html": self._html,
+                    "messages": self._messages,
+                },
+                cls=LazyEncoder
+            ),
+            content_type='application/json'
+        )
+
+    def _clear_components_data(self, root):
+        """Clears messsage and html of all components.
+        """
+        root._html = []
+        root._messages = []
+        if hasattr(root, "components"):
+            for component in root.components:
+                component._html = ""
+                component._messages = []
+                self._clear_components_data(component)
+
+    def _collect_components_data(self, component):
+        """Collects refreshed HTML and messages from all components.
+        """
+        if component.is_root():
+            if component._html:
+                self._html.append(component._html)
+
+            if component._messages:
+                self._messages.extend(component._messages)
+
+        if hasattr(component, "components"):
+            for component in component.components:
+                if component._html:
+                    self._html.append(component._html)
+                if component._messages:
+                    self._messages.extend(component._messages)
+                self._collect_components_data(component)
+
+    def _load_data(self, root):
+        """Loads components with values from the browser.
+        """
+        logger.debug("load data for {}".format(root))
+        if hasattr(root, "components"):
+            for component in root.components:
+                if component.id in self.request.POST:
+                    root._components[component.id].value = self.request.POST.get(component.id)
+                else:
+                    # List elements
+                    list_id = "{}[]".format(component.id)
+                    if list_id in self.request.POST:
+                        root._components[component.id].value = self.request.POST.getlist(list_id)
+                    else:
+                        # if the component not within the request at the value
+                        # is deleted
+                        root._components[component.id].value = ""
+
+                if component.id in self.request.FILES:
+                    if component.multiple:
+                        root._components[component.id].value = self.request.FILES.getlist(component.id)
+                    else:
+                        root._components[component.id].value = self.request.FILES.get(component.id)
+
+                # The FileInput component sends ids of images which should be delete. Per
+                # convention these are send with the key "delete"-<component.id>.
+                if "delete-{}[]".format(component.id) in self.request.POST:
+                    root._components[component.id].to_delete = self.request.POST.getlist("delete-{}[]".format(component.id))
+
+                self._load_data(component)

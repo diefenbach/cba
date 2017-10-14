@@ -8,15 +8,17 @@
            {% for name, value in self.attributes.items %}
                {{ name }}="{{ value }}"
            {% endfor %} >
-        <thead>
-            <tr>
-                {% for header in self.headers %}
-                    <th>
-                        {{ header }}
-                    </th>
-                {% endfor %}
-            </tr>
-        </thead>
+        {% if self.headers %}
+            <thead>
+                <tr>
+                    {% for header in self.headers %}
+                        <th>
+                            {{ header }}
+                        </th>
+                    {% endfor %}
+                </tr>
+            </thead>
+        {% endif %}
         {% if self.components %}
             <tbody>
                 {% for component in self.components %}
@@ -55,5 +57,5 @@
                 </tr>
             </tfoot>
         {% endif %}
-        </table>
+    </table>
 </div>

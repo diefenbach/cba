@@ -24,20 +24,25 @@
     </div>
     <script type="text/javascript">
       $(function() {
+        var data = {};
         $('.ui.small.modal')
         .modal({
           onApprove: function() {
-            var data = {};
-            data.handler = "{{ self.handler }}";
-            data.csrfmiddlewaretoken = $('input[name=csrfmiddlewaretoken]').attr('value');
-            data.event_id = "{{ self.event_id }}";
-            $.post('', data, result => {
-                replaceHTML(result.html);
-                addMessages(result.messages);
-            });
+            data.component_value = "{{ self.component_value }}";
+          },
+          onDeny: function() {
+            data.component_value = null;
           },
           onHidden: function() {
+            // TODO: Use defaultAjaxAction
             $('.ui.small.modal').remove();
+            data.handler = "{{ self.handler }}";
+            data.csrfmiddlewaretoken = $('input[name=csrfmiddlewaretoken]').attr('value');
+            data.component_id = "{{ self.id }}";
+            $.post('', data, result => {
+                CBA.replaceHTML(result.html);
+                CBA.addMessages(result.messages);
+            });
           }
         })
         .modal('show');

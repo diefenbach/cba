@@ -83,7 +83,7 @@ const CBA = {
 
         const elementId = element.attr('id');
         const componentId = element.attr('cid') || elementId;
-        const componentValue = element.attr('component-value') || componentId;
+        const componentValue = element.attr('component_value') || componentId;
         data.append('handler', handler);
         data.append('element_id', elementId);
         data.append('component_id', componentId);

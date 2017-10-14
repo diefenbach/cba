@@ -1,5 +1,6 @@
 <tr id="{{ self.id }}"
-    class="component render{% if self.css_class %} {{ self.css_class}}{% endif %}{% for event in self.handler.keys %} {{ event }}{% endfor %}"
+    class="component render{% if self.css_class %} {{ self.css_class}}{% endif %}{% for event in self.handler.keys %} {{ event }}{% endfor %} {% if self.selected %} selected{% endif %}"
+    {% if self.component_value %}component_value={{ self.component_value }}{% endif %}
     {% for name, value in self.attributes.items %}
         {{ name }}="{{ value }}"
     {% endfor %}
