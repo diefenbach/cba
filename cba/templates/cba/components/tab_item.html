@@ -10,6 +10,11 @@
         {% endfor %}
     {% if self.is_grid %}</div>{% endif %}
     <script type="text/javascript">
-        $('.menu .item').tab();
+        {# Using the onload callback from semantic to fake a normal handler call #}
+        $('.menu .item').tab({
+            onLoad: function(element) {
+                CBA.handleEvent($(`#${element}`), {type: "load"});
+            }
+        });
     </script>
 </div>
