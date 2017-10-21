@@ -51,3 +51,9 @@ def set_to_session(key, value):
     """
     request = get_request()
     request.session.setdefault("cba", {})[key] = value
+
+
+def display_components(root):
+    for component in root.components:
+        print component
+        display_components(component)

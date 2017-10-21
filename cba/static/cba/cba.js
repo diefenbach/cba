@@ -111,7 +111,7 @@ const CBA = {
             processData: false,
             contentType: false,
             success: result => {
-                // history.pushState(state, null, `#${state}`);
+                history.pushState(state, null, `#${state}`);
                 CBA.replaceHTML(result.html);
                 CBA.addMessages(result.messages);
             },

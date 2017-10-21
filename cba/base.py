@@ -356,12 +356,9 @@ class CBAView(View):
             self.root.refresh()
             self._collect_components_data(self.root)
         else:
-            new_state = "0"
-            # new_state = str(self.request.POST.get("state"))
-            # state = str(int(new_state) - 1)
-            # self.root = copy.deepcopy(self.request.session["root"][state])
-
-            self.root = self.request.session["root"]["0"]
+            new_state = str(self.request.POST.get("state"))
+            state = str(int(new_state) - 1)
+            self.root = copy.deepcopy(self.request.session["root"][state])
 
             self._clear_components_data(self.root)
             self._load_data(self.root)
@@ -379,7 +376,7 @@ class CBAView(View):
             component = self.root.get_component(component_id)
 
             logger.debug("Handler: {} / Component: {}".format(handler, component))
-            import pdb; pdb.set_trace()
+
             # Bubbles up the components to find the handler
             handler_found = False
             while component:
