@@ -143,9 +143,9 @@ const CBA = {
                 if (!$.isArray(keys)) {
                     keys = [keys];
                 }
-                if ($.inArray(event.keyCode, keys)) {
+                if ($.inArray(event.keyCode, keys) === -1) {
                     if (CBA.DEBUG) {
-                        console.log(`${event.keyCode} is not ${handler[2]}`);
+                        console.log(`${event.keyCode} is not in ${handler[2]}`);
                     }
                     return false;
                 }

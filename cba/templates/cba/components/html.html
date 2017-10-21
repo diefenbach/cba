@@ -1,6 +1,7 @@
+<!-- HTML -->
 <div class="render">
     {% if self.displayed == False %}style="display:none"{% endif %}
-    <{{self.tag}} class="component{% if self.css_class %} {{ self.css_class}}{% endif %}{% if self.draggable %} draggable{% endif %}{% if self.droppable %} droppable{% endif %} {% for event in self.handler.keys %} {{ event }}{% endfor %}"
+    <{{self.tag}} class="component{% if self.css_class %} {{ self.css_class}}{% endif %}{% if self.draggable %} draggable{% endif %}{% if self.droppable %} droppable{% endif %}{% for event in self.handler.keys %} {{ event }}{% endfor %}"
                   id="{{ self.id }}"
         {% for name, value in self.attributes.items %}
             {{ name }}="{{ value }}"

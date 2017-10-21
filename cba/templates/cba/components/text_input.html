@@ -34,3 +34,12 @@
         {{ self.javascript|safe }}
     </script>
 {% endif %}
+
+<script type="text/javascript">
+    {% if self.focus %}
+        $("#{{self.id}}").select();
+    {% endif %}
+    {% if self.select_text %}
+        $("#{{self.id}}").select();
+    {% endif %}
+</script>

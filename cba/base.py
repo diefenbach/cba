@@ -50,6 +50,10 @@ class Component(object):
             if ``True`` the other components can be dropped to the component.
             Defaults to ``False``.
 
+        focus
+            if ``True`` the component get focus within the browser. Last
+            component wins. Defaults to ``False``.
+
         id
             The unique id of the component. This must be unique troughout
             the whole application. If the id is not given a UUID4 based
@@ -96,7 +100,7 @@ class Component(object):
     def __init__(self, id=None, component_value=None, attributes=None,
                  css_class=None, disabled=False, displayed=True, draggable=False,
                  droppable=False, handler=None, initial_components=None, cols=None,
-                 is_grid=False, javascript="", *args, **kwargs):
+                 is_grid=False, javascript="", focus=False, *args, **kwargs):
         self.id = id or str(uuid.uuid4())
         self.component_value = component_value
         self.attributes = attributes or {}
@@ -110,6 +114,7 @@ class Component(object):
         self.javascript = javascript
         self.cols = cols
         self.is_grid = is_grid
+        self.focus = focus
 
         self.parent = None
 

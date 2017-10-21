@@ -10,7 +10,8 @@
         {% endfor %}
     {% if self.is_grid %}</div>{% endif %}
     <script type="text/javascript">
-        {# Using the onload callback from semantic to fake a normal handler call #}
+        {# Using the onLoad callback from semantic to fake a normal handler call
+           when a tab has been made active #}
         $('.menu .item').tab({
             onLoad: function(element) {
                 CBA.handleEvent($(`#${element}`), {type: "load"});

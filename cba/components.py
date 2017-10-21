@@ -633,7 +633,9 @@ class TextInput(Component):
     """
     template = "cba/components/text_input.html"
 
-    def __init__(self, id=None, value="", label=None, placeholder=None, error=None, icon=None, icon_position="right", *args, **kwargs):
+    def __init__(self, id=None, value="", label=None, placeholder=None,
+                 error=None, icon=None, icon_position="right", select_text=False,
+                 *args, **kwargs):
         super(TextInput, self).__init__(id, *args, **kwargs)
         self.error = error
         self.icon = icon
@@ -641,6 +643,7 @@ class TextInput(Component):
         self.label = label
         self.placeholder = placeholder
         self.value = value
+        self.select_text = select_text
 
     def clear(self):
         """Sets the value and error messages to empty strings.
