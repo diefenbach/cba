@@ -75,7 +75,7 @@ const CBA = {
         }
     },
 
-    defaultAjaxAction: (element, event, handler) => {
+    defaultAjaxAction: (element, event, handler, createState) => {
         const data = CBA.collectComponents();
         try {
             data.append('source_id', event.originalEvent.dataTransfer.getData('text'));
@@ -103,6 +103,7 @@ const CBA = {
         }
 
         data.append('state', state);
+        data.append('create_state', createState)
 
         $.ajax({
             url: '',
@@ -111,7 +112,9 @@ const CBA = {
             processData: false,
             contentType: false,
             success: result => {
-                history.pushState(state, null, `#${state}`);
+                if (createState) {
+                    history.pushState(state, null, `#${state}`);
+                }
                 CBA.replaceHTML(result.html);
                 CBA.addMessages(result.messages);
             },
@@ -125,7 +128,14 @@ const CBA = {
 
     handleEvent: (element, event) => {
         const handlerString = element.attr(`${event.type}_handler`);
-        const handler = handlerString.split(':');
+        const handlerState = handlerString.split('|');
+
+        let createState = false;
+        if (handlerState[1]) {
+            createState = true;
+        }
+
+        const handler = handlerState[0].split(':');
 
         if (event.type === 'keyup') {
             if (handler[2]) {
@@ -143,9 +153,9 @@ const CBA = {
         }
 
         if (handler[0] === 'server') {
-            CBA.defaultAjaxAction(element, event, handler[1]);
+            CBA.defaultAjaxAction(element, event, handler[1], createState);
         } else if (handler[0] === 'client') {
-            CBA.defaultJSAction(element, event, handler[1]);
+            CBA.defaultJSAction(element, event, handler[1], createState);
         }
 
         return true;

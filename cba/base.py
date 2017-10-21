@@ -340,6 +340,7 @@ class CBAView(View):
         if "root" not in self.request.session:
             self.request.session["root"] = {}
 
+        # Create the first history state
         self.request.session["root"]["0"] = self.root
         self.request.session.modified = True
 
@@ -350,12 +351,18 @@ class CBAView(View):
     def post(self, *args, **kwargs):
         """Handles all subsequent ajax calls.
         """
+
+        # Reload a state then popstate event has been triggerd (back/foward
+        # button)
         if self.request.POST.get("action") == "reload":
             state = str(self.request.POST.get("state"))
             self.root = self.request.session["root"][state]
             self.root.refresh()
             self._collect_components_data(self.root)
         else:
+            # Creates a new history state
+            create_state = self.request.POST.get("create_state")
+            create_state = True if create_state == "true" else False
             new_state = str(self.request.POST.get("state"))
             state = str(int(new_state) - 1)
             self.root = copy.deepcopy(self.request.session["root"][state])
@@ -399,7 +406,11 @@ class CBAView(View):
             logger.debug("Refreshed components: {}".format(self._html))
             logger.debug("Collected messages: {}".format(self._messages))
 
-            self.request.session["root"][new_state] = self.root
+            if create_state:
+                self.request.session["root"][new_state] = self.root
+            else:
+                self.request.session["root"][state] = self.root
+
             self.request.session.modified = True
 
         return HttpResponse(
