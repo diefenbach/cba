@@ -173,8 +173,8 @@ class HTML(Component):
         tag
             The outer tag of the component.
 
-        text
-            The text of the component. Will be rendered within the outer tag.
+        content
+            The content of the component. Will be rendered within the outer tag.
     """
     template = "cba/components/html.html"
 
@@ -415,7 +415,7 @@ class Table(Component):
 
         if headers:
             self.headers = headers
-        else:
+        elif self.data_provider:
             self.headers = self.data_provider.get_headers()
 
         super(Table, self).__init__(*args, **kwargs)
@@ -439,7 +439,7 @@ class Table(Component):
                 component_value=row.get("component_value"),
                 css_class=row.get("css_class"),
                 selected=row.get("selected"),
-                handler={"click": "server:handle_show_note"},
+                handler=row.get("handler"),
             )
 
             # A TableColumn can have components or simple text.
@@ -503,6 +503,13 @@ class Table(Component):
 
         return {"start": start, "end": end}
 
+    def get_selected_rows(self):
+        result = []
+        for row in self.components:
+            if row.selected:
+                result.append(row)
+        return result
+
     def has_previous(self):
         """Returns True if there is a previous page.
         """
@@ -562,6 +569,8 @@ class TabItem(Component):
         title
             The title of the tab item.
     """
+    template = "cba/components/tab_item.html"
+
     def __init__(self, title="", active=False, *args, **kwargs):
         super(TabItem, self).__init__(*args, **kwargs)
         self.active = active
@@ -579,7 +588,7 @@ class Textarea(Component):
 
         rows
             The amount of rows of the text area.
-.
+
         value
             The current value of the text area.
     """

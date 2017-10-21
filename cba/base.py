@@ -1,3 +1,4 @@
+import copy
 import json
 import logging
 import uuid
@@ -24,14 +25,30 @@ class Component(object):
 
                 {"style": "color:red"}
 
+        cols
+            If given the component is rendered to the width of given cols.
+            The outer component has to be a grid. Defaults to ``None``.
+
         css_class
             The css class of the component. A string.
 
-        disabled
-            If ``True`` the component is disabled. Default is ``False``
+        component_value
+            Can be used to provide a value to the component which can be
+            requested within handlers. Defaults to the id of component.
 
-        display
-            if ``False`` the component is hidden. Default is False.
+        disabled
+            If ``True`` the component is disabled. Defaults to ``False``
+
+        displayed
+            if ``False`` the component is hidden. Defaults to ``False``.
+
+        draggable
+            if ``True``the component can be dragged and dropped. Defaults to
+            ``False``.
+
+        droppable
+            if ``True`` the other components can be dropped to the component.
+            Defaults to ``False``.
 
         id
             The unique id of the component. This must be unique troughout
@@ -55,6 +72,13 @@ class Component(object):
         initial_components
             The initial sub components of this component.
 
+        is_grid
+            If set to True the component provides a grid. Defaults to ``False``.
+
+        javascript
+            If given this is rendered with the component. Defaults to empty
+            string.
+
         parent
             The parent component of the component. This is set automically
             Only the root component has a parent of `None`.
@@ -71,8 +95,8 @@ class Component(object):
 
     def __init__(self, id=None, component_value=None, attributes=None,
                  css_class=None, disabled=False, displayed=True, draggable=False,
-                 droppable=False, handler=None, initial_components=None,
-                 javascript="", *args, **kwargs):
+                 droppable=False, handler=None, initial_components=None, cols=None,
+                 is_grid=False, javascript="", *args, **kwargs):
         self.id = id or str(uuid.uuid4())
         self.component_value = component_value
         self.attributes = attributes or {}
@@ -84,6 +108,8 @@ class Component(object):
         self.handler = handler or {}
         self.initial_components = initial_components or []
         self.javascript = javascript
+        self.cols = cols
+        self.is_grid = is_grid
 
         self.parent = None
 
@@ -307,9 +333,15 @@ class CBAView(View):
         except KeyError:
             pass
 
+        # Create root element and render it
         self.root = self.root(id="root")
         content = self.root.render()
-        self.request.session["root"] = self.root
+
+        if "root" not in self.request.session:
+            self.request.session["root"] = {}
+
+        self.request.session["root"]["0"] = self.root
+        self.request.session.modified = True
 
         return render(self.request, self.template, {
             "content": content,
@@ -318,45 +350,60 @@ class CBAView(View):
     def post(self, *args, **kwargs):
         """Handles all subsequent ajax calls.
         """
-        self.root = self.request.session.get("root")
+        if self.request.POST.get("action") == "reload":
+            state = str(self.request.POST.get("state"))
+            self.root = self.request.session["root"][state]
+            self.root.refresh()
+            self._collect_components_data(self.root)
+        else:
+            new_state = "0"
+            # new_state = str(self.request.POST.get("state"))
+            # state = str(int(new_state) - 1)
+            # self.root = copy.deepcopy(self.request.session["root"][state])
 
-        self._clear_components_data(self.root)
-        self._load_data(self.root)
+            self.root = self.request.session["root"]["0"]
 
-        # component_id is always the event triggering component. For DnD this
-        # means component_id is the droppable and source_id is the dragged
-        # item. For non DnD events source_id is None.
-        handler = self.request.POST.get("handler")
-        element_id = self.request.POST.get("element_id")
-        component_id = self.request.POST.get("component_id")
-        component_value = self.request.POST.get("component_value")
-        source_id = self.request.POST.get("source_id")
-        component = self.root.get_component(component_id)
+            self._clear_components_data(self.root)
+            self._load_data(self.root)
 
-        logger.debug("Handler: {} / Component: {}".format(handler, component))
+            # component_id is always the event triggering component. For DnD this
+            # means component_id is the droppable and source_id is the dragged
+            # item. For non DnD events source_id is None.
+            handler = self.request.POST.get("handler")
+            element_id = self.request.POST.get("element_id")
+            component_id = self.request.POST.get("component_id")
+            component_value = self.request.POST.get("component_value")
+            source_id = self.request.POST.get("source_id")
+            key_code = self.request.POST.get("key_code")
 
-        # Bubbles up the components to find the handler
-        handler_found = False
-        while component:
-            if hasattr(component, handler):
-                component.element_id = element_id
-                component.component_id = component_id
-                component.component_value = component_value
-                component.source_id = source_id
-                getattr(component, handler)()
-                handler_found = True
-                break
-            component = component.parent
+            component = self.root.get_component(component_id)
 
-        if handler_found is False:
-            logger.error("Handler {} not found".format(handler))
-            raise AttributeError("Handler {} not found".format(handler))
+            logger.debug("Handler: {} / Component: {}".format(handler, component))
+            import pdb; pdb.set_trace()
+            # Bubbles up the components to find the handler
+            handler_found = False
+            while component:
+                if hasattr(component, handler):
+                    component.element_id = element_id
+                    component.component_id = component_id
+                    component.component_value = component_value
+                    component.source_id = source_id
+                    component.key_code = key_code
+                    getattr(component, handler)()
+                    handler_found = True
+                    break
+                component = component.parent
 
-        self._collect_components_data(self.root)
-        logger.debug("Refreshed components: {}".format(self._html))
-        logger.debug("Collected messages: {}".format(self._messages))
+            if handler_found is False:
+                logger.error("Handler {} not found".format(handler))
+                raise AttributeError("Handler {} not found".format(handler))
 
-        self.request.session["root"] = self.root
+            self._collect_components_data(self.root)
+            logger.debug("Refreshed components: {}".format(self._html))
+            logger.debug("Collected messages: {}".format(self._messages))
+
+            self.request.session["root"][new_state] = self.root
+            self.request.session.modified = True
 
         return HttpResponse(
             json.dumps(
@@ -414,7 +461,8 @@ class CBAView(View):
                     else:
                         # if the component not within the request at the value
                         # is deleted
-                        root._components[component.id].value = ""
+                        pass
+                        # root._components[component.id].value = ""
 
                 if component.id in self.request.FILES:
                     if component.multiple:

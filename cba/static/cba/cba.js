@@ -88,11 +88,21 @@ const CBA = {
         data.append('element_id', elementId);
         data.append('component_id', componentId);
         data.append('component_value', componentValue);
+        data.append('key_code', event.keyCode);
         data.append('csrfmiddlewaretoken', $('input[name=csrfmiddlewaretoken]').attr('value'));
 
         if (CBA.DEBUG) {
             console.log(data);
         }
+
+        let state = history.state;
+        if (state != null) {
+            state = parseInt(state, 10) + 1;
+        } else {
+            state = 1;
+        }
+
+        data.append('state', state);
 
         $.ajax({
             url: '',
@@ -101,6 +111,7 @@ const CBA = {
             processData: false,
             contentType: false,
             success: result => {
+                // history.pushState(state, null, `#${state}`);
                 CBA.replaceHTML(result.html);
                 CBA.addMessages(result.messages);
             },
@@ -115,11 +126,29 @@ const CBA = {
     handleEvent: (element, event) => {
         const handlerString = element.attr(`${event.type}_handler`);
         const handler = handlerString.split(':');
+
+        if (event.type === 'keyup') {
+            if (handler[2]) {
+                let keys = JSON.parse(handler[2]);
+                if (!$.isArray(keys)) {
+                    keys = [keys];
+                }
+                if ($.inArray(event.keyCode, keys)) {
+                    if (CBA.DEBUG) {
+                        console.log(`${event.keyCode} is not ${handler[2]}`);
+                    }
+                    return false;
+                }
+            }
+        }
+
         if (handler[0] === 'server') {
             CBA.defaultAjaxAction(element, event, handler[1]);
         } else if (handler[0] === 'client') {
             CBA.defaultJSAction(element, event, handler[1]);
         }
+
+        return true;
     },
 };
 
@@ -182,5 +211,23 @@ $(() => {
     $('body').on('click', '.file-input img', function(event) {
         const checkbox = $(this).siblings('.checkbox').children('input');
         checkbox.prop('checked', !checkbox.prop('checked'));
+    });
+
+    // Handles history changes
+    window.addEventListener('popstate', function(e) {
+        const data = new FormData();
+        data.append('action', 'reload');
+        data.append('state', e.state);
+
+        $.ajax({
+            url: '',
+            type: 'POST',
+            data,
+            processData: false,
+            contentType: false,
+            success: result => {
+                CBA.replaceHTML(result.html);
+            },
+        });
     });
 });

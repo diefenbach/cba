@@ -18,6 +18,9 @@ class Column(Component):
             maxmimal 16 columns but can be ended explicitly.
     """
     template = "cba/layouts/column.html"
+
+    # TODO: This needs be moved out of Python, to be independent of the use ui
+    # system
     WIDTH = ["love", "one", "two", "three", "four", "five", "six", "seven",
              "eight", "nine", "ten", "eleven", "twelve", "thirteen",
              "fourteen", "fifteen", "sixteen"]

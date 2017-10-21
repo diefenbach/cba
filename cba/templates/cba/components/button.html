@@ -1,14 +1,16 @@
-<button id="{{ self.id }}"
-        class="ui button render
-              {% if self.css_class %}{{ self.css_class }}{% endif %}
-              {% for event in self.handler.keys %}{{ event }}{% endfor %}"
-        {% if self.displayed == False %}style="display:none"{% endif %}
-        {% if self.disabled %}disabled{% endif %}
-        {% for event, handler in self.handler.items %}
-            {{ event }}_handler="{{ handler }}"
-        {% endfor %}
-        {% for name, value in self.attributes.items %}
-            {{ name }}="{{ value }}"
-        {% endfor %}>
-    {{ self.value }}
-</button>
+{% if self.cols %}<div class="{{ self.cols }} wide column">{% endif %}
+    <button id="{{ self.id }}"
+            class="ui button render
+                  {% if self.css_class %}{{ self.css_class }}{% endif %}
+                  {% for event in self.handler.keys %}{{ event }}{% endfor %}"
+            {% if self.displayed == False %}style="display:none"{% endif %}
+            {% if self.disabled %}disabled{% endif %}
+            {% for event, handler in self.handler.items %}
+                {{ event }}_handler="{{ handler }}"
+            {% endfor %}
+            {% for name, value in self.attributes.items %}
+                {{ name }}="{{ value }}"
+            {% endfor %}>
+        {{ self.value }}
+    </button>
+{% if self.cols %}</div>{% endif %}

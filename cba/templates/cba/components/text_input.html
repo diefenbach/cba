@@ -1,4 +1,6 @@
 <!-- TextInput -->
+{% if self.cols %}<div class="{{ self.cols }} wide column">{% endif %}
+
 <div class="render field">
     {% if self.label %}
         <div class="ui sub header">{{ self.label }}</div>
@@ -23,11 +25,12 @@
             {% for name, value in self.attributes.items %}
                {{ name }}="{{ value }}"
             {% endfor %} />
-        {% if self.javascript %}
-            <script type="text/javascript">
-                {{ self.javascript|safe }}
-            </script>
-        {% endif %}
-
     {% if self.icon %}</div>{% endif %}
 </div>
+
+{% if self.cols %}</div>{% endif %}
+{% if self.javascript %}
+    <script type="text/javascript">
+        {{ self.javascript|safe }}
+    </script>
+{% endif %}

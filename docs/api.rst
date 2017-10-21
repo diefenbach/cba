@@ -7,7 +7,7 @@ Base classes
 .. autoclass:: cba.base.Component
     :members:
 
-.. autoclass:: cba.views.CBAView
+.. autoclass:: cba.base.CBAView
     :members:
 
 

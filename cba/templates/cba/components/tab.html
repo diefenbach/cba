@@ -1,22 +1,20 @@
 <div class="ui container render"
+     id="{{ self.id }}"
     {% for name, value in self.attributes.items %}
         {{ name }}="{{ value }}"
     {% endfor %}>
-    <div id="{{ self.id }}"
-         class="ui top attached tabular menu">
+    <div class="ui top attached tabular menu">
         {% for item in self.components %}
             <a class="item {% if item.active %}active{% endif %}" data-tab="{{ item.id }}">{{ item.title }}</a>
         {% endfor %}
     </div>
     {% for item in self.components %}
-        <div class="ui bottom attached tab segment {% if item.active %}active{% endif %}"
-             data-tab="{{ item.id }}">
-            {% for component in item.components %}
-                {{ component.render }}
-            {% endfor %}
-        </div>
+        {{ item.render }}
     {% endfor %}
-    <script type="text/javascript">
-        $('.menu .item').tab();
-    </script>
 </div>
+<script type="text/javascript">
+    for (let item of $("#{{self.id}}")) {
+        console.log(item);
+    }
+</script>
+

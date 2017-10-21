@@ -52,7 +52,7 @@ The following is a simplified example.
             my_input = self.get_component("my-input")
             my_div = self.get_component("my-div")
 
-            my_div.text = my_input.value
+            my_div.content = my_input.value
             my_div.refresh()
 
     class MyAppView(CBAView):

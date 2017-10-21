@@ -21,7 +21,7 @@ Install CBA
 
 #. Install CBA::
 
-    $ pip install https://github.com/diefenbach/cba/archive/master.zip
+    $ pip install https://github.com/diefenbach/django-cba/archive/master.zip
 
 #. Create a new Django project::
 
@@ -68,7 +68,7 @@ Install the Examples reference application
         'cba_examples',
     ]
 
-#. Register urls (within urls.py)::
+#. Register urls (within urls.py of your project)::
 
     from django.conf import settings
     from django.conf.urls import include

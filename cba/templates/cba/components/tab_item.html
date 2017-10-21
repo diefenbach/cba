@@ -1,0 +1,15 @@
+<div class="ui bottom attached tab segment render {% if self.active %}active{% endif %}{% for event in self.handler.keys %} {{ event }}{% endfor %}"
+     id="{{ self.id }}"
+     data-tab="{{ self.id }}"
+    {% for event, handler in self.handler.items %}
+        {{ event }}_handler="{{ handler }}"
+    {% endfor %}>
+    {% if self.is_grid %}<div class="ui grid">{% endif %}
+        {% for component in self.components %}
+            {{ component.render }}
+        {% endfor %}
+    {% if self.is_grid %}</div>{% endif %}
+    <script type="text/javascript">
+        $('.menu .item').tab();
+    </script>
+</div>

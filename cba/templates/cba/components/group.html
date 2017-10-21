@@ -1,4 +1,4 @@
-<div class="render">
+<div class="ui form container render">
      {% if self.displayed == False %}style="display:none"{% endif %}
     <!-- Group -->
     <div class="ui component{% if self.css_class %} {{ self.css_class }}{% endif %}"
@@ -6,12 +6,14 @@
         {% for name, value in self.attributes.items %}
             {{ name }}="{{ value }}"
         {% endfor %}>
-        {% for component in self.components %}
-            {% if self.tag %}
-                <{{self.tag}}>{{ component.render }}</{{self.tag}}>
-            {% else %}
-                {{ component.render }}
-            {% endif %}
-        {% endfor %}
+        {% if self.is_grid %}<div class="ui grid">{% endif %}
+            {% for component in self.components %}
+                {% if self.tag %}
+                    <{{self.tag}}>{{ component.render }}</{{self.tag}}>
+                {% else %}
+                    {{ component.render }}
+                {% endif %}
+            {% endfor %}
+        {% if self.is_grid %}</div>{% endif %}
     </div>
 </div>
